@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="race_db" />
+
+    <!--2018-09-19 XuBo 增加B30HalfHourDB类,版本号:2-->
+    <!--2018-12-21 新增HRV和血氧的bean,版本号3-->
+    <version value="1" />
+
+    <list>
+        <mapping class="com.ble.blebzl.event.AlarmClock" />
+        <mapping class="com.ble.blebzl.w30s.bean.W30SAlarmClockBean" />
+        <mapping class="com.ble.blebzl.w30s.ble.w30.W30S_AlarmInfo" />
+        <mapping class="com.ble.blebzl.b30.bean.B30Bean"/>
+        <mapping class="com.ble.blebzl.b30.bean.B30HalfHourDB"/>
+        <mapping class="com.ble.blebzl.b31.model.B31HRVBean"/>
+        <mapping class="com.ble.blebzl.b31.model.B31Spo2hBean"/>
+        <mapping class="com.ble.blebzl.b31.model.ManfatiBean"/>
+
+        <mapping class="com.ble.blebzl.commdbserver.CommSleepDb"/>
+        <mapping class="com.ble.blebzl.commdbserver.CommStepCountDb"/>
+        <mapping class="com.ble.blebzl.commdbserver.CommBloodDb"/>
+        <mapping class="com.ble.blebzl.commdbserver.CommHeartDb"/>
+        <mapping class="com.ble.blebzl.commdbserver.CommBloodOxyDb"/>
+        <mapping class="com.ble.blebzl.commdbserver.CommDownloadDb"/>
+
+        <mapping class="com.ble.blebzl.bean.AmapSportBean"/>
+
+        <!--B18闹钟-->
+        <mapping class="com.ble.blebzl.b18.modle.B18AlarmBean"/>
+        <mapping class="com.ble.blebzl.b18.modle.B16CadenceResultBean"/>
+
+    </list>
+</litepal>  

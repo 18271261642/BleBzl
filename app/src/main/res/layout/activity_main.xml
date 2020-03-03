@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+<!--    <com.roughike.bottombar.BottomBar
+        android:id="@+id/xwatch_bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        app:bb_activeTabColor="@color/new_colorAccent"
+        app:bb_tabXmlResource="@xml/x_watch_bottom_tabs" />-->
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,193 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.ble.blebzl"
+        minSdkVersion 20
+        targetSdkVersion 28
+        versionCode 3
+        versionName "1.0.2"
+        testInstrumentationRunner "android.support.Utils.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    configurations {
+
+        all*.exclude group: 'com.android.support', module: 'support-v13'
+    }
+    lintOptions {
+        checkReleaseBuilds true
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    useLibrary 'org.apache.http.legacy'
+
+
+
+    greendao {
+        schemaVersion 1
+        daoPackage 'com.afa.tourism.greendao.gen'
+        targetGenDir 'src/main/java'
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:support-vector-drawable:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:support-v4:28.0.0'
+
+    // 以下依赖Android系统
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:customtabs:28.0.0'
+    implementation 'com.android.support:mediarouter-v7:28.0.0'
+
+    //B36女性功能的日历
+    implementation project(':calendarview')
+
+    //圆形进度条
+    implementation project(':circleviewprogress')
+
+    //androidMpChart图表库
+    implementation project(':MPChartLib')
+    implementation project(':wheelpicker')
+    implementation(name: 'BluetoothLibrary', ext: 'aar')
+    implementation name: 'SMSSDK-2.1.3', ext: 'aar'
+    implementation name: 'SMSSDKGUI-2.1.3', ext: 'aar'
+
+    /**
+     *      ShareSDK登陆分享
+     */
+    implementation files('libs/MobCommons-2018.1011.1129.jar')
+    implementation files('libs/MobTools-2018.1009.1056.jar')
+    implementation files('libs/ShareSDK-Facebook-3.3.0.jar')
+    implementation files('libs/ShareSDK-GooglePlus-3.3.0.jar')
+    implementation files('libs/ShareSDK-QQ-3.3.0.jar')
+    implementation files('libs/ShareSDK-QZone-3.3.0.jar')
+    implementation files('libs/ShareSDK-SinaWeibo-3.3.0.jar')
+    implementation files('libs/ShareSDK-Wechat-3.3.0.jar')
+    implementation files('libs/ShareSDK-Wechat-Core-3.3.0.jar')
+    implementation files('libs/ShareSDK-Wechat-Moments-3.3.0.jar')
+    implementation files('libs/ShareSDK-Cmcc-3.3.0.jar')
+    implementation files('libs/ShareSDK-Core-3.3.0.jar')
+
+    //腾进达SDK
+    implementation files('libs/lib0_tjdL4.jar')
+    implementation files('libs/hplus.jar')
+    implementation files('libs/mframework.jar')
+    implementation files('libs/open_sdk_r5923_lite.jar')
+    implementation files('libs/libammsdk.jar')
+    implementation files('libs/date4j.jar')
+
+    //greendao数据库
+    implementation 'org.greenrobot:greendao:3.2.0'
+    implementation 'org.greenrobot:greendao-generator:3.2.2'
+
+    //eventbus
+    implementation 'org.greenrobot:eventbus:3.0.0'
+
+    //hellocharts图表库
+    implementation files('libs/hellocharts-library-1.5.8.jar')
+
+    //Strings工具包
+    implementation files('libs/commons-lang-2.5.jar')
+    implementation files('libs/BluetoothSDK.jar')
+    implementation files('libs/OTA.jar')
+
+    //维亿魄系列sdk
+    implementation files('libs/vpbluetooth_1.0.3.jar')
+    implementation files('libs/vpprotocol_2.1.21.15.jar')
+
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    //butterknife注解
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //rxjava
+    implementation 'io.reactivex:rxjava:1.1.1'
+    implementation 'io.reactivex:rxandroid:1.1.0'
+
+    //fastjson
+    implementation 'com.alibaba:fastjson:1.2.30'
+
+    //圆形图片
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
+    implementation 'com.romandanylyk:pageindicatorview:0.1.1'
+
+    //bottomBar导航栏
+    implementation 'com.roughike:bottom-bar:2.1.2'
+    implementation 'com.nightonke:boommenu:2.0.7'
+
+    //图片裁剪库uCrop
+    implementation 'com.github.yalantis:ucrop:2.2.2'
+    implementation 'com.flipboard:bottomsheet-core:1.5.3'
+    implementation 'com.flipboard:bottomsheet-commons:1.5.3'
+    implementation 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
+
+    //photoView
+    implementation 'com.bm.photoview:library:1.4.1'
+
+    //图片选择库
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
+
+    //文件下载库
+    implementation 'com.arialyy.aria:core:3.8'
+    annotationProcessor 'com.arialyy.aria:compiler:3.8'
+
+    //权限管理库
+    implementation 'com.yanzhenjie:permission:2.0.0-rc12'
+
+    //网络请求
+    implementation 'com.yanzhenjie.nohttp:nohttp:1.1.5'
+    implementation 'com.yanzhenjie.nohttp:okhttp:1.1.5'
+
+    // okhttp网络请求
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
+    implementation 'com.squareup:otto:1.3.8'
+
+    // 上下拉刷新
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-3'
+
+    // 上下拉刷新Header,自带经典和贝塞尔雷达,其他样式才加这行
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-3'
+    implementation 'com.android.volley:dc-volley:1.1.0'
+
+    //glide库
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'me.drakeet.multitype:multitype:3.4.4'
+
+    //zxing二维码
+    implementation 'com.github.yuzhiqiang1993:zxing:2.2.1'
+
+    //litePal数据库
+    implementation 'org.litepal.android:java:3.0.0'
+    implementation files('libs/AMap3DMap_7.2.1_AMapLocation_4.8.0_20200115.jar')
+}
