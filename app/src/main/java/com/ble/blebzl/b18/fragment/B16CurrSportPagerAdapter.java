@@ -136,7 +136,7 @@ public class B16CurrSportPagerAdapter extends PagerAdapter {
             //计算燃烧的脂肪
             float currFatV = allCountKcal * 1000 / 7700;
             fatTv.setText(decimalFormat.format(currFatV/1000)+"");
-            fat2Tv.setText(decimalFormat.format(currFatV/1000)+"克");
+            fat2Tv.setText(decimalFormat.format(currFatV/1000)+"g");
             dayFor30Fat.setText(decimalFormat.format(currFatV * 30 /1000 ) +"");
 
 

@@ -18,6 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+//import com.alibaba.sdk.android.push.CloudPushService;
+//import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.ble.blebzl.Commont;
 import com.ble.blebzl.MyApp;
 import com.ble.blebzl.R;
@@ -36,6 +39,7 @@ import com.ble.blebzl.view.PrivacyActivity;
 import com.ble.blebzl.view.PrivacyDialogView;
 import com.ble.blebzl.view.PromptDialog;
 import com.ble.blebzl.view.ShowPermissDialogView;
+import com.ble.blebzl.view.UserProtocalActivity;
 import com.ble.blebzl.w30s.utils.httputils.RequestPressent;
 import com.ble.blebzl.w30s.utils.httputils.RequestView;
 import com.google.gson.Gson;
@@ -62,8 +66,7 @@ public class NewLoginActivity extends WatchBaseActivity implements LoginListente
 
     @BindView(R.id.logo_img)
     ImageView logoImg;
-    //    @BindView(R.id.login_waveView)
-//    LoginWaveView loginWaveView;
+
     @BindView(R.id.username)
     EditText username;
     @BindView(R.id.password_logon)
@@ -142,12 +145,6 @@ public class NewLoginActivity extends WatchBaseActivity implements LoginListente
     @SuppressLint("SetTextI18n")
     private void initViews() {
 
-        //if (loginWaveView != null) loginWaveView.startMove();  //波浪线贝塞尔曲线
-        //版本更新
-        String upUrl = Commont.FRIEND_BASE_URL + URLs.getvision;
-        String packName = getPackageName();
-
-
 
         //appVersionTv.setText(getResources().getString(R.string.app_version)+BuildConfig.VERSION_NAME);
 
@@ -207,7 +204,8 @@ public class NewLoginActivity extends WatchBaseActivity implements LoginListente
 
 
     @OnClick({R.id.login_visitorTv, R.id.forget_tv, R.id.login_btn,
-            R.id.register_btn})
+            R.id.register_btn,R.id.userProtocalTv,
+            R.id.appVersionTv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login_visitorTv://游客
@@ -254,6 +252,12 @@ public class NewLoginActivity extends WatchBaseActivity implements LoginListente
                 break;
             case R.id.register_btn://注册
                 startActivity(new Intent(NewLoginActivity.this, RegisterActivity2.class));
+                break;
+            case R.id.userProtocalTv:   //用户协议
+                startActivity(UserProtocalActivity.class);
+                break;
+            case R.id.appVersionTv:     //隐私政策
+                startActivity(PrivacyActivity.class);
                 break;
         }
     }
@@ -323,7 +327,7 @@ public class NewLoginActivity extends WatchBaseActivity implements LoginListente
 //        map.put("deviceToken","");
 //        map.put("deviceId",deviceId);
 //        map.put("deviceType","android");
-//        map.put("language","zh");
+//        map.put("language","en");
 //
 //        String mapjson = gson.toJson(map);
 //        Log.e("msg", "-mapjson-" + mapjson);

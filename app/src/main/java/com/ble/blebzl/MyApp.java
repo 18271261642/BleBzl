@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -17,10 +16,8 @@ import android.os.Process;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
 import com.afa.tourism.greendao.gen.DaoMaster;
 import com.afa.tourism.greendao.gen.DaoSession;
-import com.ble.blebzl.activity.wylactivity.wyl_util.service.PhoneBroadcastReceiver;
 import com.ble.blebzl.util.SharedPreferencesUtils;
 import com.ble.blebzl.w30s.ble.W30SBLEManage;
 import com.android.volley.RequestQueue;
@@ -39,6 +36,7 @@ import com.ble.blebzl.w30s.ble.W37BleOperateManager;
 import com.ble.blebzl.w30s.ble.W37ConnStatusService;
 import com.hplus.bluetooth.BleProfileManager;
 import com.sdk.bluetooth.app.BluetoothApplicationContext;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tjdL4.tjdmain.L4M;
 import com.veepoo.protocol.VPOperateManager;
 import com.yanzhenjie.nohttp.InitializationConfig;
@@ -89,8 +87,6 @@ public class MyApp extends LitePalApplication {
     //接收短信的广播
     private NewSmsBroadCastReceiver newSmsBroadCastReceiver;
 
-    //电话
-    private PhoneBroadcastReceiver phoneBroadcastReceiver;
 
     @Override
     public void onCreate() {
@@ -99,11 +95,6 @@ public class MyApp extends LitePalApplication {
         AppisOne = true;
         AppisOneStar = true;
         activities = new ArrayList<>();
-        //B18
-        new BleProfileManager.Builder()
-                .setReConnect(true)
-                .setScanTime(60)
-                .build(this);
 
         //App初始启动是断开状态
         MyCommandManager.DEVICENAME = null;
@@ -111,20 +102,12 @@ public class MyApp extends LitePalApplication {
         SharedPreferencesUtils.setParam(getContext(), Commont.BATTERNUMBER, 0);//电池电量默认清空
 
 
-
-//        phoneBroadcastReceiver = new PhoneBroadcastReceiver();
-//        IntentFilter intentFilter1 = new IntentFilter();
-//        intentFilter1.addAction("android.intent.action.PHONE_STATE");
-//        intentFilter1.addAction("android.intent.action.NEW_OUTGOING_CALL");
-//        registerReceiver(phoneBroadcastReceiver,intentFilter1);
-
-
         /**
          * 第三方登陆分享+注册短信
          */
 //        MobSDK.init(this);
 //
-//        CrashReport.initCrashReport(getApplicationContext(), "4713db8b55", true);
+        CrashReport.initCrashReport(instance, "2f85320049", true);
         initSDK();
 
 //        newSmsBroadCastReceiver = new NewSmsBroadCastReceiver();
@@ -184,9 +167,15 @@ public class MyApp extends LitePalApplication {
                      */
                     L4M.InitData(instance, 1, 0);
 
+                    //B18
+                    new BleProfileManager.Builder()
+                            .setReConnect(true)
+                            .setScanTime(30)
+                            .build(instance);
+
                     B18BleConnManager.getB18BleConnManager();
 
-                    initCloudChannel();
+                    //initCloudChannel();
                     Looper.loop();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -200,7 +189,7 @@ public class MyApp extends LitePalApplication {
 
     //初始化云推送通道
     private void initCloudChannel() {
-        createNotificationChannel();
+//        createNotificationChannel();
 //        PushServiceFactory.init(instance);
 //        CloudPushService pushService = PushServiceFactory.getCloudPushService();
 //        pushService.register(instance, new CommonCallback() {

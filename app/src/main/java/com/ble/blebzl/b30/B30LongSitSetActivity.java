@@ -17,6 +17,7 @@ import com.ble.blebzl.MyApp;
 import com.ble.blebzl.R;
 import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
+import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.ILongSeatDataListener;
 import com.veepoo.protocol.model.datas.LongSeatData;
@@ -216,6 +217,8 @@ public class B30LongSitSetActivity extends WatchBaseActivity implements Compound
     private void saveLongSitData() {
         if (MyCommandManager.DEVICENAME != null) {
             String startD = showB30LongSitStartTv.getText().toString().trim();
+            if(WatchUtils.isEmpty(startD))
+                return;
             int startHour = Integer.valueOf(StringUtils.substringBefore(startD, ":").trim());
             int startMine = Integer.valueOf(StringUtils.substringAfter(startD, ":").trim());
             String endD = showB30LongSitEndTv.getText().toString().trim();

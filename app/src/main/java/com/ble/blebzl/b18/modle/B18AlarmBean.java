@@ -69,6 +69,21 @@ public class B18AlarmBean extends LitePalSupport {
 
     }
 
+    public String setAlarmAnalysis(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("0");
+        stringBuilder.append(isOpenSaturday()?"1":"0");
+        stringBuilder.append(isOpenFriday()?"1":"0");
+        stringBuilder.append(isOpenThursday()?"1":"0");
+        stringBuilder.append(isOpenWednesday()?"1":"0");
+        stringBuilder.append(isOpenTuesday()?"1":"0");
+        stringBuilder.append(isOpenMonday()?"1":"0");
+        stringBuilder.append(isOpenSunday()?"1":"0");
+        return stringBuilder.toString();
+    }
+
+
+
     public int getId() {
         return id;
     }

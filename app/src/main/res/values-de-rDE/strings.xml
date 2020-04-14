@@ -2,6 +2,49 @@
     <!--头尾内部m部分翻译为英文,后期根据提供文档更改-->
     <!--头-->
     <!--德语-->
+    <string name="string_x_watch_take_camera">Remote-Kamera</string>
+    <string name="string_b16_step_frequency">frequency</string>
+    <string name="string_b16_bmi1">Fettreduktionsindex</string>
+    <string name="string_b16_bmi2">Effektive Kalorien verbrannt</string>
+    <string name="string_b16_bmi3">Kalorien = Fettverbrennung</string>
+    <string name="string_b16_bmi4">Ein Aufenthalt von 30 Tagen entspricht einer Fettverbrennung</string>
+
+    <string name="string_b16_bmi_count">Zusammenfassung</string>
+    <string name="string_b16_bmi_time">Fettverbrennungszeit</string>
+    <string name="string_b16_bmi_consume">Fettverbrennung Verbrauch</string>
+    <string name="string_b16_bmi_effective">Trainingshäufigkeit über 120 kann effektiv Fett verbrauchen</string>
+    <string name="string_b16_bmi_desc">Was ist BMI?</string>
+    <string name="string_b16_bmi_desc_content">Der Body Mass Index (BMI, BodyMassIndex) ist ein wichtiger Standard zur Messung von Fettleibigkeit und Gesundheit beim Menschen und wird hauptsächlich für statistische Analysen verwendet. Der absolute Wert des Gewichts kann nicht verwendet werden, um den Grad der Fettleibigkeit zu bestimmen. Es hat ein Gefühl von heißem Wetter und Größe. Daher erhält der BMI relativ objektive Parameter durch zwei Werte von Körpergewicht und Körpergröße und verwendet diesen Parameter, um die Körpermasse zu messen.</string>
+    <string name="string_b16_compute_title">Berechnungsformel</string>
+    <string name="string_b16_compute_context">Body Mass Index BMI = Gewicht / Größe Quadrat (in internationalen Einheiten kg / m²) Idealer BMI (18,5 ~ 23,9) = Gewicht (Einheit kg) ÷ Größe Quadrat (in m) gemäß den von der Weltgesundheitsorganisation festgelegten Standards:</string>
+
+    <string name="string_b16_bmi_table_tr1">BMI-Klassifizierung</string>
+    <string name="string_b16_bmi_table_td1">Dünn</string>
+    <string name="string_b16_bmi_table_td2">Normal</string>
+    <string name="string_b16_bmi_table_td3">Übergewicht</string>
+    <string name="string_b16_bmi_table_td4">Übergewicht</string>
+    <string name="string_b16_bmi_table_td5">Übergewichtig</string>
+    <string name="string_b16_bmi_table_td6">Mäßige Fettleibigkeit</string>
+    <string name="string_b16_bmi_table_td7">Extrem fettleibig</string>
+    <string name="string_b16_bmi_table_tr2">WHO-Standards</string>
+    <string name="string_b16_bmi_table_tr3">Asiatischer Standard</string>
+    <string name="string_b16_bmi_table_tr4">Risiko verwandter Krankheiten</string>
+    <string name="string_b16_bmi_table_tr4_1">Niedrig (aber erhöhtes Risiko für andere Krankheiten)</string>
+    <string name="string_b16_bmi_table_tr4_2">Durchschnitt</string>
+    <string name="string_b16_bmi_table_tr4_3">Erhöhen</string>
+    <string name="string_b16_bmi_table_tr4_4">Mäßiger Anstieg</string>
+    <string name="string_b16_bmi_table_tr4_5">Starker Anstieg</string>
+    <string name="string_b16_bmi_table_tr4_6">Sehr starker Anstieg</string>
+
+
+    <string name="string_friend_level_title">Beschreibung der Erlaubnis der Freunde</string>
+    <string name="string_friend_special">Als besonderen Freund einstellen</string>
+    <string name="string_friend_start">Set als Star-Freund</string>
+    <string name="string_friend_normal">Als normaler Freund einstellen</string>
+    <string name="string_friend_level_desc">Besondere Freunde: Es kann nur eine Person festgelegt werden, die alle Daten anzeigen darf. Nach dem Festlegen besonderer Freunde müssen sie der Bewerbung zustimmen; \n\n
+        Starfreunde: Sie können alle Daten außer der physiologischen Periode anzeigen und Starfreunde ohne Zustimmung von Freunden festlegen;\n\n
+        Normale Freunde: Sie können Schritt-, Schlaf-, Herzfrequenz- und Blutdruckdaten miteinander überprüfen. Nachdem Sie die Einwilligung beantragt haben, sind Sie standardmäßig normale Freunde;</string>
+
     <string name="string_bmi_title">BMI</string>
 
     <string name="string_permis_title">Welcome to RaceFit Pro</string>

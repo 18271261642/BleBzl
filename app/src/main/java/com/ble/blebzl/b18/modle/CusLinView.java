@@ -98,7 +98,7 @@ public class CusLinView extends View {
         canvas.translate(0,height);
 
         if(isTxt){
-            canvas.drawText("步频",0f,-MiscUtil.dipToPx(getContext(),100f),txtPaint);
+            canvas.drawText(getResources().getString(R.string.string_b16_step_frequency),0f,-MiscUtil.dipToPx(getContext(),100f),txtPaint);
             canvas.drawText("120",width- MiscUtil.getTextWidth(txtPaint,"120"),-MiscUtil.dipToPx(getContext(),100f),txtPaint);
         }
 

@@ -280,37 +280,42 @@ public class AmapSportActivity extends WatchBaseActivity implements LocationSour
     private void saveSportData() {
         if (tempTraceList.size() == 0)
             return;
-        String bleMac = WatchUtils.getSherpBleMac(AmapSportActivity.this);
-        String userId = (String) SharedPreferencesUtils.readObject(AmapSportActivity.this,Commont.USER_ID_DATA);
-        if(WatchUtils.isEmpty(userId))
-            return;
-        //卡路里
-        String saveKcal = mapSportKcalTv.getText().toString();
-        //总里程
-        String countDis = mapSportCountDisTv.getText().toString().trim();
-        String tmpCountDis = StringUtils.substringBefore(countDis," ");
+        try {
+            String bleMac = WatchUtils.getSherpBleMac(AmapSportActivity.this);
+            String userId = (String) SharedPreferencesUtils.readObject(AmapSportActivity.this,Commont.USER_ID_DATA);
+            if(WatchUtils.isEmpty(bleMac) || WatchUtils.isEmpty(userId))
+                return;
+            //卡路里
+            String saveKcal = mapSportKcalTv.getText().toString();
+            //总里程
+            String countDis = mapSportCountDisTv.getText().toString().trim();
+            String tmpCountDis = StringUtils.substringBefore(countDis," ");
 
-        if(tmpCountDis.equals("0"))
-            return;
-        //总时间
-        String countTime = mapSportCountTimeTv.getText().toString().trim();
-        //平均配速
-        String avgSpeed = mapSportAvgSpeedTv.getText().toString();
-        String tmpAvgSpeed = StringUtils.substringBefore(avgSpeed," ").trim();
+            if(tmpCountDis.equals("0"))
+                return;
+            //总时间
+            String countTime = mapSportCountTimeTv.getText().toString().trim();
+            //平均配速
+            String avgSpeed = mapSportAvgSpeedTv.getText().toString();
+            String tmpAvgSpeed = StringUtils.substringBefore(avgSpeed," ").trim();
 
 
-        AmapSportBean amapSportBean = new AmapSportBean();
-         amapSportBean.setRtc(WatchUtils.getCurrentDate());
-         amapSportBean.setDetailTime(WatchUtils.getCurrentDate2());
-         amapSportBean.setBleMac(bleMac);
-         amapSportBean.setUserId(userId);
-         amapSportBean.setKcal(StringUtils.substringBefore(saveKcal," ").trim());
-         amapSportBean.setCountDisance(isUnit ? tmpCountDis : WatchUtils.miToKm(Double.valueOf(tmpCountDis))+"");
-         amapSportBean.setCountTime(StringUtils.substringBefore(countTime," "));
-         amapSportBean.setAvgSpeed(isUnit ? tmpAvgSpeed : WatchUtils.miToKm(Double.valueOf(tmpAvgSpeed))+"");
-         amapSportBean.setAmapTraceStr(new Gson().toJson(tempTraceList));
-         amapSportBean.setSportType(sportType);
-         amapSportBean.save();
+            AmapSportBean amapSportBean = new AmapSportBean();
+            amapSportBean.setRtc(WatchUtils.getCurrentDate());
+            amapSportBean.setDetailTime(WatchUtils.getCurrentDate2());
+            amapSportBean.setBleMac(bleMac);
+            amapSportBean.setUserId(userId);
+            amapSportBean.setKcal(StringUtils.substringBefore(saveKcal," ").trim());
+            amapSportBean.setCountDisance(isUnit ? tmpCountDis : WatchUtils.miToKm(Double.valueOf(tmpCountDis))+"");
+            amapSportBean.setCountTime(StringUtils.substringBefore(countTime," "));
+            amapSportBean.setAvgSpeed(isUnit ? tmpAvgSpeed : WatchUtils.miToKm(Double.valueOf(tmpAvgSpeed))+"");
+            amapSportBean.setAmapTraceStr(new Gson().toJson(tempTraceList));
+            amapSportBean.setSportType(sportType);
+            amapSportBean.save();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 

@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="BMI分类"/>
+            android:text="@string/string_b16_bmi_table_tr1"/>
 
         <View
             android:layout_width="1dp"
@@ -41,7 +41,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="WHO标准"/>
+            android:text="@string/string_b16_bmi_table_tr2"/>
 
         <View
             android:layout_width="1dp"
@@ -51,7 +51,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="亚洲标准"/>
+            android:text="@string/string_b16_bmi_table_tr3"/>
 
 
 
@@ -63,7 +63,7 @@
         <TextView
             android:layout_width="120dp"
             style="@style/B16BMIStyle"
-            android:text="相关疾病发病的危险性"/>
+            android:text="@string/string_b16_bmi_table_tr4"/>
 
 
 
@@ -84,7 +84,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="偏瘦"/>
+            android:text="@string/string_b16_bmi_table_td1"/>
 
         <View
             android:layout_width="1dp"
@@ -117,7 +117,7 @@
         <TextView
             android:layout_width="120dp"
             style="@style/B16BMIStyle"
-            android:text="低(但其它疾病的危险性增加)"/>
+            android:text="@string/string_b16_bmi_table_tr4_1"/>
 
 
 
@@ -139,7 +139,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="正常"/>
+            android:text="@string/string_b16_bmi_table_td2"/>
 
         <View
             android:layout_width="1dp"
@@ -173,7 +173,7 @@
         <TextView
             android:layout_width="120dp"
             style="@style/B16BMIStyle"
-            android:text="平均水平"/>
+            android:text="@string/string_b16_bmi_table_tr4_2"/>
 
 
 
@@ -194,7 +194,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="超重"/>
+            android:text="@string/string_b16_bmi_table_td3"/>
 
         <View
             android:layout_width="1dp"
@@ -250,7 +250,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="偏胖"/>
+            android:text="@string/string_b16_bmi_table_td4"/>
 
         <View
             android:layout_width="1dp"
@@ -284,7 +284,7 @@
         <TextView
             android:layout_width="120dp"
             style="@style/B16BMIStyle"
-            android:text="增加"/>
+            android:text="@string/string_b16_bmi_table_tr4_3"/>
 
 
 
@@ -305,7 +305,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="肥胖"/>
+            android:text="@string/string_b16_bmi_table_td5"/>
 
         <View
             android:layout_width="1dp"
@@ -339,7 +339,7 @@
         <TextView
             android:layout_width="120dp"
             style="@style/B16BMIStyle"
-            android:text="中度增加"/>
+            android:text="@string/string_b16_bmi_table_tr4_4"/>
 
 
 
@@ -360,7 +360,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="中度肥胖"/>
+            android:text="@string/string_b16_bmi_table_td6"/>
 
         <View
             android:layout_width="1dp"
@@ -399,7 +399,7 @@
         <TextView
             android:layout_width="120dp"
             style="@style/B16BMIStyle"
-            android:text="严重增加"/>
+            android:text="@string/string_b16_bmi_table_tr4_5"/>
 
 
 
@@ -420,7 +420,7 @@
         <TextView
             android:layout_width="80dp"
             style="@style/B16BMIStyle"
-            android:text="极重度肥胖"/>
+            android:text="@string/string_b16_bmi_table_td7"/>
 
         <View
             android:layout_width="1dp"
@@ -453,7 +453,7 @@
         <TextView
             android:layout_width="120dp"
             style="@style/B16BMIStyle"
-            android:text="非常严重增加"/>
+            android:text="@string/string_b16_bmi_table_tr4_6"/>
 
 
 

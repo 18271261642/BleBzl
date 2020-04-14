@@ -1,5 +1,7 @@
 package com.ble.blebzl.xwatch.fragment;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -21,14 +24,22 @@ import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.ble.blebzl.Commont;
 import com.ble.blebzl.MyApp;
 import com.ble.blebzl.R;
+import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.siswatch.NewSearchActivity;
 import com.ble.blebzl.util.SharedPreferencesUtils;
+import com.ble.blebzl.w30s.carema.W30sCameraActivity;
 import com.ble.blebzl.xwatch.ble.XWatchBleAnalysis;
 import com.ble.blebzl.xwatch.ble.XWatchGoalListener;
 import com.ble.blebzl.xwatch.ble.XWatchTimeModelListener;
 import com.ble.blebzl.xwatch.ble.XWatchUnitListener;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RequestExecutor;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,6 +62,13 @@ public class XWatchDeviceFragment extends Fragment {
     TextView xWatchDeviceSleepGoalTv;
     @BindView(R.id.xWatchDeviceUnitTv)
     TextView xWatchDeviceUnitTv;
+
+    @BindView(R.id.xWatchDeviceSleepRel)
+    RelativeLayout xWatchDeviceSleepRel;
+    @BindView(R.id.b18DeviceUnitRel)
+    RelativeLayout b18DeviceUnitRel;
+
+
     Unbinder unbinder;
 
 
@@ -66,6 +84,8 @@ public class XWatchDeviceFragment extends Fragment {
     private AlertDialog.Builder unitBuilder;
     //时间格式
     private AlertDialog.Builder timeTypeBuilder;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +117,15 @@ public class XWatchDeviceFragment extends Fragment {
     private void initViews() {
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(getResources().getString(R.string.menu_settings));
+
+        if(MyCommandManager.DEVICENAME.equals("XWatch")){
+            xWatchDeviceSleepRel.setVisibility(View.VISIBLE);
+            b18DeviceUnitRel.setVisibility(View.VISIBLE);
+        }
+
+        int sportGoal = (int) SharedPreferencesUtils.getParam(getActivity(), Commont.SPORT_GOAL_STEP,10000);
+        xWatchDeviceSportGoalTv.setText(sportGoal+"");
+
         xWatchBleAnalysis.getDeviceSportGoal(new XWatchGoalListener() {
             @Override
             public void backDeviceGoal(int goal) {
@@ -140,7 +169,7 @@ public class XWatchDeviceFragment extends Fragment {
     @OnClick({R.id.commentB30BackImg, R.id.xWatchDeviceSportRel,
             R.id.b18DeviceUnitRel, R.id.xWatchDeviceMsgRel,
             R.id.xWatchDeviceAlarmRel,R.id.xWatchDeviceSleepRel,
-            R.id.xWatchDeviceunBindRel})
+            R.id.xWatchDeviceunBindRel,R.id.xWatchDevicePhotoRel})
     public void onClick(View view) {
         fragmentManager = getFragmentManager();
         if (fragmentManager == null)
@@ -148,7 +177,7 @@ public class XWatchDeviceFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         switch (view.getId()) {
             case R.id.commentB30BackImg:
-                fragmentManager.popBackStack();
+                getActivity().finish();
                 break;
             case R.id.xWatchDeviceSportRel:     //运动目标
                 setSportGoal();
@@ -166,14 +195,41 @@ public class XWatchDeviceFragment extends Fragment {
                 break;
             case R.id.xWatchDeviceAlarmRel: //闹钟
                 fragmentTransaction.addToBackStack(null)
-                        .replace(R.id.xWatchDeviceFrameLayout, new XWatchAlarmFragment())
+                        .replace(R.id.xWatchDeviceFrameLayout, MyCommandManager.DEVICENAME.equals("XWatch") ? new XWatchAlarmFragment() : new SWatchAlarmFragment())
                         .commit();
                 break;
             case R.id.xWatchDeviceunBindRel:    //断开连接
                 disDeviceBle();
                 break;
+            case R.id.xWatchDevicePhotoRel:     //摇一摇拍照
+                if (AndPermission.hasPermissions(this, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)) {
+                    openCamera();
+                } else {
+                    AndPermission.with(this)
+                            .runtime()
+                            .permission(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+                            .rationale(rationale)
+                            .onGranted(new Action<List<String>>() {
+                                @Override
+                                public void onAction(List<String> data) {
+                                    openCamera();
+                                }
+                            })
+                            .start();
+                }
+                break;
         }
     }
+
+
+    private void openCamera() {
+        if (MyCommandManager.DEVICENAME.equals("SWatch")) {
+            XWatchBleAnalysis.getW37DataAnalysis().openOrCloseCamera(1);
+        }
+        startActivity(new Intent(getActivity(), W30sCameraActivity.class));
+    }
+
+
 
     //断开连接
     private void disDeviceBle() {
@@ -228,6 +284,7 @@ public class XWatchDeviceFragment extends Fragment {
                     public void onProCityPickCompleted(String profession) {
                         xWatchDeviceSportGoalTv.setText(profession);
                         xWatchBleAnalysis.setDeviceSportGoal(Integer.valueOf(profession.trim()));
+                        SharedPreferencesUtils.setParam(getActivity(),Commont.SPORT_GOAL_STEP,Integer.valueOf(profession.trim()));
                     }
                 }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
                 .textCancel(getResources().getString(R.string.cancle)) //text of cancel button
@@ -274,4 +331,12 @@ public class XWatchDeviceFragment extends Fragment {
             }
         }).show();
     }
+
+    private Rationale rationale = new Rationale() {
+        @Override
+        public void showRationale(Context context, Object data, RequestExecutor executor) {
+            AndPermission.with(XWatchDeviceFragment.this).runtime().setting().start();
+            executor.execute();
+        }
+    };
 }

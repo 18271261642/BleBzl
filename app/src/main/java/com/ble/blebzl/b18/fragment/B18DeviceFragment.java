@@ -1,9 +1,12 @@
 package com.ble.blebzl.b18.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -72,6 +75,18 @@ public class B18DeviceFragment extends LazyFragment {
 
 
     private AlertDialog.Builder builder;
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            closeLoadingDialog();
+            startActivity(new Intent(getActivity(), NewSearchActivity.class));
+            getActivity().finish();
+
+        }
+    };
 
 
     @Override
@@ -265,9 +280,9 @@ public class B18DeviceFragment extends LazyFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        showLoadingDialog("Loading...");
                         B18BleConnManager.getB18BleConnManager().disConnB18Device(getActivity());
-                        startActivity(new Intent(getActivity(), NewSearchActivity.class));
-                        getActivity().finish();
+                        handler.sendEmptyMessageDelayed(0x00,2 * 1000);
 
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {

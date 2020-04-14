@@ -1,6 +1,8 @@
 package com.ble.blebzl.b30.women;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,8 +24,8 @@ import com.ble.blebzl.b36.calview.WomenMenBean;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.DateTimeUtils;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
-import com.ble.blebzl.util.ToastUtil;
 import com.ble.blebzl.util.SharedPreferencesUtils;
+import com.ble.blebzl.util.ToastUtil;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarUtil;
 import com.haibin.calendarview.CalendarView;
@@ -95,6 +97,9 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
     //经期开始和结束的开关显示的状态文字
     @BindView(R.id.womenJinQiStatusTv)
     TextView womenJinQiStatusTv;
+    //是否开启推送开关
+    @BindView(R.id.womenPushNotToggle)
+    ToggleButton womenPushNotToggle;
 
     private java.util.Calendar sysCalendar;
 
@@ -117,22 +122,17 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
     //点击的日期的日期
     String clickCalendarDate = null;
 
-
+    private AlertDialog.Builder pushAlert;
 
 
     @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             initTmpData();
         }
     };
-
-
-
-
-
 
 
     @Override
@@ -143,8 +143,8 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
 
         initViews();
 
-        String bleName = (String) SharedPreferencesUtils.readObject(WomenDetailActivity.this,Commont.BLENAME);
-        if(bleName != null && bleName.equals("B16"))
+        String bleName = (String) SharedPreferencesUtils.readObject(WomenDetailActivity.this, Commont.BLENAME);
+        if (bleName != null && bleName.equals("B16"))
             womenNotiRel.setVisibility(View.GONE);
 
     }
@@ -199,8 +199,6 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
         }
 
 
-
-
     }
 
 
@@ -209,7 +207,7 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
         //预测出生日
         String babyBornDate = null;
         boolean isSmartSwitch = (boolean) SharedPreferencesUtils.getParam(WomenDetailActivity.this, Commont.WOMEN_LAST_MEN_STATUS, false);
-        Log.e(TAG,"---------isSmartSwitch="+isSmartSwitch);
+        Log.e(TAG, "---------isSmartSwitch=" + isSmartSwitch);
         if (isSmartSwitch) {      //根据最后一次的月经期预测
             //往后280天出生日
             //最后一次月经
@@ -241,7 +239,7 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
         if (WatchUtils.isEmpty(babyBornDate))
             babyBornDate = WatchUtils.getCurrentDate();
 
-        SharedPreferencesUtils.setParam(WomenDetailActivity.this,Commont.BABY_BORN_DATE,babyBornDate);
+        SharedPreferencesUtils.setParam(WomenDetailActivity.this, Commont.BABY_BORN_DATE, babyBornDate);
 
         B36SetWomenDataServer.setB30WomenData(womenStatus);
 
@@ -252,8 +250,8 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
         //日
         int babyDay = DateTimeUtils.getCurrDay(babyBornDate);//Integer.valueOf(babyBornDate.substring(8, babyBornDate.length()));
         Map<String, Calendar> babyBornMap = new HashMap<>();
-        babyBornMap.put(getSchemeCalendar(babyYear, babyMonth, babyDay, Color.parseColor("#3f1256"), "baby"+getResources().getString(R.string.birthday)).toString(),
-                getSchemeCalendar(babyYear, babyMonth, babyDay, Color.parseColor("#3f1256"), "baby"+getResources().getString(R.string.birthday)));
+        babyBornMap.put(getSchemeCalendar(babyYear, babyMonth, babyDay, Color.parseColor("#3f1256"), "baby" + getResources().getString(R.string.birthday)).toString(),
+                getSchemeCalendar(babyYear, babyMonth, babyDay, Color.parseColor("#3f1256"), "baby" + getResources().getString(R.string.birthday)));
         calendarView.setSchemeDate(babyBornMap);
 
 
@@ -279,7 +277,7 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
         if (WatchUtils.isEmpty(menseLength))
             menseLength = "5";
 
-        Log.e(TAG,"----------月经长度="+menseLength);
+        Log.e(TAG, "----------月经长度=" + menseLength);
 
         int womenMenInter = Integer.valueOf(menesInterval.trim()) - Integer.valueOf(menseLength.trim());
         Log.e(TAG, "------经期长度=" + menseLength + "-=间隔周期=" + womenMenInter);
@@ -351,16 +349,16 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
                 list.add(womenMenBean);
 
                 //下一次月经的经期开始日=最后一次的经期开始日+月经周期
-                mapLastMenDate = WatchUtils.getLongToDate("yyyy-MM-dd", longLtMonth + Integer.valueOf(menesInterval)  * oneDayLong);
-               // Log.e(TAG,"---------下一次月经的开始日="+mapLastMenDate);
+                mapLastMenDate = WatchUtils.getLongToDate("yyyy-MM-dd", longLtMonth + Integer.valueOf(menesInterval) * oneDayLong);
+                // Log.e(TAG,"---------下一次月经的开始日="+mapLastMenDate);
 
 
-               // Log.e(TAG, "-----wb=" + womenMenBean.toString());
+                // Log.e(TAG, "-----wb=" + womenMenBean.toString());
 
 
                 //排卵日=下次月经开始往前推14天
                 long valLongDate = sdf.parse(mapLastMenDate).getTime() - 14 * oneDayLong;
-                String valLongDateStr = WatchUtils.getLongToDate("yyyy-MM-dd",valLongDate);
+                String valLongDateStr = WatchUtils.getLongToDate("yyyy-MM-dd", valLongDate);
                 mps.put(valLongDateStr, getResources().getString(R.string.b36_ovulation_day));  //排卵日
 
 
@@ -377,13 +375,11 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
         Map<String, Calendar> schemeMap = new HashMap<>();
 
 
-
-
         //标记排卵日
         for (Map.Entry<String, String> mp : mps.entrySet()) {
             String keyDay = mp.getKey();
-            int ovulationYear =!WatchUtils.isEmpty(keyDay) ? DateTimeUtils.getCurrYear(keyDay) : 0;
-            int ovulationMonth = !WatchUtils.isEmpty(keyDay) ?DateTimeUtils.getCurrMonth(keyDay) : 0;
+            int ovulationYear = !WatchUtils.isEmpty(keyDay) ? DateTimeUtils.getCurrYear(keyDay) : 0;
+            int ovulationMonth = !WatchUtils.isEmpty(keyDay) ? DateTimeUtils.getCurrMonth(keyDay) : 0;
             int ovulationDay = !WatchUtils.isEmpty(keyDay) ? DateTimeUtils.getCurrDay(keyDay) : 0;
 
             schemeMap.put(getSchemeCalendar(ovulationYear,
@@ -399,9 +395,9 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
                 int beforeOvulationDay = !WatchUtils.isEmpty(currDayStr) ? DateTimeUtils.getCurrDay(currDayStr) : 0;
 
                 schemeMap.put(getSchemeCalendar(beforeOvulationYear,
-                        beforeOvulationMonth, beforeOvulationDay, Color.parseColor("#e6aaf8"), getResources().getString(R.string.b36_ovulation_period) +" "+ i +" "+ getResources().getString(R.string.data_report_day)).toString(),
+                        beforeOvulationMonth, beforeOvulationDay, Color.parseColor("#e6aaf8"), getResources().getString(R.string.b36_ovulation_period) + " " + i + " " + getResources().getString(R.string.data_report_day)).toString(),
                         getSchemeCalendar(beforeOvulationYear,
-                                beforeOvulationMonth, beforeOvulationDay, Color.parseColor("#e6aaf8"), getResources().getString(R.string.b36_ovulation_period) + " "+i +" "+ getResources().getString(R.string.data_report_day)));
+                                beforeOvulationMonth, beforeOvulationDay, Color.parseColor("#e6aaf8"), getResources().getString(R.string.b36_ovulation_period) + " " + i + " " + getResources().getString(R.string.data_report_day)));
 
             }
 
@@ -414,15 +410,14 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
                 int afterOvulationDay = !WatchUtils.isEmpty(currDayStr2) ? DateTimeUtils.getCurrDay(currDayStr2) : 0;
 
                 schemeMap.put(getSchemeCalendar(afterOvulationYear,
-                        afterOvulationMonth, afterOvulationDay, Color.parseColor("#e6aaf8"), getResources().getString(R.string.b36_ovulation_period) + " "+j +" "+ getResources().getString(R.string.data_report_day)).toString(),
+                        afterOvulationMonth, afterOvulationDay, Color.parseColor("#e6aaf8"), getResources().getString(R.string.b36_ovulation_period) + " " + j + " " + getResources().getString(R.string.data_report_day)).toString(),
                         getSchemeCalendar(afterOvulationYear,
-                                afterOvulationMonth, afterOvulationDay, Color.parseColor("#e6aaf8"), getResources().getString(R.string.b36_ovulation_period) + " "+ j+" " + getResources().getString(R.string.data_report_day)));
+                                afterOvulationMonth, afterOvulationDay, Color.parseColor("#e6aaf8"), getResources().getString(R.string.b36_ovulation_period) + " " + j + " " + getResources().getString(R.string.data_report_day)));
 
             }
 
 
         }
-
 
 
         //绘制月经期
@@ -440,7 +435,7 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
             //保存最后一次的月经及月经长度
             for (int i = 1; i <= Integer.valueOf(menseLength.trim()); i++) {
                 lastMenMap.put(WatchUtils.getLongToDate("yyyy-MM-dd", (sdf.parse(lastMenDate).getTime() + (i - 1) * oneDayLong)),
-                        getResources().getString(R.string.b36_period) + " " + i+" " + getResources().getString(R.string.data_report_day));
+                        getResources().getString(R.string.b36_period) + " " + i + " " + getResources().getString(R.string.data_report_day));
 
             }
 
@@ -453,15 +448,13 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
         //绘制最后一次的月经期
         for (Map.Entry<String, String> ltMap : lastMenMap.entrySet()) {
             String keyDay = ltMap.getKey();
-            int ltYear = !WatchUtils.isEmpty(keyDay) ? DateTimeUtils.getCurrYear(keyDay): 0;
-            int ltMonth =!WatchUtils.isEmpty(keyDay) ? DateTimeUtils.getCurrMonth(keyDay) : 0;
+            int ltYear = !WatchUtils.isEmpty(keyDay) ? DateTimeUtils.getCurrYear(keyDay) : 0;
+            int ltMonth = !WatchUtils.isEmpty(keyDay) ? DateTimeUtils.getCurrMonth(keyDay) : 0;
             int ltDay = !WatchUtils.isEmpty(keyDay) ? DateTimeUtils.getCurrDay(keyDay) : 0;
             schemeMap.put(getSchemeCalendar(ltYear, ltMonth, ltDay, Color.RED, ltMap.getValue()).toString(),
                     getSchemeCalendar(ltYear, ltMonth, ltDay, Color.RED, ltMap.getValue()));
 
         }
-
-
 
 
         calendarView.setSchemeDate(schemeMap);
@@ -480,9 +473,9 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
         womenCurrDateTv.setText(calendarView.getCurYear() + "-" + calendarView.getCurMonth());
         womenNotToggle.setOnCheckedChangeListener(onCheckedChangeListener);
         womenJinqiStartToggle.setOnCheckedChangeListener(onCheckedChangeListener);
+        womenPushNotToggle.setOnCheckedChangeListener(onCheckedChangeListener);
 
-
-        boolean isB36Noti = (boolean) SharedPreferencesUtils.getParam(WomenDetailActivity.this,Commont.IS_B36_JINGQI_NOTI,false);
+        boolean isB36Noti = (boolean) SharedPreferencesUtils.getParam(WomenDetailActivity.this, Commont.IS_B36_JINGQI_NOTI, false);
         womenNotToggle.setChecked(isB36Noti);
     }
 
@@ -570,10 +563,10 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
                 if (statusDay == -1) {
                     womenShowWomenStateTv.setText("");
                 } else {
-                    if (!WatchUtils.isEmpty(calendar.getScheme()) && calendar.getScheme().equals("baby"+getResources().getString(R.string.birthday))) {
-                        womenShowWomenStateTv.setText("baby"+getResources().getString(R.string.birthday));
+                    if (!WatchUtils.isEmpty(calendar.getScheme()) && calendar.getScheme().equals("baby" + getResources().getString(R.string.birthday))) {
+                        womenShowWomenStateTv.setText("baby" + getResources().getString(R.string.birthday));
                     } else {
-                        womenShowWomenStateTv.setText(getResources().getString(R.string.b36_pregnancy) + " " +  statusDay +" " + getResources().getString(R.string.data_report_week));
+                        womenShowWomenStateTv.setText(getResources().getString(R.string.b36_pregnancy) + " " + statusDay + " " + getResources().getString(R.string.data_report_week));
                     }
 
                 }
@@ -609,39 +602,37 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
                 b36NoOperLin.setVisibility(View.GONE);
                 jignqiNoLin.setVisibility(View.VISIBLE);
 
-                if(schTxt.equals(getResources().getString(R.string.b36_period)+" "+1+" "+getResources().getString(R.string.data_report_day))){
+                if (schTxt.equals(getResources().getString(R.string.b36_period) + " " + 1 + " " + getResources().getString(R.string.data_report_day))) {
                     womenJinQiStatusTv.setText(getResources().getString(R.string.b36_period_start));
                     womenJinqiStartToggle.setChecked(true);
 
-                }else{
+                } else {
                     womenJinQiStatusTv.setText(getResources().getString(R.string.b36_period_end));
                     womenJinqiStartToggle.setChecked(false);
                     //经期的第二天+经期长度+5天
-                    String secondLtMen = WatchUtils.obtainAroundDate(ltMenDate,false,0);    //第一次经期的后一天
+                    String secondLtMen = WatchUtils.obtainAroundDate(ltMenDate, false, 0);    //第一次经期的后一天
                     //月经长度
                     String menseLength = (String) SharedPreferencesUtils.getParam(WomenDetailActivity.this, Commont.WOMEN_MEN_LENGTH, "5");
-                    if(schTxt.equals(getResources().getString(R.string.b36_period)+" "+Integer.valueOf(menseLength)+" "+getResources().getString(R.string.data_report_day))){
+                    if (schTxt.equals(getResources().getString(R.string.b36_period) + " " + Integer.valueOf(menseLength) + " " + getResources().getString(R.string.data_report_day))) {
                         womenJinqiStartToggle.setChecked(true);
                     }
 
 
-
-                    long isEndMenRang = sdf.parse(secondLtMen).getTime() + (Integer.valueOf(menseLength.trim())-2) * oneDayLong + 5 * oneDayLong;
+                    long isEndMenRang = sdf.parse(secondLtMen).getTime() + (Integer.valueOf(menseLength.trim()) - 2) * oneDayLong + 5 * oneDayLong;
                     //转换成string类型
-                    String isEndMenRngStr = WatchUtils.getLongToDate("yyyy-MM-dd",isEndMenRang);
-                    Log.e(TAG,"------结束状态日期="+isEndMenRngStr);
+                    String isEndMenRngStr = WatchUtils.getLongToDate("yyyy-MM-dd", isEndMenRang);
+                    Log.e(TAG, "------结束状态日期=" + isEndMenRngStr);
                     //判断点击的日期是否在范围内
-                    boolean isClickRang =  CalendarUtil.isCalendarInRange(calendar, DateTimeUtils.getCurrYear(secondLtMen), DateTimeUtils.getCurrMonth(secondLtMen), DateTimeUtils.getCurrDay(secondLtMen),
+                    boolean isClickRang = CalendarUtil.isCalendarInRange(calendar, DateTimeUtils.getCurrYear(secondLtMen), DateTimeUtils.getCurrMonth(secondLtMen), DateTimeUtils.getCurrDay(secondLtMen),
                             DateTimeUtils.getCurrYear(isEndMenRngStr), DateTimeUtils.getCurrMonth(isEndMenRngStr), DateTimeUtils.getCurrDay(isEndMenRngStr));
-                    Log.e(TAG,"-----isClickRang="+isClickRang);
+                    Log.e(TAG, "-----isClickRang=" + isClickRang);
 
-                    if(isClickRang){
+                    if (isClickRang) {
                         womenJinQiStatusTv.setText(getResources().getString(R.string.b36_period_end));
-                    }else{
+                    } else {
                         womenJinQiStatusTv.setText(getResources().getString(R.string.b36_period_start));
                     }
                 }
-
 
 
             } else {
@@ -667,7 +658,7 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
                     ToastUtil.showToast(WomenDetailActivity.this, "未来不可操作!");
                     return;
                 }
-                Log.e(TAG,"---------选择最后一次月经="+dateDesc);
+                Log.e(TAG, "---------选择最后一次月经=" + dateDesc);
                 womenLastJingqiStartTv.setText(dateDesc);
                 //保存最近一次月经日期
                 SharedPreferencesUtils.setParam(WomenDetailActivity.this, Commont.WOMEN_LAST_MENSTRUATION_DATE, dateDesc);
@@ -683,7 +674,7 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
                 .colorConfirm(Color.parseColor("#009900"))//color of confirm button
                 .minYear(1920) //min year in loop
                 .maxYear(sysCalendar.get(java.util.Calendar.YEAR)) // max year in loop
-                .dateChose(sysCalendar.get(java.util.Calendar.YEAR) + "-" + sysCalendar.get(java.util.Calendar.MONTH)+1 + "-" + sysCalendar.get(java.util.Calendar.DAY_OF_MONTH) + "") // date chose when init popwindow
+                .dateChose(sysCalendar.get(java.util.Calendar.YEAR) + "-" + sysCalendar.get(java.util.Calendar.MONTH) + 1 + "-" + sysCalendar.get(java.util.Calendar.DAY_OF_MONTH) + "") // date chose when init popwindow
                 .build();
         pickerPopWin.showPopWin(WomenDetailActivity.this);
     }
@@ -701,23 +692,47 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
                 case R.id.womenJinqiStartToggle:    //经期开始或经期结束
                     operMenStartOrEndStatus(isChecked);
                     break;
+                case R.id.womenPushNotToggle:   //是否开启推送开关
+                    setPushNoti(isChecked);
+                    break;
             }
 
         }
     };
 
+
+    //是否推送开关提醒
+    private void setPushNoti(final boolean isCheck){
+        pushAlert = new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.prompt))
+                .setMessage("开启推送:将自己的生理期状态信息通过消息推送给设置的特殊好友."+"\n"+"关闭推送:不将自己的生理期状态信息通过消息推送给设置的特殊好友.")
+                .setPositiveButton(getResources().getText(R.string.complete), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        SharedPreferencesUtils.setParam(WomenDetailActivity.this,Commont.IS_WOMEN_PUSH,isCheck);
+                        B36SetWomenDataServer.setDevicePushNoti(isCheck,womenStatus);
+                    }
+                });
+        pushAlert.create().show();
+    }
+
+
+
+
+
     //操作经期开始和经期结束
     private void operMenStartOrEndStatus(boolean isClick) {
-        Log.e(TAG,"--------isClick="+isClick);
+        Log.e(TAG, "--------isClick=" + isClick);
         //判断当前是什么状态
         String toggStatus = womenJinQiStatusTv.getText().toString().trim();
         //最近一次经期的日期
         String ltMenDate = (String) SharedPreferencesUtils.getParam(WomenDetailActivity.this,
                 Commont.WOMEN_LAST_MENSTRUATION_DATE, WatchUtils.getCurrentDate());
         try {
-            if(toggStatus.equals(getResources().getString(R.string.b36_period_end))){
-                Log.e(TAG,"---11-----isClick="+isClick);
-                if(isClick){
+            if (toggStatus.equals(getResources().getString(R.string.b36_period_end))) {
+                Log.e(TAG, "---11-----isClick=" + isClick);
+                if (isClick) {
                     womenJinqiStartToggle.setChecked(true);
                     //计算经期长度，开始日期不变
                     //结束日期
@@ -725,8 +740,8 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
                     long difStartEnd = endMenDate - sdf.parse(ltMenDate).getTime();
                     //长度
                     int womenLength = (int) (difStartEnd / oneDayLong) + 1;
-                    Log.e(TAG,"---------长度="+womenLength);
-                    SharedPreferencesUtils.setParam(WomenDetailActivity.this, Commont.WOMEN_MEN_LENGTH, womenLength+"");
+                    Log.e(TAG, "---------长度=" + womenLength);
+                    SharedPreferencesUtils.setParam(WomenDetailActivity.this, Commont.WOMEN_MEN_LENGTH, womenLength + "");
 
                     initStatus();
 
@@ -734,18 +749,18 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
 
             }
 
-            if(toggStatus.equals(getResources().getString(R.string.b36_period_start))){
-                Log.e(TAG,"----22----isClick="+isClick);
-                if(isClick){
+            if (toggStatus.equals(getResources().getString(R.string.b36_period_start))) {
+                Log.e(TAG, "----22----isClick=" + isClick);
+                if (isClick) {
                     womenJinqiStartToggle.setChecked(true);
                     //最后一次的月经开始日期
-                    SharedPreferencesUtils.setParam(WomenDetailActivity.this,Commont.WOMEN_LAST_MENSTRUATION_DATE,clickCalendarDate);
+                    SharedPreferencesUtils.setParam(WomenDetailActivity.this, Commont.WOMEN_LAST_MENSTRUATION_DATE, clickCalendarDate);
                     initStatus();
 
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -754,7 +769,7 @@ public class WomenDetailActivity extends WatchBaseActivity implements CalendarVi
 
     //B36手环的通知
     private void b36SettingNoti(boolean isChecked) {
-        SharedPreferencesUtils.setParam(WomenDetailActivity.this,Commont.IS_B36_JINGQI_NOTI,isChecked);
+        SharedPreferencesUtils.setParam(WomenDetailActivity.this, Commont.IS_B36_JINGQI_NOTI, isChecked);
     }
 
 

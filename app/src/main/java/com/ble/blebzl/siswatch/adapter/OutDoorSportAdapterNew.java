@@ -52,74 +52,78 @@ public class OutDoorSportAdapterNew extends RecyclerView.Adapter<OutDoorSportAda
 
     @Override
     public void onBindViewHolder(final OutDoorSportViewHolder holder, int position) {
-        //日期
-        holder.yearTv.setText((TextUtils.isEmpty(outDoorSportBeanList.get(position).getRtc())?"--":outDoorSportBeanList.get(position).getRtc()));
-        //公里
-        double distance = Double.valueOf(outDoorSportBeanList.get(position).getCountDisance());
-        double tempDistance = distance * 1000;
-        //总公里数
+        try {
+            //日期
+            holder.yearTv.setText((TextUtils.isEmpty(outDoorSportBeanList.get(position).getRtc())?"--":outDoorSportBeanList.get(position).getRtc()));
+            //公里
+            double distance = Double.valueOf(outDoorSportBeanList.get(position).getCountDisance());
+            double tempDistance = distance * 1000;
+            //总公里数
 
-        boolean isUnit = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSystem, false);
-        int h9_step_util = (int) SharedPreferencesUtils.getParam(MyApp.getInstance(), "H9_UTIT", 0);
+            boolean isUnit = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSystem, false);
+            int h9_step_util = (int) SharedPreferencesUtils.getParam(MyApp.getInstance(), "H9_UTIT", 0);
 
-        if(!WatchUtils.isEmpty(MyCommandManager.DEVICENAME) &&(MyCommandManager.DEVICENAME.equals("H9") ||
-                MyCommandManager.DEVICENAME.equals("W06X"))){
-            if (h9_step_util == 0) {
-                if (distance > 0) {
-                    BigDecimal decimal = new BigDecimal(distance / 1000.0);
+            if(!WatchUtils.isEmpty(MyCommandManager.DEVICENAME) &&(MyCommandManager.DEVICENAME.equals("H9") ||
+                    MyCommandManager.DEVICENAME.equals("W06X"))){
+                if (h9_step_util == 0) {
+                    if (distance > 0) {
+                        BigDecimal decimal = new BigDecimal(distance / 1000.0);
+                        BigDecimal setScale = decimal.setScale(2, BigDecimal.ROUND_DOWN);
+                        holder.discTv.setText(setScale.doubleValue() +" km");
+                        holder.sumdiscTv.setText(setScale.doubleValue() +" km");
+                    }else {
+                        holder.discTv.setText("0 km");
+                        holder.sumdiscTv.setText("0 km");
+                    }
+                } else {
+                    BigDecimal decimal = new BigDecimal(distance * 0.0006214);
                     BigDecimal setScale = decimal.setScale(2, BigDecimal.ROUND_DOWN);
-                    holder.discTv.setText(setScale.doubleValue() +" km");
-                    holder.sumdiscTv.setText(setScale.doubleValue() +" km");
-                }else {
-                    holder.discTv.setText("0 km");
-                    holder.sumdiscTv.setText("0 km");
+                    holder.discTv.setText(setScale.doubleValue()+" Mi");//String.format("%.3f", metric)
+                    holder.sumdiscTv.setText(setScale.doubleValue()+" Mi");
                 }
-            } else {
-                BigDecimal decimal = new BigDecimal(distance * 0.0006214);
-                BigDecimal setScale = decimal.setScale(2, BigDecimal.ROUND_DOWN);
-                holder.discTv.setText(setScale.doubleValue()+" Mi");//String.format("%.3f", metric)
-                holder.sumdiscTv.setText(setScale.doubleValue()+" Mi");
-            }
-        }else{
-            if (isUnit) {     //公制
-                //            holder.discTv.setText(""+Math.round(distance)+"km");
+            }else{
+                if (isUnit) {     //公制
+                    //            holder.discTv.setText(""+Math.round(distance)+"km");
 //            holder.sumdiscTv.setText(""+Math.round(distance)+"km");
-                holder.discTv.setText(String.format("%.3f", distance)+" km");
-                holder.sumdiscTv.setText(String.format("%.3f", distance)+" km");
-            } else { //Ft 英里
-                //            holder.discTv.setText(""+Math.round(WatchUtils.mul(tempDistance,3.28))+"ft");
+                    holder.discTv.setText(String.format("%.3f", distance)+" km");
+                    holder.sumdiscTv.setText(String.format("%.3f", distance)+" km");
+                } else { //Ft 英里
+                    //            holder.discTv.setText(""+Math.round(WatchUtils.mul(tempDistance,3.28))+"ft");
 //            holder.sumdiscTv.setText(""+Math.round(WatchUtils.mul(tempDistance,3.28))+"ft");
-                holder.discTv.setText(WatchUtils.unitToImperial(distance,3)+" mile");//String.format("%.3f", metric)
-                holder.sumdiscTv.setText(WatchUtils.unitToImperial(distance,3)+" mile");
-            }
-        }
-
-
-        //开始时间
-        holder.dateWeekTv.setText(outDoorSportBeanList.get(position).getDetailTime());
-        //0 跑步 ；1 骑行
-        int outSportType = outDoorSportBeanList.get(position).getSportType();
-        if (outSportType == 0) {
-            holder.typeImg.setImageResource(R.mipmap.huwaipaohuan);
-            holder.outSportTypeTv.setText(mContext.getResources().getString(R.string.outdoor_running));
-        } else {
-            holder.typeImg.setImageResource(R.mipmap.image_w30s_qixing_run);
-            holder.outSportTypeTv.setText(mContext.getResources().getString(R.string.outdoor_cycling));
-        }
-        //运动时间
-        holder.sportDruationTv.setText((TextUtils.isEmpty(outDoorSportBeanList.get(position).getCountTime())?"--":outDoorSportBeanList.get(position).getCountTime()));
-        //卡里留
-        String calories = outDoorSportBeanList.get(position).getKcal();
-        holder.kcalTv.setText(""+(TextUtils.isEmpty(calories)||calories ==null?"0":calories)+"kcal");
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null) {
-                    int position = holder.getLayoutPosition();
-                    listener.doItemClick(position);
+                    holder.discTv.setText(WatchUtils.unitToImperial(distance,3)+" mile");//String.format("%.3f", metric)
+                    holder.sumdiscTv.setText(WatchUtils.unitToImperial(distance,3)+" mile");
                 }
             }
-        });
+
+
+            //开始时间
+            holder.dateWeekTv.setText(outDoorSportBeanList.get(position).getDetailTime());
+            //0 跑步 ；1 骑行
+            int outSportType = outDoorSportBeanList.get(position).getSportType();
+            if (outSportType == 0) {
+                holder.typeImg.setImageResource(R.mipmap.huwaipaohuan);
+                holder.outSportTypeTv.setText(mContext.getResources().getString(R.string.outdoor_running));
+            } else {
+                holder.typeImg.setImageResource(R.mipmap.image_w30s_qixing_run);
+                holder.outSportTypeTv.setText(mContext.getResources().getString(R.string.outdoor_cycling));
+            }
+            //运动时间
+            holder.sportDruationTv.setText((TextUtils.isEmpty(outDoorSportBeanList.get(position).getCountTime())?"--":outDoorSportBeanList.get(position).getCountTime()));
+            //卡里留
+            String calories = outDoorSportBeanList.get(position).getKcal();
+            holder.kcalTv.setText(""+(TextUtils.isEmpty(calories)||calories ==null?"0":calories)+"kcal");
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = holder.getLayoutPosition();
+                        listener.doItemClick(position);
+                    }
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -11,13 +11,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <android.support.v4.widget.NestedScrollView
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/xWatchRefreshLayout"
+        app:layout_constraintTop_toBottomOf="@+id/new_h8_record_titleLin"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:srlAccentColor="@color/new_colorAccent"
+        app:srlEnableLoadMore="false"
+        app:srlEnablePreviewInEditMode="false"
+        app:srlPrimaryColor="#ffffff">
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="61dp"
-        android:layout_gravity="top"
-        app:layout_constraintTop_toBottomOf="@+id/new_h8_record_titleLin">
+        android:layout_gravity="top">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -116,15 +126,18 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <View
+                    <com.ble.blebzl.view.CusScheduleView
                         android:id="@+id/homeSportSchudeView"
                         android:layout_width="80dp"
                         android:layout_height="10dp"
                         android:layout_marginTop="10dp"
-                        android:background="@color/colorAccent"
+                        app:cus_all_schedule_color="#E2E0DF"
+                        app:cus_curr_schedule_color="#86D7C3"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/homeSportImg" />
+
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -175,15 +188,17 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <View
+                    <com.ble.blebzl.view.CusScheduleView
                         android:id="@+id/homeKcalSchudeView"
                         android:layout_width="80dp"
                         android:layout_height="10dp"
                         android:layout_marginTop="10dp"
-                        android:background="@color/colorAccent"
+                        app:cus_all_schedule_color="#E2E0DF"
+                        app:cus_curr_schedule_color="#F56D94"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/homeKcalImg" />
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -234,15 +249,17 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <View
+                    <com.ble.blebzl.view.CusScheduleView
                         android:id="@+id/homeAlarmSchudeView"
                         android:layout_width="80dp"
                         android:layout_height="10dp"
                         android:layout_marginTop="15dp"
-                        android:background="@color/colorAccent"
+                        app:cus_all_schedule_color="#E2E0DF"
+                        app:cus_curr_schedule_color="#9785E2"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/homeAlarmImg" />
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -279,13 +296,12 @@
 
             </LinearLayout>
 
-
             <!--日期-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@color/chang_white"
+                android:background="#F7F7F7"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -302,6 +318,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|top"
+                        android:textColor="#5F6364"
                         android:gravity="center"
                         android:padding="3dp"
                         android:text="@string/today"
@@ -309,7 +326,7 @@
 
                     <ImageView
                         android:id="@+id/xWatchHomeTodayImg"
-                        android:layout_width="15dp"
+                        android:layout_width="23dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center|bottom"
                         android:background="@drawable/fgm_home_move"
@@ -322,7 +339,7 @@
                 <LinearLayout
                     android:id="@+id/xWatchHomeYesDayLin"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:orientation="vertical">
@@ -336,11 +353,12 @@
                         android:gravity="center"
                         android:padding="3dp"
                         android:text="@string/yesterday"
+                        android:textColor="#5F6364"
                         android:textSize="18sp" />
 
                     <ImageView
                         android:id="@+id/xWatchHomeYestdayImg"
-                        android:layout_width="15dp"
+                        android:layout_width="23dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center|bottom"
                         android:background="@drawable/fgm_home_move"
@@ -365,12 +383,13 @@
                         android:layout_gravity="center|top"
                         android:gravity="center"
                         android:padding="3dp"
+                        android:textColor="#5F6364"
                         android:text="@string/string_yesterday"
                         android:textSize="18sp" />
 
                     <ImageView
                         android:id="@+id/xWatchHomeBeYestdayImg"
-                        android:layout_width="15dp"
+                        android:layout_width="23dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center|bottom"
                         android:background="@drawable/fgm_home_move"
@@ -387,16 +406,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:background="#F2F2F2">
+                android:layout_marginBottom="10dp"
+                android:background="@mipmap/icon_x_watch_sport_detail_img">
 
-                <include layout="@layout/include_cus_steps_view"/>
+                <include layout="@layout/x_watch_comm_step_layout"/>
             </LinearLayout>
 
 
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>

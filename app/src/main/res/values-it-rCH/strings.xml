@@ -1,6 +1,49 @@
 <resources>
     <!--头尾内部m部分翻译为英文,后期根据提供文档更改-->
     <!--意大利语-->
+    <string name="string_x_watch_take_camera">Telecamera remota</string>
+    <string name="string_b16_step_frequency">frequency</string>
+    <string name="string_b16_bmi1">Indice di riduzione del grasso</string>
+    <string name="string_b16_bmi2">Calorie efficaci bruciate</string>
+    <string name="string_b16_bmi3">Calorie = brucia grassi</string>
+    <string name="string_b16_bmi4">Rimanere per 30 giorni equivale a bruciare grassi</string>
+
+    <string name="string_b16_bmi_count">raccogliere</string>
+    <string name="string_b16_bmi_time">Tempo di combustione dei grassi</string>
+    <string name="string_b16_bmi_consume">Consumo di grassi</string>
+    <string name="string_b16_bmi_effective">Una frequenza di allenamento superiore a 120 può effettivamente consumare grassi</string>
+    <string name="string_b16_bmi_desc">Che cos\'è l\'IMC</string>
+    <string name="string_b16_bmi_desc_content">L\'indice di massa corporea (BMI, BodyMassIndex) è uno standard importante per misurare l\'obesità e la salute umana e viene utilizzato principalmente per l\'analisi statistica. Il valore assoluto del peso non può essere utilizzato per determinare il grado di obesità: ha una sensazione di caldo e altezza. Pertanto, l\'IMC ottiene parametri relativamente obiettivi attraverso due valori di peso corporeo e altezza e utilizza questo parametro per misurare la massa corporea.</string>
+    <string name="string_b16_compute_title">Formula di calcolo</string>
+    <string name="string_b16_compute_context">Indice di massa corporea BMI = peso/altezza quadrato (in unità internazionali kg/m²) BMI ideale (18,5 ~ 23,9) = peso (unità kg)÷altezza quadrato (in m) secondo gli standard stabiliti dall\'Organizzazione mondiale della sanità:</string>
+
+    <string name="string_b16_bmi_table_tr1">Classificazione BMI</string>
+    <string name="string_b16_bmi_table_td1">sottile</string>
+    <string name="string_b16_bmi_table_td2">normale</string>
+    <string name="string_b16_bmi_table_td3">sovrappeso</string>
+    <string name="string_b16_bmi_table_td4">sovrappeso</string>
+    <string name="string_b16_bmi_table_td5">obesità</string>
+    <string name="string_b16_bmi_table_td6">Obesità moderata</string>
+    <string name="string_b16_bmi_table_td7">Estremamente obeso</string>
+    <string name="string_b16_bmi_table_tr2">Standard dell\'OMS</string>
+    <string name="string_b16_bmi_table_tr3">Standard asiatico</string>
+    <string name="string_b16_bmi_table_tr4">Rischio di malattie correlate</string>
+    <string name="string_b16_bmi_table_tr4_1">Basso (ma aumento del rischio di altre malattie)</string>
+    <string name="string_b16_bmi_table_tr4_2">il livello medio</string>
+    <string name="string_b16_bmi_table_tr4_3">aggiunta</string>
+    <string name="string_b16_bmi_table_tr4_4">Aumento moderato</string>
+    <string name="string_b16_bmi_table_tr4_5">Aumento grave</string>
+    <string name="string_b16_bmi_table_tr4_6">Aumento molto grave</string>
+
+    <string name="string_friend_level_title">Descrizione del permesso degli amici</string>
+    <string name="string_friend_special">Imposta come amico speciale</string>
+    <string name="string_friend_start">Imposta come amico stella</string>
+    <string name="string_friend_normal">Imposta come un normale amico</string>
+
+    <string name="string_friend_level_desc">Amici speciali: è possibile impostare una sola persona e hanno il permesso di visualizzare tutti i dati. Dopo aver impostato amici speciali, devono accettare di fare domanda; \n\n
+        Amici a stella: puoi visualizzare tutti i dati tranne il periodo fisiologico e impostare amici a stella senza il consenso degli amici;\n\n
+        Amici ordinari: puoi controllare tra loro i dati relativi a passi, sonno, frequenza cardiaca e pressione sanguigna. Dopo aver richiesto il consenso, diventerai amici ordinari per impostazione predefinita;</string>
+
     <string name="string_bmi_title">BMI</string>
 
     <string name="string_permis_title">Welcome to RaceFit Pro</string>

@@ -1,5 +1,22 @@
 <resources>
     <!-- 越南语-->
+
+    <string name="string_x_watch_take_camera">Camera từ xa</string>
+
+    <string name="string_b16_step_frequency">frequency</string>
+    <string name="string_b16_bmi1">Chỉ số giảm mỡ</string>
+    <string name="string_b16_bmi2">Lượng calo đốt cháy hiệu quả</string>
+    <string name="string_b16_bmi3">Calo = đốt cháy chất béo</string>
+    <string name="string_b16_bmi4">Ở lại trong 30 ngày tương đương với việc đốt cháy chất béo</string>
+
+    <string name="string_friend_level_title">Mô tả cho phép bạn bè</string>
+    <string name="string_friend_special">Đặt làm bạn đặc biệt</string>
+    <string name="string_friend_start">Đặt làm bạn sao</string>
+    <string name="string_friend_normal">Đặt làm bạn bình thường</string>
+    <string name="string_friend_level_desc">Bạn bè đặc biệt: Chỉ có thể đặt một người và họ có quyền xem tất cả dữ liệu. Sau khi đặt bạn bè đặc biệt, họ cần đồng ý đăng ký; \n\n
+        Bạn bè sao: Bạn có thể xem tất cả dữ liệu ngoại trừ thời gian sinh lý và đặt bạn bè sao mà không có sự đồng ý của bạn bè;\n\n
+        Bạn bè thông thường: Bạn có thể kiểm tra dữ liệu bước, giấc ngủ, nhịp tim và huyết áp với nhau. Sau khi bạn nộp đơn đồng ý, bạn sẽ là bạn bình thường theo mặc định;</string>
+
     <string name="string_bmi_title">BMI</string>
 
 

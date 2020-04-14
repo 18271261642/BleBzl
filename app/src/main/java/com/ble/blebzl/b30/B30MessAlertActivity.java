@@ -106,7 +106,7 @@ public class B30MessAlertActivity extends WatchBaseActivity {
         initViews();
 
         //申请权限
-        //requestPermiss();
+        requestPermiss(Manifest.permission.READ_PHONE_STATE);
 
         getPhoneStatus();
         //读取社交消息设置

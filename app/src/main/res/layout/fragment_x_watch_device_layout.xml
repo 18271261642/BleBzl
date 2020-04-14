@@ -75,6 +75,7 @@
                 android:background="@color/chang_white" />
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/xWatchDeviceSleepRel"
                 style="@style/B30DeviceRelStyle"
                 android:background="@drawable/square_white_btn_change">
@@ -120,6 +121,7 @@
                 android:background="@color/chang_white" />
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/b18DeviceUnitRel"
                 style="@style/B30DeviceRelStyle"
                 android:background="@drawable/square_white_btn_change">
@@ -248,10 +250,47 @@
 
 
 
+            <RelativeLayout
+                android:id="@+id/xWatchDevicePhotoRel"
+                style="@style/B30DeviceRelStyle"
+                android:background="@drawable/square_white_btn_change">
+
+                <ImageView
+                    android:id="@+id/img1311"
+                    android:layout_width="@dimen/size_30"
+                    android:layout_height="@dimen/size_30"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:background="@mipmap/image_w30s_yaoyiyao" />
+
+
+                <TextView
+                    style="@style/B30DeviceStyle"
+
+                    android:layout_toRightOf="@+id/img1311"
+                    android:text="@string/string_x_watch_take_camera" />
+
+
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/fgm_fitness_arrow_left" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_1"
+                android:background="@color/chang_white" />
 
 
             <RelativeLayout
                 android:id="@+id/b18DeviceOtaRel"
+                android:visibility="gone"
                 style="@style/B30DeviceRelStyle"
                 android:background="@drawable/square_white_btn_change">
 

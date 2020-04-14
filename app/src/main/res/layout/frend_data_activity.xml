@@ -340,7 +340,6 @@
 
 
 
-
             <RelativeLayout
                 android:id="@+id/friendHrvLin"
                 android:layout_width="match_parent"
@@ -391,6 +390,54 @@
             </RelativeLayout>
 
 
+            <RelativeLayout
+                android:id="@+id/friendWomenLin"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_200"
+                android:background="#FFC0CB">
+                <!--FFCC99-->
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="77dp"
+                    android:layout_marginEnd="@dimen/size_45"
+                    android:layout_toStartOf="@+id/v22"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/icon_friend_women" />
+
+                <View
+                    android:id="@+id/v22"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_centerInParent="true" />
+
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/size__20"
+                    android:layout_toEndOf="@+id/v22"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+
+
+                    <TextView
+                        android:id="@+id/friendHomeWomenStatusTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/sp_24"
+                        android:layout_marginBottom="@dimen/sp_24"
+                        android:text="当前经期状态:--"
+                        android:textColor="#ffffffff"
+                        android:textSize="@dimen/sp_12" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
         </LinearLayout>
 

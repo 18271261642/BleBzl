@@ -6,7 +6,21 @@
     android:layout_margin="15dp"
     android:layout_height="wrap_content">
 
+    <TextView
+        android:id="@+id/friendPermissDesc"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:background="@drawable/layout_click"
+        android:textColor="@color/backgoundhtest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/string_friend_level_title"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/chang_white"/>
 
     <TextView
         android:id="@+id/starSpecialTv"
@@ -17,7 +31,7 @@
         android:textColor="@color/contents_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="设置为特殊好友"/>
+        android:text="@string/string_friend_special"/>
 
 
     <View
@@ -34,7 +48,7 @@
         android:textColor="@color/contents_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="设置为星标好友"/>
+        android:text="@string/string_friend_start"/>
 
     <View
         android:layout_width="match_parent"
@@ -52,7 +66,7 @@
         android:textColor="@color/contents_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="设置为普通好友"/>
+        android:text="@string/string_friend_normal"/>
 
     <View
         android:layout_width="match_parent"
@@ -69,7 +83,7 @@
         android:textColor="@color/contents_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="取消"/>
+        android:text="@string/cancle"/>
 
 
 </LinearLayout>

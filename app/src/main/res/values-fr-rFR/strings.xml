@@ -1,6 +1,49 @@
 <resources>
     <!--头尾内部m部分翻译为英文,后期根据提供文档更改-->
     <!--法语-->
+    <string name="string_x_watch_take_camera">Caméra à distance</string>
+    <string name="string_b16_step_frequency">frequency</string>
+    <string name="string_b16_bmi1">Indice de réduction des graisses</string>
+    <string name="string_b16_bmi2">Calories efficaces brûlées</string>
+    <string name="string_b16_bmi3">Calorie = combustion des graisses</string>
+    <string name="string_b16_bmi4">Rester 30 jours équivaut à brûler des graisses</string>
+
+    <string name="string_b16_bmi_count">Résumé</string>
+    <string name="string_b16_bmi_time">Temps de combustion des graisses</string>
+    <string name="string_b16_bmi_consume">Consommation de graisse brûlante</string>
+    <string name="string_b16_bmi_effective">Une fréquence d\'exercice supérieure à 120 peut effectivement consommer des graisses</string>
+    <string name="string_b16_bmi_desc">Qu\'est-ce que l\'IMC</string>
+    <string name="string_b16_bmi_desc_content">L\'indice de masse corporelle (IMC, BodyMassIndex) est une norme importante pour mesurer l\'obésité et la santé humaine, et est principalement utilisé pour l\'analyse statistique. La valeur absolue du poids ne peut pas être utilisée pour déterminer le degré d\'obésité, il a une sensation de chaleur et de hauteur. Par conséquent, l\'IMC obtient des paramètres relativement objectifs grâce à deux valeurs de poids corporel et de taille, et utilise ce paramètre pour mesurer la masse corporelle.</string>
+    <string name="string_b16_compute_title">Formule de calcul</string>
+    <string name="string_b16_compute_context">Indice de masse corporelle IMC = poids / taille carré (en unités internationales kg / m²) IMC idéal (18,5 ~ 23,9) = poids (unité kg) ÷ hauteur carré (en m) selon les normes établies par l\'Organisation mondiale de la santé:</string>
+
+    <string name="string_b16_bmi_table_tr1">Classification IMC</string>
+    <string name="string_b16_bmi_table_td1">Mince</string>
+    <string name="string_b16_bmi_table_td2">Normal</string>
+    <string name="string_b16_bmi_table_td3">Embonpoint</string>
+    <string name="string_b16_bmi_table_td4">Embonpoint</string>
+    <string name="string_b16_bmi_table_td5">Obèse</string>
+    <string name="string_b16_bmi_table_td6">Obésité modérée</string>
+    <string name="string_b16_bmi_table_td7">Extrêmement obèse</string>
+    <string name="string_b16_bmi_table_tr2">Normes de l\'OMS</string>
+    <string name="string_b16_bmi_table_tr3">Standard asiatique</string>
+    <string name="string_b16_bmi_table_tr4">Risque de maladies apparentées</string>
+    <string name="string_b16_bmi_table_tr4_1">Risque faible (mais accru d\'autres maladies)</string>
+    <string name="string_b16_bmi_table_tr4_2">Moyenne</string>
+    <string name="string_b16_bmi_table_tr4_3">Augmenter</string>
+    <string name="string_b16_bmi_table_tr4_4">Augmentation modérée</string>
+    <string name="string_b16_bmi_table_tr4_5">Augmentation sévère</string>
+    <string name="string_b16_bmi_table_tr4_6">Augmentation très sévère</string>
+
+    <string name="string_friend_level_title">Description de l\'autorisation d\'amis</string>
+    <string name="string_friend_special">Définir comme ami spécial</string>
+    <string name="string_friend_start">Définir comme ami star</string>
+    <string name="string_friend_normal">Définir comme un ami normal</string>
+    <string name="string_friend_level_desc">Amis spéciaux: une seule personne peut être définie et elle est autorisée à afficher toutes les données. Après avoir défini des amis spéciaux, elle doit accepter de postuler; \n\n
+        Amis étoiles: Vous pouvez afficher toutes les données, sauf la période physiologique, et définir des amis étoiles sans le consentement d\'amis;\n\n
+        Amis ordinaires: Vous pouvez vérifier les données de pas, de sommeil, de fréquence cardiaque et de pression artérielle les uns avec les autres. Après avoir demandé le consentement, vous serez des amis ordinaires par défaut;</string>
+
+
     <string name="string_bmi_title">BMI</string>
 
     <string name="string_permis_title">Welcome to RaceFit Pro</string>

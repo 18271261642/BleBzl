@@ -117,6 +117,7 @@ public class WatchUtils {
     public static final String B31_NAME = "B31";        //B31手环
     public static final String B31S_NAME = "B31S";        //B31S手环
     public static final String S500_NAME = "500S";        //B31S手环
+    public static final String E_WATCH_NAME = "E Watch";    //EWatch手表
 
     //腾进达方案
     public static final String B15P_BLENAME = "B15P";  //B15P
@@ -168,7 +169,7 @@ public class WatchUtils {
      * @return
      */
     public static boolean isVPBleDevice(String bName) {
-        String[] bleArray = new String[]{B30_NAME, B31_NAME, B36_NAME,B36M_NAME ,RINGMII_NAME, B31S_NAME, S500_NAME};
+        String[] bleArray = new String[]{B30_NAME, B31_NAME, B36_NAME,B36M_NAME ,RINGMII_NAME, B31S_NAME, S500_NAME,E_WATCH_NAME};
         Set<String> set = new HashSet<>(Arrays.asList(bleArray));
         return set.contains(bName);
     }

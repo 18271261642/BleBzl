@@ -197,17 +197,21 @@ public class AlertService extends MyNotificationListenerService {
                     sendMsgW30S(msgCont, W30SBLEManage.NotifaceMsgLine);
                 }
 
+                boolean isLine = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISLINE, false);
+
                 if (WatchUtils.isVPBleDevice(saveBleName)) {  //B30,B31,B36
-                    boolean isLine = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISLINE, false);
                     if (isLine) sendB30Msg(ESocailMsg.LINE, "Line", msgCont);
 
                 }
 
                 if(isB16Device){  //B18
-                    boolean isLine = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISLINE, false);
                     if(isLine)sendB18MsgType("line",msgCont);
 
                 }
+                if(saveBleName.equals("XWatch") || saveBleName.equals("SWatch")){
+                    if(isLine)sendXWatcsgType(100);
+                }
+
 
                 return;
             }
@@ -230,19 +234,19 @@ public class AlertService extends MyNotificationListenerService {
                 if (isW30Device) {  //W30
                     sendMsgW30S(msgCont, W30SBLEManage.NotifaceMsgQq);
                 }
+
+                boolean isQQ = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISQQ, false);
+
                 if (WatchUtils.isVPBleDevice(saveBleName)) {  //B30,B31,B36
-                    boolean isQQ = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISQQ, false);
                     if (isQQ) sendB30Msg(ESocailMsg.QQ, "QQ", msgCont);
                 }
 
                 if(isB16Device){  //B18
-                    boolean isQQ = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISQQ, false);
                     if(isQQ)sendB18MsgType("isQQ",msgCont);
 
                 }
 
-                if(saveBleName.equals("XWatch")){
-                    boolean isQQ = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISQQ, false);
+                if(saveBleName.equals("XWatch") || saveBleName.equals("SWatch")){
                     if(isQQ)
                         sendXWatcsgType(2);
                 }
@@ -269,18 +273,18 @@ public class AlertService extends MyNotificationListenerService {
                 if (isW30Device) {  //W30,W31
                     sendMsgW30S(msgCont, W30SBLEManage.NotifaceMsgWx);
                 }
+
+                boolean isWechart = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISWechart, false);
+
+
                 if (WatchUtils.isVPBleDevice(saveBleName)) {  //B30,B31,B36
-                    boolean isWechart = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISWechart, false);
                     if (isWechart) sendB30Msg(ESocailMsg.WECHAT, "Wechat", msgCont);
                 }
 
                 if(isB16Device){  //B18
-                    boolean isWechart = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISWechart, false);
                     if(isWechart)sendB18MsgType("wechat",msgCont);
-
                 }
-                if(saveBleName.equals("XWatch")){   //Xwatch
-                    boolean isWechart = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISWechart, false);
+                if(saveBleName.equals("XWatch") || saveBleName.equals("SWatch")){   //Xwatch
                     if(isWechart)sendXWatcsgType(3);
                 }
                 return;
@@ -305,19 +309,19 @@ public class AlertService extends MyNotificationListenerService {
                 if (isW30Device) {  //W30,W31
                     sendMsgW30S(msgCont, W30SBLEManage.NotifaceMsgFacebook);
                 }
+
+                boolean isFacebook = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISFacebook, false);
+
                 if (WatchUtils.isVPBleDevice(saveBleName)) {  //B30,B31,B36
-                    boolean isFacebook = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISFacebook, false);
                     if (isFacebook) sendB30Msg(ESocailMsg.FACEBOOK, "FaceBook", msgCont);
                 }
 
                 if(isB16Device){  //B18
-                    boolean isFacebook = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISFacebook, false);
                     if(isFacebook)sendB18MsgType("facebook",msgCont);
 
                 }
 
-                if(saveBleName.equals("XWatch")){
-                    boolean isFacebook = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISFacebook, false);
+                if(saveBleName.equals("XWatch") || saveBleName.equals("SWatch")){
                     if(isFacebook)sendXWatcsgType(5);
                 }
 
@@ -345,19 +349,19 @@ public class AlertService extends MyNotificationListenerService {
                     sendMsgW30S(msgCont, W30SBLEManage.NotifaceMsgTwitter);
 
                 }
+
+                boolean isTwitter = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISTwitter, false);
+
                 if (WatchUtils.isVPBleDevice(saveBleName)) {  //B30,B31,B36
-                    boolean isTwitter = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISTwitter, false);
                     if (isTwitter) sendB30Msg(ESocailMsg.TWITTER, "Twitter", msgCont);
                 }
 
                 if(isB16Device){  //B18
-                    boolean isTwitter = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISTwitter, false);
                     if(isTwitter)sendB18MsgType("twitter",msgCont);
 
                 }
 
-                if(saveBleName.equals("XWatch")){
-                    boolean isTwitter = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISTwitter, false);
+                if(saveBleName.equals("XWatch") || saveBleName.equals("SWatch")){
                     if(isTwitter)
                         sendXWatcsgType(4);
                 }
@@ -386,19 +390,19 @@ public class AlertService extends MyNotificationListenerService {
                     sendMsgW30S(msgCont, W30SBLEManage.NotifaceMsgWhatsapp);
 
                 }
+
+                boolean isWhats = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISWhatsApp, false);
+
                 if (WatchUtils.isVPBleDevice(saveBleName)) {  //B30,B31,B36
-                    boolean isWhats = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISWhatsApp, false);
                     if (isWhats) sendB30Msg(ESocailMsg.WHATS, "Whats", msgCont);
                 }
 
                 if(isB16Device){  //B18
-                    boolean isWhats = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISWhatsApp, false);
                     if(isWhats)sendB18MsgType("whats",msgCont);
 
                 }
 
-                if(saveBleName.equals("XWatch")){
-                    boolean isWhats = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISWhatsApp, false);
+                if(saveBleName.equals("XWatch") || saveBleName.equals("SWatch")){
                     if(isWhats)sendXWatcsgType(6);
                 }
 
@@ -495,24 +499,24 @@ public class AlertService extends MyNotificationListenerService {
                             }
                         }
                     }
+
+                    boolean isMSG = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISMsm, true);
+
                     if (isW30Device) {  //W30
                         sendMsgW30S(msgCont, W30SBLEManage.NotifaceMsgMsg);
                     }
                     if (WatchUtils.isVPBleDevice(saveBleName)) {  //B30,B31,B36
-                        boolean isMSG = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISMsm, true);
                         if (isMSG) sendB30Mesage(ESocailMsg.SMS, "MMS", msgCont);
                     }
 
                     if(isB16Device){  //B18
-                        boolean isMSG = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISMsm, true);
                         if(isMSG)sendB18MsgType("msg",msgCont);
 
                     }
 
-                if(saveBleName.equals("XWatch")){   //Xwatch
-                    boolean isMSG = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISMsm, true);
-                    if(isMSG)sendXWatcsgType(1);
-                }
+                    if (saveBleName.equals("XWatch") || saveBleName.equals("SWatch")) {   //Xwatch
+                        if (isMSG) sendXWatcsgType(1);
+                    }
 
                     return;
 
@@ -520,29 +524,26 @@ public class AlertService extends MyNotificationListenerService {
 
 
             if (packageName.equals(SKYPE_PACKAGENAME) || packageName.equals(SKYPE_PACKNAME)) {  //Skype
-
-
                 if (saveBleName.equals("H9")) {   //H9
                     boolean h9_skype = (boolean) SharedPreferencesUtils.getParam(MyApp.getInstance(), "H9_SKYPE", false);
                     if (h9_skype)
                         sendMessH9(SocialPush.SKYPE, msgCont, (byte) 0x0F);
                 }
+
+                boolean isSkype = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSkype, false);
+
                 if (isW30Device) {  //W30
                     sendMsgW30S(msgCont, W30SBLEManage.NotifaceMsgSkype);
                 }
                 if (WatchUtils.isVPBleDevice(saveBleName)) {  //B30,B31,B36
-                    boolean isSkype = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSkype, false);
                     if (isSkype) sendB30Msg(ESocailMsg.SKYPE, "Skype", msgCont);
                 }
 
                 if(isB16Device){  //B18
-                    boolean isSkype = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSkype, false);
                     if(isSkype)sendB18MsgType("skype",msgCont);
-
                 }
 
-                if(saveBleName.equals("XWatch")){
-                    boolean isSkype = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSkype, false);
+                if(saveBleName.equals("XWatch") || saveBleName.equals("SWatch")){
                     if(isSkype)sendXWatcsgType(7);
                 }
 
@@ -595,7 +596,15 @@ public class AlertService extends MyNotificationListenerService {
 
     //xWatch推送
     private void sendXWatcsgType(int type){
-        XWatchBleAnalysis.getW37DataAnalysis().setDeviceNoti(type);
+        String saveBleName = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), Commont.BLENAME);
+        if(WatchUtils.isEmpty(saveBleName))
+            return;
+        if(saveBleName.equals("SWatch")){
+            XWatchBleAnalysis.getW37DataAnalysis().setSWatchNoti(type);
+        }else{
+            XWatchBleAnalysis.getW37DataAnalysis().setDeviceNoti(type);
+        }
+
     }
 
 

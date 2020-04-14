@@ -1,6 +1,50 @@
 <resources>
     <!--葡萄牙语-->
 
+
+    <string name="string_x_watch_take_camera">Câmera remota</string>
+
+    <string name="string_b16_step_frequency">frequency</string>
+    <string name="string_b16_bmi1">Índice de redução de gordura</string>
+    <string name="string_b16_bmi2">Calorias efetivas queimadas</string>
+    <string name="string_b16_bmi3">Caloria = queima de gordura</string>
+    <string name="string_b16_bmi4">Ficar por 30 dias é equivalente a queimar gordura</string>
+
+    <string name="string_b16_bmi_count">Sumário</string>
+    <string name="string_b16_bmi_time">Tempo de queima de gordura</string>
+    <string name="string_b16_bmi_consume">Consumo de queima de gordura</string>
+    <string name="string_b16_bmi_effective">Frequência de exercício acima de 120 pode efetivamente consumir gordura</string>
+    <string name="string_b16_bmi_desc">O que é IMC</string>
+    <string name="string_b16_bmi_desc_content">O índice de massa corporal (IMC, BodyMassIndex) é um padrão importante para medir a obesidade e a saúde humanas e é usado principalmente para análises estatísticas. O valor absoluto do peso não pode ser usado para determinar o grau de obesidade, pois tem uma sensação de clima quente e altura. Portanto, o IMC obtém parâmetros relativamente objetivos por meio de dois valores de peso e altura do corpo e usa esse parâmetro para medir a massa corporal.</string>
+    <string name="string_b16_compute_title">Fórmula de cálculo</string>
+    <string name="string_b16_compute_context">Índice de massa corporal IMC = quadrado peso / altura (em unidades internacionais kg / m²) interesse IMC (18,5 ~ 23,9) = peso (unidade kg) square quadrado quadrado (em m) de acordo com os padrões estabelecidos pela Organização Mundial da Saúde:</string>
+
+    <string name="string_b16_bmi_table_tr1">Classificação do IMC</string>
+    <string name="string_b16_bmi_table_td1">Fino</string>
+    <string name="string_b16_bmi_table_td2">Normal</string>
+    <string name="string_b16_bmi_table_td3">Excesso de peso</string>
+    <string name="string_b16_bmi_table_td4">Excesso de peso</string>
+    <string name="string_b16_bmi_table_td5">Obesos</string>
+    <string name="string_b16_bmi_table_td6">Obesidade moderada</string>
+    <string name="string_b16_bmi_table_td7">Extremamente obesos</string>
+    <string name="string_b16_bmi_table_tr2">Normas da OMS</string>
+    <string name="string_b16_bmi_table_tr3">Padrão asiático</string>
+    <string name="string_b16_bmi_table_tr4">Risco de doenças relacionadas</string>
+    <string name="string_b16_bmi_table_tr4_1">Baixo (mas risco aumentado de outras doenças)</string>
+    <string name="string_b16_bmi_table_tr4_2">Média</string>
+    <string name="string_b16_bmi_table_tr4_3">Aumentar</string>
+    <string name="string_b16_bmi_table_tr4_4">Aumento moderado</string>
+    <string name="string_b16_bmi_table_tr4_5">Aumento grave</string>
+    <string name="string_b16_bmi_table_tr4_6">Aumento muito grave</string>
+
+    <string name="string_friend_level_title">Descrição da permissão de amigos</string>
+    <string name="string_friend_special">Definir como amigo especial</string>
+    <string name="string_friend_start">Definir como amigo estrela</string>
+    <string name="string_friend_normal">Definir como amigo normal</string>
+    <string name="string_friend_level_desc">Amigos especiais: apenas uma pessoa pode ser configurada e eles têm permissão para visualizar todos os dados.Depois de definir amigos especiais, eles precisam concordar em se inscrever; \n\n
+        Amigos em estrela: você pode visualizar todos os dados, exceto o período fisiológico, e definir amigos em estrela sem o consentimento de amigos;\n\n
+        Amigos comuns: você pode verificar os dados de etapas, sono, freqüência cardíaca e pressão arterial entre si. Depois de solicitar o consentimento, você será um amigo comum por padrão;</string>
+
     <string name="string_bmi_title">BMI</string>
 
     <string name="string_permis_title">Welcome to RaceFit Pro</string>

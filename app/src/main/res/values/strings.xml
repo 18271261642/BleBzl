@@ -1,6 +1,49 @@
 <resources>
+
+    <string name="string_x_watch_take_camera">Remote camera</string>
+
+    <string name="string_b16_step_frequency">frequency</string>
+    <string name="string_b16_bmi1">Fat Reduction Index</string>
+    <string name="string_b16_bmi2">Effective calories burned</string>
+    <string name="string_b16_bmi3">Calorie = fat burning</string>
+    <string name="string_b16_bmi4">Staying for 30 days is equivalent to burning fat</string>
+
+    <string name="string_b16_bmi_count">Total</string>
+    <string name="string_b16_bmi_time">Fat burning time</string>
+    <string name="string_b16_bmi_consume">Fat burning consumption</string>
+    <string name="string_b16_bmi_effective">Exercise frequency above 120 can effectively consume fat</string>
+    <string name="string_b16_bmi_desc">What is BMI</string>
+    <string name="string_b16_bmi_desc_content">Body mass index (BMI, BodyMassIndex) is an important standard for measuring human obesity and health, and is mainly used for statistical analysis. The absolute value of weight cannot be used to determine the degree of obesity. It has a feeling of hot weather and height. Therefore, BMI obtains relatively objective parameters through two values of body weight and height, and uses this parameter to measure the body mass.</string>
+    <string name="string_b16_compute_title">Calculation formula</string>
+    <string name="string_b16_compute_context">Body mass index BMI = weight / height square (in international units kg / m²) ideal BMI (18.5 ~ 23.9) = weight (unit kg) ÷ height square (in m) according to the standards set by the World Health Organization:</string>
+
+    <string name="string_b16_bmi_table_tr1">BMI classification</string>
+    <string name="string_b16_bmi_table_td1">Thin</string>
+    <string name="string_b16_bmi_table_td2">Normal</string>
+    <string name="string_b16_bmi_table_td3">overweight</string>
+    <string name="string_b16_bmi_table_td4">Overweight</string>
+    <string name="string_b16_bmi_table_td5">obesity</string>
+    <string name="string_b16_bmi_table_td6">Moderate obesity</string>
+    <string name="string_b16_bmi_table_td7">Extremely obese</string>
+    <string name="string_b16_bmi_table_tr2">WHO standards</string>
+    <string name="string_b16_bmi_table_tr3">Asian Standard</string>
+    <string name="string_b16_bmi_table_tr4">Risk of related diseases</string>
+    <string name="string_b16_bmi_table_tr4_1">Low (but increased risk of other diseases)</string>
+    <string name="string_b16_bmi_table_tr4_2">Average</string>
+    <string name="string_b16_bmi_table_tr4_3">increase</string>
+    <string name="string_b16_bmi_table_tr4_4">Moderate increase</string>
+    <string name="string_b16_bmi_table_tr4_5">Severe increase</string>
+    <string name="string_b16_bmi_table_tr4_6">Very severe increase</string>
+
+
+
     <string name="string_bmi_title">BMI</string>
 
+    <string name="string_friend_level_title">Friends permission description</string>
+    <string name="string_friend_special">Set as special friend</string>
+    <string name="string_friend_start">Set as star friend</string>
+    <string name="string_friend_normal">Set as a normal friend</string>
+    <string name="string_friend_level_desc">Special friends: Only one person can be set, and they have permission to view all data. After setting up special friends, the other party must agree to apply Agree; \n\n Star friends: You can view all data except the physiological period, and set star friends without the consent of friends;\n\nOrdinary friends: You can check step, sleep, heart rate, and blood pressure data with each other.After you apply for consent, you will be ordinary friends by default;</string>
     <string name="string_permis_title">Welcome to RaceFit Pro</string>
     <string name="string_permis_title_desc">When you use RaceFitPro, some features require you to enable the following permissions:</string>
     <string name="string_permis_file_title">File storage</string>

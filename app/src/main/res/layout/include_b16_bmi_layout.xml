@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="减脂指数"
+        android:text="@string/string_b16_bmi1"
         android:textColor="#FA9850"
         android:textSize="@dimen/sp_15"
         app:layout_constraintBottom_toBottomOf="@id/b16CadenceImg"
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="18dp"
-        android:text="正常"
+        android:text="@string/string_b16_bmi_table_td2"
         android:textColor="#FA9850"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/b16BMIDesc" />

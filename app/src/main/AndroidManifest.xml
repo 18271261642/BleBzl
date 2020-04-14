@@ -15,6 +15,7 @@
         android:xlargeScreens="false" />
 
 
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -142,8 +143,7 @@
         android:vmSafeMode="true"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="HardcodedDebugMode"
-        tools:replace="label,android:appComponentFactory"
-        android:appComponentFactory="RaceFitPro" >
+       >
 
 
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
@@ -1371,8 +1371,11 @@
         <!--内部测试页面-->
         <activity android:name=".xwatch.XWatchIntelActivity"/>
         <activity android:name=".xwatch.XWatchDeviceActivity"/>
-
-
+        <!--运动详情-->
+        <activity android:name=".xwatch.XWatchSportDetailActivity"/>
+        <!--好友女性页面-->
+        <activity android:name=".friend.FriendWomenActivity"/>
+        <activity android:name=".view.UserProtocalActivity"/>
 
         <!--  provider -->
         <provider
@@ -1473,20 +1476,20 @@
         </receiver>
 
 
-<!--        &lt;!&ndash; 阿里云推送消息接收监听器 &ndash;&gt;-->
-<!--        <receiver-->
-<!--            android:name=".push.AliyunBroadCastReceiver"-->
-<!--            android:exported="false"> &lt;!&ndash; 为保证receiver安全，建议设置不可导出，如需对其他应用开放可通过android：permission进行限制 &ndash;&gt;-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />-->
-<!--            </intent-filter>-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.alibaba.push2.action.NOTIFICATION_REMOVED" />-->
-<!--            </intent-filter>-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.alibaba.sdk.android.push.RECEIVE" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
+       <!-- &lt;!&ndash; 阿里云推送消息接收监听器 &ndash;&gt;
+        <receiver
+            android:name=".push.AliyunBroadCastReceiver"
+            android:exported="false"> &lt;!&ndash; 为保证receiver安全，建议设置不可导出，如需对其他应用开放可通过android：permission进行限制 &ndash;&gt;
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_REMOVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
+            </intent-filter>
+        </receiver>-->
 
 
 

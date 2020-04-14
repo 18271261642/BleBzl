@@ -2,6 +2,7 @@ package com.ble.blebzl.b30.service;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -235,22 +236,29 @@ public class ConnBleHelpService {
             @Override
             public void onFunctionSupportDataChange(FunctionDeviceSupportData functionDeviceSupportData) {
                 Log.e(TAG, "--111---functionDeviceSupportData--=" + functionDeviceSupportData.toString());
+
+                Context context = MyApp.getContext();
+
                 //版本协议
                 int originProtcolVersion = functionDeviceSupportData.getOriginProtcolVersion();
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.VP_DEVICE_VERSION,originProtcolVersion);
+                SharedPreferencesUtils.setParam(context,Commont.VP_DEVICE_VERSION,originProtcolVersion);
                 //B31带血压功能的标识
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
+                SharedPreferencesUtils.setParam(context,Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
 
                 isSleepPrecisionData = functionDeviceSupportData.getPrecisionSleep() == EFunctionStatus.SUPPORT;
                 //B31S支持亮度调节功能
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_B31S_LIGHT_KEY,functionDeviceSupportData.getScreenLight() == EFunctionStatus.SUPPORT);
+                SharedPreferencesUtils.setParam(context,Commont.IS_B31S_LIGHT_KEY,functionDeviceSupportData.getScreenLight() == EFunctionStatus.SUPPORT);
 
                 //B31S带精准睡眠功能的设备不支持疲劳度检测功能
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_B31S_FATIGUE_KEY,functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
+                SharedPreferencesUtils.setParam(context,Commont.IS_B31S_FATIGUE_KEY,functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
 
                 //设置支持的主题风格
                 int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
+                SharedPreferencesUtils.setParam(context,Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
+
+                //B31是否支持呼吸率
+                SharedPreferencesUtils.setParam(context,Commont.IS_B31_HEART,functionDeviceSupportData.getBeathFunction() == EFunctionStatus.SUPPORT);
+
 
             }
         }, new ISocialMsgDataListener() {
@@ -301,20 +309,27 @@ public class ConnBleHelpService {
             @Override
             public void onFunctionSupportDataChange(FunctionDeviceSupportData functionDeviceSupportData) {
                 Log.e(TAG,"----------functionDeviceSupportData="+functionDeviceSupportData.toString());
-                //B31带血压功能的标识
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
+                Context context = MyApp.getContext();
+
                 //版本协议
                 int originProtcolVersion = functionDeviceSupportData.getOriginProtcolVersion();
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.VP_DEVICE_VERSION,originProtcolVersion);
+                SharedPreferencesUtils.setParam(context,Commont.VP_DEVICE_VERSION,originProtcolVersion);
+                //B31带血压功能的标识
+                SharedPreferencesUtils.setParam(context,Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
+
                 isSleepPrecisionData = functionDeviceSupportData.getPrecisionSleep() == EFunctionStatus.SUPPORT;
-                //B31S亮度调节功能
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_B31S_LIGHT_KEY,functionDeviceSupportData.getScreenLight() == EFunctionStatus.SUPPORT);
+                //B31S支持亮度调节功能
+                SharedPreferencesUtils.setParam(context,Commont.IS_B31S_LIGHT_KEY,functionDeviceSupportData.getScreenLight() == EFunctionStatus.SUPPORT);
 
                 //B31S带精准睡眠功能的设备不支持疲劳度检测功能
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_B31S_FATIGUE_KEY,functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
+                SharedPreferencesUtils.setParam(context,Commont.IS_B31S_FATIGUE_KEY,functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
+
                 //设置支持的主题风格
                 int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
+                SharedPreferencesUtils.setParam(context,Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
+
+                //B31是否支持呼吸率
+                SharedPreferencesUtils.setParam(context,Commont.IS_B31_HEART,functionDeviceSupportData.getBeathFunction() == EFunctionStatus.SUPPORT);
 
 
 
@@ -705,62 +720,67 @@ public class ConnBleHelpService {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            MyApp.getInstance().getVpOperateManager().readOriginData(bleWriteResponse, new IOriginData3Listener() {
-                @Override
-                public void onOriginFiveMinuteListDataChange(List<OriginData3> list) {
+            try {
+                MyApp.getInstance().getVpOperateManager().readOriginData(bleWriteResponse, new IOriginData3Listener() {
+                    @Override
+                    public void onOriginFiveMinuteListDataChange(List<OriginData3> list) {
 
-                }
-
-                @Override
-                public void onOriginHalfHourDataChange(OriginHalfHourData originHalfHourData) {
-                    saveHalfHourData(originHalfHourData);
-                }
-
-                @Override
-                public void onOriginHRVOriginListDataChange(List<HRVOriginData> list) {
-                    Log.e(TAG,"-------HRVOriginData--="+list.size()+"---1="+list.get(0).toString());
-                    if(b31sSaveHrvAsyncTask != null && b31sSaveHrvAsyncTask.getStatus() == Status.RUNNING){
-                        b31sSaveHrvAsyncTask.cancel(true);
-                        b31sSaveHrvAsyncTask = null;
-                        b31sSaveHrvAsyncTask = new B31sSaveHrvAsyncTask();
-                    }else{
-                        b31sSaveHrvAsyncTask = new B31sSaveHrvAsyncTask();
                     }
-                    b31sSaveHrvAsyncTask.execute(list);
-                }
 
-                @Override
-                public void onOriginSpo2OriginListDataChange(List<Spo2hOriginData> list) {
-                    Log.e(TAG,"-------Spo2hOriginData--="+list.size()+"---1="+list.get(0).toString());
-                    if(b31SaveSpo2AsyncTask != null && b31SaveSpo2AsyncTask.getStatus() == Status.RUNNING){
-                        b31SaveSpo2AsyncTask.cancel(true);
-                        b31SaveSpo2AsyncTask = null;
-                        b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
-                    }else{
-                        b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
+                    @Override
+                    public void onOriginHalfHourDataChange(OriginHalfHourData originHalfHourData) {
+                        saveHalfHourData(originHalfHourData);
                     }
-                    b31SaveSpo2AsyncTask.execute(list);
-                }
 
-                @Override
-                public void onReadOriginProgressDetail(int i, String s, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onReadOriginProgress(float v) {
-
-                }
-
-                @Override
-                public void onReadOriginComplete() {
-                    new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
-                            .obtainFormatDate(0));// 更新最后更新数据的时间
-                    if (connBleMsgDataListener != null) {
-                        connBleMsgDataListener.onOriginData();
+                    @Override
+                    public void onOriginHRVOriginListDataChange(List<HRVOriginData> list) {
+                        Log.e(TAG,"-------HRVOriginData--="+list.size()+"---1="+list.get(0).toString());
+                        if(b31sSaveHrvAsyncTask != null && b31sSaveHrvAsyncTask.getStatus() == Status.RUNNING){
+                            b31sSaveHrvAsyncTask.cancel(true);
+                            b31sSaveHrvAsyncTask = null;
+                            b31sSaveHrvAsyncTask = new B31sSaveHrvAsyncTask();
+                        }else{
+                            b31sSaveHrvAsyncTask = new B31sSaveHrvAsyncTask();
+                        }
+                        b31sSaveHrvAsyncTask.execute(list);
                     }
-                }
-            }, 1);
+
+                    @Override
+                    public void onOriginSpo2OriginListDataChange(List<Spo2hOriginData> list) {
+                        Log.e(TAG,"-------Spo2hOriginData--="+list.size()+"---1="+list.get(0).toString());
+                        if(b31SaveSpo2AsyncTask != null && b31SaveSpo2AsyncTask.getStatus() == Status.RUNNING){
+                            b31SaveSpo2AsyncTask.cancel(true);
+                            b31SaveSpo2AsyncTask = null;
+                            b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
+                        }else{
+                            b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
+                        }
+                        b31SaveSpo2AsyncTask.execute(list);
+                    }
+
+                    @Override
+                    public void onReadOriginProgressDetail(int i, String s, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onReadOriginProgress(float v) {
+
+                    }
+
+                    @Override
+                    public void onReadOriginComplete() {
+                        new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
+                                .obtainFormatDate(0));// 更新最后更新数据的时间
+                        if (connBleMsgDataListener != null) {
+                            connBleMsgDataListener.onOriginData();
+                        }
+                    }
+                }, 1);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             return null;
         }
     }

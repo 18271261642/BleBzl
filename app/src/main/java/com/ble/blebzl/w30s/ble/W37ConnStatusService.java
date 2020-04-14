@@ -55,13 +55,14 @@ public class W37ConnStatusService extends Service {
                     SearchResult searchResult = (SearchResult) msg.obj;
                     if(searchResult == null)
                         return;
-                    Log.e(TAG,"---------搜索设备="+searchResult.getName()+"---ble="+searchResult.getAddress());
                     if(searchResult.getAddress() == null || searchResult.getName() == null)
                         return;
                     if(!WatchUtils.isEmpty(searchResult.getAddress().trim()) && searchResult.getAddress().trim().equals(saveLocalBleMac)){
                         Log.e(TAG,"------w37相等了-----");
                         MyApp.getInstance().getW37BleOperateManager().stopScan();
-                        connW37ByMac(searchResult.getAddress().trim(),searchResult.getName().equals("XWatch")? "XWatch" : searchResult.getName().substring(0,3).trim());  //开始连接
+                        connW37ByMac(searchResult.getAddress().trim(),searchResult.getName().equals("XWatch")
+                                ? "XWatch" : (searchResult.getName().equals("SWatch")
+                                ? "SWatch":searchResult.getName().substring(0,3).trim()));  //开始连接
                     }
 
                     break;
@@ -126,7 +127,7 @@ public class W37ConnStatusService extends Service {
             public void setNotiStatus(int code) {
                 MyCommandManager.DEVICENAME = bleName;
                 MyCommandManager.ADDRESS = mac;
-                if(bleName.equals("XWatch")){
+                if(bleName.equals("XWatch") || bleName.equals("SWatch")){
                     xWatchSyncTime(mac,bleName);
                 }else {
                     Intent intent = new Intent();
@@ -158,7 +159,7 @@ public class W37ConnStatusService extends Service {
                 MyCommandManager.DEVICENAME = bleName;
                 MyCommandManager.ADDRESS = mac;
 
-                if(bleName.equals("XWatch")){
+                if(bleName.equals("XWatch") || bleName.equals("SWatch")){
                     xWatchSyncTime(mac,bleName);
                 }else {
                     Intent intent = new Intent();
@@ -177,7 +178,7 @@ public class W37ConnStatusService extends Service {
             @Override
             public void bleSyncComplete(byte[] data) {
                 Intent intent = new Intent();
-                intent.putExtra("bleName",mac);
+                intent.putExtra("bleName",bleName);
                 intent.setAction(W37Constance.X_WATCH_CONNECTED_ACTION);
                 sendBroadcast(intent);
             }

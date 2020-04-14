@@ -1,5 +1,49 @@
 <resources>
 
+    <string name="string_x_watch_take_camera">遙控拍照</string>
+    <string name="string_b16_step_frequency">頻率</string>
+    <string name="string_b16_bmi1">減脂指數</string>
+    <string name="string_b16_bmi2">有效消耗的卡路里</string>
+    <string name="string_b16_bmi3">卡=燃燒脂肪</string>
+    <string name="string_b16_bmi4">如此堅持30天相當於燃燒脂肪</string>
+
+    <string name="string_b16_bmi_count">匯總</string>
+    <string name="string_b16_bmi_time">燃脂時間</string>
+    <string name="string_b16_bmi_consume">燃脂消耗</string>
+    <string name="string_b16_bmi_effective">運動步頻在120以上才能有效消耗脂肪</string>
+    <string name="string_b16_bmi_desc">什麼是BMI</string>
+    <string name="string_b16_bmi_desc_content">身體質量指數(BMI,BodyMassIndex)是國際上常用的衡量人體肥胖程度和健康的重要標準，主要用於統計分析。肥胖程度的判斷不能採用體重的絕對值，它天熱與身高有感。因此，BMI通過​​人體體重和身高兩個數值獲取相對客觀的參數，並用這個參數所處範圍衡量身體質量。</string>
+    <string name="string_b16_compute_title">計算公式</string>
+    <string name="string_b16_compute_context">體重指數BMI=體重/身高的平方(國際單位kg/m²)理想BMI(18.5~23.9)=體重(單位kg)÷身高的平方(單位m)根據世界衛生組織定下的標準:</string>
+
+    <string name="string_b16_bmi_table_tr1">BMI分類</string>
+    <string name="string_b16_bmi_table_td1">偏瘦</string>
+    <string name="string_b16_bmi_table_td2">正常</string>
+    <string name="string_b16_bmi_table_td3">超重</string>
+    <string name="string_b16_bmi_table_td4">偏胖</string>
+    <string name="string_b16_bmi_table_td5">肥胖</string>
+    <string name="string_b16_bmi_table_td6">中度肥胖</string>
+    <string name="string_b16_bmi_table_td7">極度肥胖</string>
+    <string name="string_b16_bmi_table_tr2">WHO標準</string>
+    <string name="string_b16_bmi_table_tr3">亞洲標準</string>
+    <string name="string_b16_bmi_table_tr4">相關疾病發病的危險性</string>
+    <string name="string_b16_bmi_table_tr4_1">低(但其它疾病的危險性增加)</string>
+    <string name="string_b16_bmi_table_tr4_2">平均水平</string>
+    <string name="string_b16_bmi_table_tr4_3">增加</string>
+    <string name="string_b16_bmi_table_tr4_4">中度增加</string>
+    <string name="string_b16_bmi_table_tr4_5">嚴重增加</string>
+    <string name="string_b16_bmi_table_tr4_6">非常嚴重增加</string>
+
+
+
+
+    <string name="string_friend_level_title">好友權限說明</string>
+    <string name="string_friend_special">設置為特殊好友</string>
+    <string name="string_friend_start">設置為星標好友</string>
+    <string name="string_friend_normal">設置為普通好友</string>
+    <string name="string_friend_level_desc">特殊好友:只允許設置一位，擁有查看所有數據的權限，設置特殊好友後需對方同意申請;\n\n
+星標好友:可以互相查看除生理期外的所有數據，設置星標好友無需好友同意;\n\n
+普通好友:可以互相查看步數、睡眠、心率、血壓數據,申請好友同意後默認為普通好友;\n</string>
     <string name="string_bmi_title">減脂指數</string>
 
 

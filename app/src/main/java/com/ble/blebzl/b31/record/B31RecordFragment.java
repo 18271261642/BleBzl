@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.ble.blebzl.Commont;
 import com.ble.blebzl.MyApp;
 import com.ble.blebzl.R;
@@ -89,20 +88,16 @@ import com.veepoo.protocol.model.enums.ESpo2hDataType;
 import com.veepoo.protocol.util.HRVOriginUtil;
 import com.veepoo.protocol.util.HrvScoreUtil;
 import com.veepoo.protocol.util.Spo2hOriginUtil;
-
 import org.litepal.LitePal;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
 import static com.ble.blebzl.b31.bpoxy.enums.Constants.CHART_MAX_HRV;
 import static com.ble.blebzl.b31.bpoxy.enums.Constants.CHART_MAX_SPO2H;
 import static com.ble.blebzl.b31.bpoxy.enums.Constants.CHART_MIN_HRV;
@@ -215,6 +210,10 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
     //血压是否显示的布局
     @BindView(R.id.b30CusBloadLin)
     LinearLayout b30CusBloadLin;
+
+    //呼吸率
+    @BindView(R.id.homeB31ManRespRateImg)
+    ImageView homeB31ManRespRateImg;
 
     /**
      * 当前显示哪天的数据(0_今天 1_昨天 2_前天)
@@ -387,8 +386,8 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
 
                         if(kmSpo2Task != null && kmSpo2Task.getStatus() == AsyncTask.Status.RUNNING){
                             kmSpo2Task.cancel(true);
+                            kmSpo2Task = null;
                             kmSpo2Task = new KmSpo2Task();
-                            kmSpo2Task.execute();
                         }else{
                             kmSpo2Task = new KmSpo2Task();
                         }
@@ -459,6 +458,10 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
         Log.e(TAG, "----------isB31HasBp=" + isB31HasBp);
         b30CusBloadLin.setVisibility(isB31HasBp ? View.VISIBLE : View.GONE);
         homeBpManLin.setVisibility(isB31HasBp ? View.VISIBLE : View.GONE);
+
+        //是否支持呼吸率
+        boolean isHeart = (boolean) SharedPreferencesUtils.getParam(getmContext(),Commont.IS_B31_HEART,false);
+        homeB31ManRespRateImg.setVisibility(isHeart ? View.VISIBLE : View.GONE);
 
         //带精准睡眠的B31S不支持疲劳度测量
         boolean isB31sFatigue = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_B31S_FATIGUE_KEY, false);
@@ -1477,6 +1480,7 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
 
             if(kmAsyncTask != null && kmAsyncTask.getStatus() == AsyncTask.Status.RUNNING){
                 kmAsyncTask.cancel(true);
+                kmAsyncTask = null;
                 kmAsyncTask = new KmAsyncTask();
                 kmAsyncTask.execute();
             }else{

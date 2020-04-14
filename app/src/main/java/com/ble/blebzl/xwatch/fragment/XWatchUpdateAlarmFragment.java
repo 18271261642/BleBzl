@@ -15,10 +15,13 @@ import android.widget.TimePicker;
 
 import com.ble.blebzl.R;
 import com.ble.blebzl.b18.modle.B18AlarmBean;
+import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.siswatch.LazyFragment;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
+import com.ble.blebzl.util.SharedPreferencesUtils;
 import com.ble.blebzl.w30s.ble.WriteBackDataListener;
 import com.ble.blebzl.xwatch.ble.XWatchBleAnalysis;
+import com.google.gson.Gson;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -30,6 +33,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
+ * 编辑闹钟
  * Created by Admin
  * Date 2020/2/21
  */
@@ -188,6 +192,14 @@ public class XWatchUpdateAlarmFragment extends LazyFragment {
         boolean isSaturday = weekMap.get("week_6");
         boolean isSunday = weekMap.get("week_7");
 
+        b18AlarmBean.setOpenMonday(isMonday);
+        b18AlarmBean.setOpenTuesday(isThursday);
+        b18AlarmBean.setOpenWednesday(isWednesday);
+        b18AlarmBean.setOpenThursday(isThursday);
+        b18AlarmBean.setOpenFriday(isFriday);
+        b18AlarmBean.setOpenSaturday(isSaturday);
+        b18AlarmBean.setOpenSunday(isSunday);
+
         if(!isMonday && !isTuesday && !isWednesday && !isThursday && !isFriday && !isSaturday && !isSunday){
             int todayWeek = WatchUtils.getDataForWeek();
             switch (todayWeek){
@@ -216,18 +228,24 @@ public class XWatchUpdateAlarmFragment extends LazyFragment {
 
         }
 
-        String bxHour = new BigInteger(String.valueOf(alarmHour),16).toString(10);//16进制的s转换为10进制
-        String bxMine = new BigInteger(String.valueOf(alarmMine),16).toString(10);
+        if(MyCommandManager.DEVICENAME.equals("SWatch")){
+            b18AlarmBean.setOpen(true);
+            SharedPreferencesUtils.setParam(getActivity(),"s_watch_alarm",new Gson().toJson(b18AlarmBean));
+            getFragmentManager().popBackStack();
+        }else{
+            String bxHour = new BigInteger(String.valueOf(alarmHour),16).toString(10);//16进制的s转换为10进制
+            String bxMine = new BigInteger(String.valueOf(alarmMine),16).toString(10);
 
-        showLoadingDialog("Loading...");
-        xWatchBleAnalysis.setAlarmData(id, true, Integer.valueOf(bxHour), Integer.valueOf(bxMine), isSunday,
-                isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday, new WriteBackDataListener() {
-                    @Override
-                    public void backWriteData(byte[] data) {
-                        closeLoadingDialog();
-                        getFragmentManager().popBackStack();
-                    }
-                });
+            showLoadingDialog("Loading...");
+            xWatchBleAnalysis.setAlarmData(id, true, Integer.valueOf(bxHour), Integer.valueOf(bxMine), isSunday,
+                    isMonday, isTuesday, isWednesday, isThursday, isFriday, isSaturday, new WriteBackDataListener() {
+                        @Override
+                        public void backWriteData(byte[] data) {
+                            closeLoadingDialog();
+                            getFragmentManager().popBackStack();
+                        }
+                    });
+        }
 
 
     }

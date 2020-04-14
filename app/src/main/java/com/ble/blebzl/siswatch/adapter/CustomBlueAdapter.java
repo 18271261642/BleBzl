@@ -157,7 +157,12 @@ public class CustomBlueAdapter extends RecyclerView.Adapter<CustomBlueAdapter.Cu
             }
 
             if(bleName.contains("X")){
-                holder.img.setImageResource(R.mipmap.icon_xwatch_home_top);
+                holder.img.setImageResource(R.mipmap.icon_xw_search);
+                return;
+            }
+
+            if(bleName.equals("SWatch")){
+                holder.img.setImageResource(R.mipmap.icon_s_watch_search);
             }
 
         }

@@ -1,6 +1,8 @@
 package com.ble.blebzl.friend;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +17,7 @@ import com.ble.blebzl.Commont;
 import com.ble.blebzl.R;
 import com.ble.blebzl.friend.bean.CommBean;
 import com.ble.blebzl.friend.bean.FriendDetailHomeBean;
+import com.ble.blebzl.friend.bean.MenstrualCycle;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.util.SharedPreferencesUtils;
@@ -96,6 +99,17 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
     @BindView(R.id.friendHrvLin)
     RelativeLayout friendHrvLin;
 
+
+    //女性生理期的布局
+    @BindView(R.id.friendWomenLin)
+    RelativeLayout friendWomenLin;
+
+
+    @BindView(R.id.friendHomeWomenStatusTv)
+    TextView friendHomeWomenStatusTv;
+
+
+
     private RequestPressent requestPressent;
     String applicant = null;
     String StepNumber = "0";
@@ -111,6 +125,11 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
 
     private BottomSheetDialog bottomSheetDialog;
 
+    //女性生理期数据
+    private String womenStr = null;
+
+    private AlertDialog.Builder descAlert;
+
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
@@ -124,6 +143,7 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
         init();
 
         intent = getIntent();
+
         if (intent == null) return;
         applicant = intent.getStringExtra("applicant");
         StepNumber = intent.getStringExtra("stepNumber");//步数
@@ -186,6 +206,7 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
 
         friendHomeHrvSourceTv.setText(getResources().getString(R.string.heart_health_sorce) + "：--");
 
+        friendHomeWomenStatusTv.setText(getResources().getString(R.string.b36_period_day)+" : --");
     }
 
 
@@ -196,10 +217,12 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();
 
+        TextView descTv = view.findViewById(R.id.friendPermissDesc);
         TextView specialTv = view.findViewById(R.id.starSpecialTv);
         TextView starTv = view.findViewById(R.id.starStarTv);
         TextView normalTv = view.findViewById(R.id.starNormalTv);
         TextView cancleTv = view.findViewById(R.id.starCancleTv);
+        descTv.setOnClickListener(onClickListener);
         specialTv.setOnClickListener(onClickListener);
         starTv.setOnClickListener(onClickListener);
         cancleTv.setOnClickListener(onClickListener);
@@ -212,6 +235,9 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.friendPermissDesc:    //好友权限说明
+                    showFriendPermissDesc();
+                    break;
                 case R.id.starSpecialTv:    //设置为特殊好友
                     settingFriendLevel(10);
                     break;
@@ -228,6 +254,20 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
             }
         }
     };
+
+
+    private void showFriendPermissDesc(){
+        descAlert = new AlertDialog.Builder(FrendDataActivity.this)
+                .setTitle(getResources().getString(R.string.prompt))
+                .setMessage(getResources().getString(R.string.string_friend_level_desc)
+                ).setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        descAlert.create().show();
+    }
 
 
     private void settingFriendLevel(int level) {
@@ -325,13 +365,16 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
                 commentB30ShareImg.setImageResource(R.mipmap.icon_star_special);
                 friendSpo2Lin.setEnabled(true);
                 friendHrvLin.setEnabled(true);
+                friendWomenLin.setEnabled(true);
             } else if (friendLevel == 5) { //星标好友
                 commentB30ShareImg.setImageResource(R.mipmap.icon_star_star);
                 friendSpo2Lin.setEnabled(true);
                 friendHrvLin.setEnabled(true);
+                friendWomenLin.setEnabled(false);
             } else {
                 friendSpo2Lin.setEnabled(false);
                 friendHrvLin.setEnabled(false);
+                friendWomenLin.setEnabled(false);
                 commentB30ShareImg.setImageResource(R.mipmap.ic_close_frend);
             }
 
@@ -416,6 +459,11 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
                 friendHomeHrvSourceTv.setText(getResources().getString(R.string.heart_health_sorce) + "：" + hrvDay.getHeartSocre());
             }
 
+            MenstrualCycle menstrualCycle = friendDetailHomeBean.getData().getMenstrualCycle();
+            if(menstrualCycle != null){
+                womenStr = new Gson().toJson(menstrualCycle);
+            }
+
 
         }
 
@@ -426,7 +474,8 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
     @OnClick({R.id.rela_step, R.id.rela_sleep,
             R.id.rela_heart, R.id.rela_bp,
             R.id.friendSpo2Lin, R.id.friendHrvLin,
-            R.id.commentB30BackImg, R.id.commentB30ShareImg})
+            R.id.commentB30BackImg, R.id.commentB30ShareImg,
+            R.id.friendWomenLin})
     public void onViewClicked(View view) {
         if (WatchUtils.isEmpty(applicant)) applicant = intent.getStringExtra("applicant");
         switch (view.getId()) {
@@ -463,6 +512,9 @@ public class FrendDataActivity extends WatchBaseActivity implements RequestView 
                 break;
             case R.id.friendHrvLin: //HRV
                 startActivity(FriendHrvDetailActivity.class, new String[]{"applicant", "friendBleMac"}, new String[]{applicant, friendBleMac});
+                break;
+            case R.id.friendWomenLin:   //女性生理期
+                startActivity(FriendWomenActivity.class,new String[]{"friend_women"},new String[]{womenStr});
                 break;
         }
 

@@ -81,6 +81,8 @@ public class XWatchMsgAlertFragment extends LazyFragment {
             closeLoadingDialog();
             if(MyCommandManager.DEVICENAME == null)
                 return;
+            if(MyCommandManager.DEVICENAME.equals("SWatch"))
+                return;
             xWatchBleAnalysis.setDeviceNotiStatus(xWatchNoti, new WriteBackDataListener() {
                 @Override
                 public void backWriteData(byte[] data) {
@@ -136,8 +138,10 @@ public class XWatchMsgAlertFragment extends LazyFragment {
     }
 
     private void readDeviceNotiSiwtch() {
-        if(MyCommandManager.DEVICENAME == null)
+        if(MyCommandManager.DEVICENAME.equals("SWatch")){
+            xWatchNoti = new XWatchNotiBean();
             return;
+        }
         /**
          * Bit0：1：来电提醒使能，0：来电提醒关闭
          * Bit1：1：短信提醒使能，0：短信提醒关闭
@@ -190,6 +194,8 @@ public class XWatchMsgAlertFragment extends LazyFragment {
         xWatchFacebookTogg.setOnCheckedChangeListener(onCheckedChangeListener);
         xWatchWhatsAppTogg.setOnCheckedChangeListener(onCheckedChangeListener);
         xWatchSkypeTogg.setOnCheckedChangeListener(onCheckedChangeListener);
+
+        requestPermiss(Manifest.permission.READ_PHONE_STATE);
     }
 
     @Override

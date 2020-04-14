@@ -90,6 +90,8 @@ public class LaunchActivity extends WatchBaseActivity {
 
     private void initData() {
 
+        SharedPreferencesUtils.setParam(this, "curr_code", 0);
+
         //B30目标步数 默认8000
         int goalStep = (int) SharedPreferencesUtils.getParam(MyApp.getContext(),Commont.SPORT_GOAL_STEP,0);
         if(goalStep==0){
@@ -166,7 +168,7 @@ public class LaunchActivity extends WatchBaseActivity {
                 }
                 else if("B18".equals(btooth) || "B16".equals(btooth)){
                     startActivity(B18HomeActivity.class);
-                }else if("XWatch".equals(btooth)){
+                }else if("XWatch".equals(btooth) || btooth.equals("SWatch")){
                     MyApp.getInstance().getW37ConnStatusService();
                     startActivity(XWatchHomeActivity.class);
                 }

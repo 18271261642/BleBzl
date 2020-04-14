@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,10 +27,16 @@ import com.ble.blebzl.b30.b30view.CusStepDetailView;
 import com.ble.blebzl.b30.bean.B30HalfHourDao;
 import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.siswatch.LazyFragment;
+import com.ble.blebzl.siswatch.NewSearchActivity;
+import com.ble.blebzl.siswatch.utils.WatchConstants;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.siswatch.view.RiseNumberTextView;
+import com.ble.blebzl.view.CusScheduleView;
 import com.ble.blebzl.w30s.ble.W37Constance;
+import com.ble.blebzl.xwatch.UploadXWatchTask;
+import com.ble.blebzl.xwatch.XWatchDeviceActivity;
 import com.ble.blebzl.xwatch.XWatchIntelActivity;
+import com.ble.blebzl.xwatch.XWatchSportDetailActivity;
 import com.ble.blebzl.xwatch.ble.XWatchBleAnalysis;
 import com.ble.blebzl.xwatch.ble.XWatchBleOperate;
 import com.ble.blebzl.xwatch.ble.XWatchStepBean;
@@ -37,6 +44,9 @@ import com.ble.blebzl.xwatch.ble.XWatchSyncSuccListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ble.blebzl.util.SharedPreferencesUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,9 +87,9 @@ public class XWatchHomeFragment extends LazyFragment {
     TextView homeSportValueTv;
     @BindView(R.id.homeKcalValueTv)
     TextView homeKcalValueTv;
-    @BindView(R.id.cusStepDView)
+    @BindView(R.id.xWatchCusStepDView)
     CusStepDetailView cusStepDView;
-    @BindView(R.id.b30SportMaxNumTv)
+    @BindView(R.id.xWatchSportMaxNumTv)
     TextView b30SportMaxNumTv;
     @BindView(R.id.xWatchHomeTodayImg)
     ImageView xWatchHomeTodayImg;
@@ -92,6 +102,18 @@ public class XWatchHomeFragment extends LazyFragment {
     @BindView(R.id.xWatchGoalTv)
     TextView xWatchGoalTv;
 
+    @BindView(R.id.homeSportSchudeView)
+    CusScheduleView homeSportSchudeView;
+
+    @BindView(R.id.homeKcalSchudeView)
+    CusScheduleView homeKcalSchudeView;
+
+    @BindView(R.id.homeAlarmSchudeView)
+    CusScheduleView homeAlarmSchudeView;
+
+    @BindView(R.id.xWatchRefreshLayout)
+    SmartRefreshLayout xWatchRefreshLayout;
+
 
     private XWatchBleAnalysis xWatchBleAnalysis;
 
@@ -101,6 +123,8 @@ public class XWatchHomeFragment extends LazyFragment {
      * 当前显示哪天的数据(0_今天 1_昨天 2_前天)
      */
     private int currDay = 0;
+
+    private UploadXWatchTask xWatchTask = null;
 
     @Override
     public void onAttach(Context context) {
@@ -132,7 +156,33 @@ public class XWatchHomeFragment extends LazyFragment {
 
             }
             if(msg.what ==0x02){
+                if (xWatchRefreshLayout != null)
+                    xWatchRefreshLayout.finishRefresh();
                 updatePageData();
+
+                try {
+                    if (xWatchTask != null && xWatchTask.getStatus() == AsyncTask.Status.RUNNING) {
+                        xWatchTask.cancel(true);
+                        xWatchTask = new UploadXWatchTask();
+                    } else {
+                        xWatchTask = new UploadXWatchTask();
+                    }
+                    xWatchTask.execute();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            if(msg.what == 0x03){
+                if(xWatchRefreshLayout != null){
+                    xWatchRefreshLayout.setEnableRefresh(true);
+                    xWatchRefreshLayout.autoRefresh();
+                }
+            }
+
+            if(msg.what == 0x04){
+                if (xWatchRefreshLayout != null)
+                    xWatchRefreshLayout.finishRefresh();
             }
         }
     };
@@ -171,10 +221,32 @@ public class XWatchHomeFragment extends LazyFragment {
     }
 
     private void initViews() {
+        b30TopDateTv.setTextColor(Color.parseColor("#FF4186D9"));
         b30TopDateTv.setText(WatchUtils.getCurrentDate());
         connStatusTv.setTextColor(Color.parseColor("#FF4186D9"));
-        ivTop.setImageResource(R.mipmap.icon_xwatch_home_top);
-        new_h8_recordShareImg.setImageResource(R.mipmap.icon_x_watch_home_chart);
+        ivTop.setImageResource(verticalDevice() == 0?R.mipmap.icon_xwatch_home_top:R.mipmap.icon_s_watch_top);
+       // new_h8_recordShareImg.setImageResource(R.mipmap.icon_x_watch_home_chart);
+
+
+        if(MyCommandManager.DEVICENAME == null)
+            xWatchRefreshLayout.setEnableRefresh(false);
+
+        xWatchRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                if (MyCommandManager.DEVICENAME == null)
+                    return;
+                readSyncDevice(0);
+                handler.sendEmptyMessageDelayed(0x04,8 * 1000);
+            }
+        });
+    }
+
+    private int verticalDevice(){
+        String saveBleName = (String) SharedPreferencesUtils.readObject(getmContext(),Commont.BLENAME);
+        if(saveBleName == null)
+            return 0;
+        return saveBleName.equals("SWatch")?1:0;
     }
 
 
@@ -186,6 +258,8 @@ public class XWatchHomeFragment extends LazyFragment {
         xWatchGoalTv.setText(getResources().getString(R.string.goal_step) + " "+sportGoal);
 
     }
+
+
 
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
@@ -202,20 +276,13 @@ public class XWatchHomeFragment extends LazyFragment {
 
             if(MyCommandManager.DEVICENAME == null)
                 return;
-            XWatchBleOperate.getxWatchBleOperate().bleConnOperate(curCode, getmContext(), new XWatchSyncSuccListener() {
-                @Override
-                public void bleSyncComplete(byte[] data) {
-                    Log.e(TAG,"-------更新="+data[0]);
-
-                    handler.sendEmptyMessageDelayed(0x02,3 * 1000);
-                }
-            });
-
-//            if(diffTime >1){
-//                if(MyCommandManager.DEVICENAME == null)
-//                    return;
-//                readSyncDevice(curCode);
-//            }
+            if(WatchConstants.isScanConn){
+                WatchConstants.isScanConn = false;
+                handler.sendEmptyMessage(0x03);
+            }
+            if(diffTime >5){
+                readSyncDevice(curCode);
+            }
 
         }
     }
@@ -223,11 +290,12 @@ public class XWatchHomeFragment extends LazyFragment {
 
     //连接成功后同步数据
     private void readSyncDevice(int code){
+        SharedPreferencesUtils.setParam(getmContext(), "saveDate", System.currentTimeMillis() / 1000 + "");
         XWatchBleOperate.getxWatchBleOperate().bleConnOperate(code, getmContext(), new XWatchSyncSuccListener() {
             @Override
             public void bleSyncComplete(byte[] data) {
                 Log.e(TAG,"-------更新="+data[0]);
-                handler.sendEmptyMessageDelayed(0x02,3 * 1000);
+                handler.sendEmptyMessageDelayed(0x02,2 * 1000);
             }
         });
     }
@@ -248,14 +316,23 @@ public class XWatchHomeFragment extends LazyFragment {
 
     @OnClick({R.id.new_h8_recordShareImg, R.id.cusStepViewLin,
             R.id.xWatchHomeTodayLin, R.id.xWatchHomeYesDayLin,
-            R.id.xWatchHomeThirdDayLin})
+            R.id.xWatchHomeThirdDayLin,R.id.newH8RecordTopRel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.new_h8_recordShareImg:
                 startActivity(new Intent(getContext(), XWatchIntelActivity.class));
                 break;
             case R.id.cusStepViewLin:
-                startActivity(new Intent(getContext(), B18StepDetailActivity.class));
+                startActivity(new Intent(getContext(), XWatchSportDetailActivity.class));
+                break;
+            case R.id.newH8RecordTopRel:
+                if(MyCommandManager.DEVICENAME == null){
+                    MyApp.getInstance().getW37BleOperateManager().stopScan();
+                    startActivity(new Intent(getmContext(), NewSearchActivity.class));
+                    getActivity().finish();
+                }else{
+                    startActivity(new Intent(getmContext(), XWatchDeviceActivity.class));
+                }
                 break;
             case R.id.xWatchHomeTodayLin:   //今天
                 clearDataStyle(0);
@@ -319,9 +396,6 @@ public class XWatchHomeFragment extends LazyFragment {
     private void updateCountStep(String date, String mac) {
         try {
             String dayCountStepStr = B30HalfHourDao.getInstance().findOriginData(mac,date,B30HalfHourDao.XWATCH_DAY_STEP);
-
-            Log.e(TAG,"---dayCountStr="+dayCountStepStr);
-
             if(dayCountStepStr == null){
                 if (xWatchSportNumberTv.isRunning())
                     xWatchSportNumberTv.setInteger(1, 0);
@@ -350,17 +424,37 @@ public class XWatchHomeFragment extends LazyFragment {
             xWatchHomeSportTimeTv.setText(xWatchStepBean.getPosrtTime()+"");
 
 
+            setSportSchedule(xWatchStepBean.getStepNumber());
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
 
+
+    private void setSportSchedule(int currStep){
+        int sportGoal = (int) SharedPreferencesUtils.getParam(getmContext(), Commont.SPORT_GOAL_STEP,10000);
+        homeSportSchudeView.setAllScheduleValue(sportGoal);
+        homeKcalSchudeView.setAllScheduleValue(sportGoal);
+        homeAlarmSchudeView.setAllScheduleValue(sportGoal);
+        homeSportSchudeView.setCurrScheduleValue(currStep);
+        homeKcalSchudeView.setCurrScheduleValue(currStep);
+        homeAlarmSchudeView.setCurrScheduleValue(currStep);
+
+        homeSportSchudeView.invalidate();
+        homeKcalSchudeView.invalidate();
+        homeAlarmSchudeView.invalidate();
+
+    }
+
+
+
     //详细步数信息
     private void updateDeviceDetailSport(String dayStr, String bleMac) {
         try {
             String originDataStr = B30HalfHourDao.getInstance().findOriginData(bleMac, dayStr, B30HalfHourDao.XWATCH_DETAIL_SPORT);
-            Log.e(TAG, "---------详情步数=" + originDataStr);
             if (originDataStr == null){
                 b30SportMaxNumTv.setText("0");
                 cusStepDView.setSourList(new ArrayList<Integer>());
@@ -369,20 +463,28 @@ public class XWatchHomeFragment extends LazyFragment {
 
             List<Integer> orginList = new Gson().fromJson(originDataStr, new TypeToken<List<Integer>>() {
             }.getType());
+
+            String saveBleName = (String) SharedPreferencesUtils.readObject(getmContext(),Commont.BLENAME);
+            if(saveBleName == null)
+                return;
             List<Integer> halfList = new ArrayList<>();
-            for (int i = 0; i < orginList.size(); i += 2) {
-                if (i + 1 <= orginList.size() - 1) {
-                    int halfHourStepCount = orginList.get(i) + orginList.get(i + 1);
-                    halfList.add(halfHourStepCount);
+            if(saveBleName.equals("XWatch")){
+                for (int i = 0; i < orginList.size(); i += 2) {
+                    if (i + 1 <= orginList.size() - 1) {
+                        int halfHourStepCount = orginList.get(i) + orginList.get(i + 1);
+                        halfList.add(halfHourStepCount);
+                    }
                 }
+            }else{
+                halfList.addAll(orginList);
             }
+
             b30SportMaxNumTv.setText(Collections.max(halfList) + "");
             cusStepDView.setSourList(halfList);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 
 
@@ -399,13 +501,14 @@ public class XWatchHomeFragment extends LazyFragment {
             if (action == null)
                 return;
             if (action.equals(W37Constance.X_WATCH_CONNECTED_ACTION)) {   //连接成功
-                MyCommandManager.DEVICENAME = "XWatch";
+                MyCommandManager.DEVICENAME = intent.getStringExtra("bleName");
                 connStatusTv.setText(getResources().getString(R.string.connted));
-                readSyncDevice(0);
+                handler.sendEmptyMessage(0x03);
 
             }
-            if (action.equals(W37Constance.W37_DISCONNECTED_ACTION)) {    //连接失败
+            if (action.equals(W37Constance.X_WATCH_DISCONN_ACTION)) {    //连接失败
                 MyCommandManager.DEVICENAME = null;
+                xWatchRefreshLayout.setEnableRefresh(false);
                 connStatusTv.setText(getResources().getString(R.string.disconnted));
             }
         }

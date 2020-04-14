@@ -1,14 +1,19 @@
-package com.ble.blebzl.push;
-
+//package com.ble.blebzl.push;
+//
+//import android.content.Context;
+//import android.util.Log;
+//
 //import com.alibaba.sdk.android.push.MessageReceiver;
 //import com.alibaba.sdk.android.push.notification.CPushMessage;
-
-
-/**
- * 阿里云推送的Receiver
- * Created by Admin
- * Date 2020/1/16
- */
+//
+//import java.util.Map;
+//
+//
+///**
+// * 阿里云推送的Receiver
+// * Created by Admin
+// * Date 2020/1/16
+// */
 //public class AliyunBroadCastReceiver extends MessageReceiver {
 //    // 消息接收部分的LOG_TAG
 //    public static final String REC_TAG = "receiver";
@@ -49,5 +54,5 @@ package com.ble.blebzl.push;
 //    protected void onNotificationRemoved(Context context, String messageId) {
 //        Log.e("MyMessageReceiver", "onNotificationRemoved");
 //    }
-
+//
 //}

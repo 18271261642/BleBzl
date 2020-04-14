@@ -78,6 +78,8 @@ public class W30SReminderActivity extends WatchBaseActivity implements CompoundB
         newSearchRightImg1.setVisibility(View.VISIBLE);
         getSwitchState();
         initSwitch();
+
+        requestPermiss(Manifest.permission.READ_PHONE_STATE);
     }
 
     private void getSwitchState() {

@@ -46,25 +46,28 @@ public class PrivacyActivity extends WatchBaseActivity {
 
         initViews();
 
-        Locale locales = getResources().getConfiguration().locale;
+//        Locale locales = getResources().getConfiguration().locale;
+//
+//        String locale = Locale.getDefault().getLanguage();
+//        Log.e("YUYAN","---------locale--"+locale);
+//        if(!WatchUtils.isEmpty(locale)){
+//            if("zh".equals(locale)){    //中文
+//                if("TW".equals(locales.getCountry())){  //中文繁体
+//                    url = "file:///android_asset/privacy_tw.html";
+//                }else{  //中文简体
+//                    url = "file:///android_asset/privacy_zh.html";
+//                }
+//
+//            }else if("en".equals(locale)){  //英文
+//                url = "file:///android_asset/privacy_en.html";
+//            }
+//            else{  //英文
+//                url = "file:///android_asset/privacy_en.html";
+//            }
+//        }
 
-        String locale = Locale.getDefault().getLanguage();
-        Log.e("YUYAN","---------locale--"+locale);
-        if(!WatchUtils.isEmpty(locale)){
-            if("zh".equals(locale)){    //中文
-                if("TW".equals(locales.getCountry())){  //中文繁体
-                    url = "file:///android_asset/privacy_tw.html";
-                }else{  //中文简体
-                    url = "file:///android_asset/privacy_zh.html";
-                }
+        url = "file:///android_asset/htmlsrc/privacy_txt.html";
 
-            }else if("en".equals(locale)){  //英文
-                url = "file:///android_asset/privacy_en.html";
-            }
-            else{  //英文
-                url = "file:///android_asset/privacy_en.html";
-            }
-        }
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {

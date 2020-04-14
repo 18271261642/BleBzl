@@ -83,6 +83,9 @@ public class B16BmiShowFragment extends LazyFragment {
     @BindView(R.id.b16linPointLin)
     LinearLayout b16linPointLin;
 
+    @BindView(R.id.b16Bmi120Tv)
+    TextView b16Bmi120Tv;
+
 
     private String bleMac = null;
 
@@ -123,6 +126,7 @@ public class B16BmiShowFragment extends LazyFragment {
     }
 
     private void initViews() {
+        b16Bmi120Tv.setSelected(true);
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30ShareImg.setVisibility(View.VISIBLE);
         commentB30ShareImg.setImageResource(R.mipmap.icon_bmi_compute);

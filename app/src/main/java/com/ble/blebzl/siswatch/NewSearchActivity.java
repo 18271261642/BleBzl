@@ -373,23 +373,29 @@ public class NewSearchActivity extends GetUserInfoActivity implements CustomBlue
 
     //获取配对的蓝牙设备
     private void getPhonePairDevice() {
-        //获取已配对设备
-        Object[] lstDevice = bluetoothAdapter.getBondedDevices().toArray();
-        if(lstDevice == null)
-            return;
-        for (Object o : lstDevice) {
-            BluetoothDevice bluetoothDevice = (BluetoothDevice) o;
-            if (bluetoothDevice == null)
+        try {
+            //获取已配对设备
+            Object[] lstDevice = bluetoothAdapter.getBondedDevices().toArray();
+            if(lstDevice == null)
                 return;
-            if (bluetoothDevice.getName().contains("H8") || bluetoothDevice.getName().contains("B18") || bluetoothDevice.getName().contains("B16")
-                    || bluetoothDevice.getName().contains("W30") || bluetoothDevice.getName().contains("W31") || bluetoothDevice.getName().contains("W37")) {
-                repeatList.add(bluetoothDevice.getAddress());
-                customDeviceList.add(new CustomBlueDevice(bluetoothDevice, "0", 0));
-                customBlueAdapter.notifyDataSetChanged();
+            for (Object o : lstDevice) {
+                BluetoothDevice bluetoothDevice = (BluetoothDevice) o;
+                if (bluetoothDevice == null)
+                    return;
+                String pariName = bluetoothDevice.getName();
+                if(WatchUtils.isEmpty(pariName))
+                    return;
+                if (pariName.contains("H8") || pariName.contains("B18") || pariName.contains("B16")
+                        || pariName.contains("W30") || pariName.contains("W31") || pariName.contains("W37")) {
+                    repeatList.add(bluetoothDevice.getAddress());
+                    customDeviceList.add(new CustomBlueDevice(bluetoothDevice, "0", 0));
+                    customBlueAdapter.notifyDataSetChanged();
+                }
+
             }
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
     }
 
     /**
@@ -398,29 +404,34 @@ public class NewSearchActivity extends GetUserInfoActivity implements CustomBlue
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(BluetoothDevice bluetoothDevice, int rssi, byte[] scanRecord) {
-            String bleName = bluetoothDevice.getName();
-            String bleMac = bluetoothDevice.getAddress(); //bozlun
-            if(bleName == null)
-                return;
-            if((scanRecord[7] == 80 && scanRecord[8] == 80) || WatchUtils.verBleNameForSearch(bleName)
-                    || bleName.contains("B18") || bleName.contains("B50") || bleName.contains("B16") || bleName.equals("XWatch")){
-                if(repeatList.contains(bleMac))
+            try {
+                String bleName = bluetoothDevice.getName();
+                String bleMac = bluetoothDevice.getAddress(); //bozlun
+                if(bleName == null)
                     return;
-                if(customDeviceList.size()>50){
-                    scanBlueDevice(false);
-                    return;
+                if((scanRecord[7] == 80 && scanRecord[8] == 80) || WatchUtils.verBleNameForSearch(bleName)
+                        || bleName.contains("B18") || bleName.contains("B50") || bleName.contains("B16") || bleName.equals("XWatch") || bleName.equals("SWatch")){
+                    if(repeatList.contains(bleMac))
+                        return;
+                    if(customDeviceList.size()>50){
+                        scanBlueDevice(false);
+                        return;
+                    }
+
+                    repeatList.add(bleMac);
+                    customDeviceList.add(new CustomBlueDevice(bluetoothDevice, Math.abs(rssi) + "", ((scanRecord[7] + scanRecord[8]))));
+                    Comparator comparator = new Comparator<CustomBlueDevice>() {
+                        @Override
+                        public int compare(CustomBlueDevice o1, CustomBlueDevice o2) {
+                            return o1.getRssi().compareTo(o2.getRssi());
+                        }
+                    };
+                    Collections.sort(customDeviceList, comparator);
+                    customBlueAdapter.notifyDataSetChanged();
                 }
 
-                repeatList.add(bleMac);
-                customDeviceList.add(new CustomBlueDevice(bluetoothDevice, Math.abs(rssi) + "", ((scanRecord[7] + scanRecord[8]))));
-                Comparator comparator = new Comparator<CustomBlueDevice>() {
-                    @Override
-                    public int compare(CustomBlueDevice o1, CustomBlueDevice o2) {
-                        return o1.getRssi().compareTo(o2.getRssi());
-                    }
-                };
-                Collections.sort(customDeviceList, comparator);
-                customBlueAdapter.notifyDataSetChanged();
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
         }
@@ -546,16 +557,12 @@ public class NewSearchActivity extends GetUserInfoActivity implements CustomBlue
             }
 
 
-            //B30，B36，Ringmiihx  B31S,500S手表
-            if ((bleName.length() >= 3 && bleName.equals(WatchUtils.B30_NAME))
-                    || (bleName.length() >= 3 && bleName.equals(WatchUtils.B36_NAME))
-                    || (bleName.length() >= 7 && bleName.equals("Ringmii"))
-                    || (bleName.length() >= 3 && bleName.equals(WatchUtils.B31_NAME))
-                    || (bleName.length() >= 4 && bleName.equals(WatchUtils.B31S_NAME))
-                    || (bleName.length() >= 4 && (bleName.equals(WatchUtils.S500_NAME) || bleName.equals("B36M")))){
+            if (WatchUtils.isVPBleDevice(bleName)){
                 connectB30(customBlueDevice.getBluetoothDevice().getAddress().trim(), bleName);
                 return;
             }
+
+
 
             //H9
             if (bleName.substring(0, 2).equals(WatchUtils.H9_BLENAME)
@@ -619,7 +626,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements CustomBlue
                 return;
             }
 
-            if(bleName.equals("XWatch")){
+            if(bleName.equals("XWatch") || bleName.equals("SWatch")){
                 showLoadingDialog("conn...");
                 if(MyApp.getInstance().getW37ConnStatusService() != null)
                     MyApp.getInstance().getW37ConnStatusService().connBleForSearch(customBlueDevice.getBluetoothDevice().getAddress(),bleName.trim());
@@ -636,18 +643,6 @@ public class NewSearchActivity extends GetUserInfoActivity implements CustomBlue
     private void connB18Device(BluetoothDevice bd){
         showLoadingDialog("conn...");
         B18BleConnManager.getB18BleConnManager().connB18Device(bd);
-//        Log.e(TAG,"---------B18="+bd.getBondState()+"--="+HidUtil.getInstance(MyApp.getContext()).isConnected(customBlueDevice.getBluetoothDevice()));
-//        if(bd.getBondState() == H8_BLE_BANDSTATE_CODE){ //已经绑定，未确定是否连接
-//            if(HidUtil.getInstance(MyApp.getContext()).isConnected(customBlueDevice.getBluetoothDevice())){ //已配对，已连接
-//                showLoadingDialog("conn...");
-//                B18BleConnManager.getB18BleConnManager().connB18Device(bd);
-//                return;
-//            }
-//            HidUtil.getInstance(MyApp.getContext()).connect(bd);
-//            return;
-//        }
-//        //配对
-//        HidUtil.getInstance(MyApp.getContext()).pair(bd);
     }
 
 
@@ -863,29 +858,6 @@ public class NewSearchActivity extends GetUserInfoActivity implements CustomBlue
 
                     }
                 }
-
-                /**
-                 * W30S链接监听
-                 */
-//                if (W30SBLEServices.ACTION_GATT_CONNECTED.equals(action)) {
-//                    closeLoadingDialog();
-//                    MyCommandManager.DEVICENAME = "W30";
-//                    String bName = intent.getStringExtra("bName");
-//                    if (!WatchUtils.isEmpty(bName)) MyCommandManager.DEVICENAME = bName;
-//                    boolean zh = VerifyUtil.isZh(context);
-//                    if (!zh) {
-//                        //Log.e(TAG,"========搜索  -- 设置了英文");
-//                        MyApp.getInstance().getmW30SBLEManage().SendAnddroidLanguage(0);
-//                    } else {
-//                        //Log.e(TAG,"========搜索  -- 设置了中文");
-//                        MyApp.getInstance().getmW30SBLEManage().SendAnddroidLanguage(1);
-//                    }
-//                    SharedPreferencesUtils.saveObject(NewSearchActivity.this, Commont.BLENAME, MyCommandManager.DEVICENAME);
-//                    startActivity(new Intent(NewSearchActivity.this, W30SHomeActivity.class));
-//                    finish();
-//                }
-
-
                 if(action.equals(W37Constance.W37_CONNECTED_ACTION)){   //舟海方案手环连接成功
                     WatchConstants.isScanConn = true;
                     startActivity(W37HomeActivity.class);
@@ -895,6 +867,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements CustomBlue
                 //xwatch
                 if(action.equals(W37Constance.X_WATCH_CONNECTED_ACTION)){
                     closeLoadingDialog();
+                    WatchConstants.isScanConn = true;
                     startActivity(XWatchHomeActivity.class);
                     finish();
                 }

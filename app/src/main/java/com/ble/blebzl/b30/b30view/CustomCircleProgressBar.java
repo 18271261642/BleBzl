@@ -365,7 +365,7 @@ public class CustomCircleProgressBar extends View {
             }
         });
         animator.setStartDelay(500);
-        animator.setDuration(dur);
+        animator.setDuration(dur * 2);
         animator.setInterpolator(new LinearInterpolator());
         animator.start();
     }

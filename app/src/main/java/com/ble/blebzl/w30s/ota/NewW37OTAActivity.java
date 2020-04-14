@@ -63,7 +63,7 @@ public class NewW37OTAActivity extends WatchBaseActivity implements RequestView 
     //private String downLoadSaveUrl = "/storage/emulated/0/Android/data/com.bozlun.bozhilun.android/cache/W37/W37V3.zip";
 
 
-    private String downLoadSaveUrl = Environment.getExternalStorageDirectory().getPath()+"/W37/W37Dfu.zip";
+    private String downLoadSaveUrl = "/storage/emulated/0/Android/data/Android/data/com.ble.blebzl/cache/W37/W37Dfu.zip";
 
     @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;

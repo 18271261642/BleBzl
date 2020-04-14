@@ -203,8 +203,8 @@ public class B18HomeFragment extends LazyFragment {
                     try {
                         if (updateB16DataTask != null && updateB16DataTask.getStatus() == AsyncTask.Status.RUNNING) {
                             updateB16DataTask.cancel(true);
+                            updateB16DataTask = null;
                             updateB16DataTask = new UpdateB16DataTask();
-                            // updateB16DataTask.execute();
                         } else {
                             updateB16DataTask = new UpdateB16DataTask();
                         }

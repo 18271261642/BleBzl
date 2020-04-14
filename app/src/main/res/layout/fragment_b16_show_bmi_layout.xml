@@ -69,74 +69,86 @@
                 android:background="#FFF3F3F3"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@mipmap/icon_bmi_count_bg"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
 
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:scrollbars="none"
+                    android:layout_height="@dimen/size_50">
 
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="汇总"
-                        android:padding="5dp"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"/>
-
-
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="燃脂时间"
-                        android:textSize="17sp"
-                        android:textColor="@color/white"/>
-
-
-                    <TextView
-                        android:id="@+id/b16BmiSportTimeTv"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="100分钟"
-                        android:gravity="center"
-                        android:textSize="17sp"
-                        android:textColor="@color/white"/>
-
-                    <View
-                        android:layout_width="1dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@color/white"/>
+                        android:background="@mipmap/icon_bmi_count_bg"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
 
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="燃脂消耗"
-                        android:textSize="17sp"
-                        android:gravity="center"
-                        android:textColor="@color/white"/>
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/string_b16_bmi_count"
+                            android:layout_gravity="center"
+                            android:padding="5dp"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"/>
 
 
-                    <TextView
-                        android:id="@+id/b16BmiSportKgTv"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="100克"
-                        android:textSize="17sp"
-                        android:gravity="center"
-                        android:textColor="@color/white"/>
+
+                        <TextView
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/string_b16_bmi_time"
+                            android:textSize="17sp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:textColor="@color/white"/>
 
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/b16BmiSportTimeTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100分钟"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:textSize="17sp"
+                            android:textColor="@color/white"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"/>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/string_b16_bmi_consume"
+                            android:textSize="17sp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center"
+                            android:textColor="@color/white"/>
+
+
+                        <TextView
+                            android:id="@+id/b16BmiSportKgTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100克"
+                            android:textSize="17sp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="@color/white"/>
+
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/b16BmiViewPager"
@@ -157,7 +169,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/size_40"
                     android:background="@mipmap/icon_bmi_count_bg"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
@@ -173,14 +185,17 @@
 
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:id="@+id/b16Bmi120Tv"
+                        android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
+                        android:layout_marginLeft="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:padding="8dp"
-                        android:text="运动步频在120以上才能有效消耗脂肪"/>
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:ellipsize="marquee"
+                        android:text="@string/string_b16_bmi_effective"/>
 
 
                 </LinearLayout>
@@ -205,14 +220,15 @@
                     android:textSize="20sp"
                     android:textColor="#FB3E3E"
                     android:layout_marginLeft="15dp"
-                    android:text="什么是BMI"/>
+                    android:text="@string/string_b16_bmi_desc"/>
 
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:text="@string/string_bmi_desc"
+                    android:text="@string/string_b16_bmi_desc_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:lineSpacingExtra="5dp"
                     android:textSize="16sp"
                     android:layout_marginRight="15dp"/>
 
@@ -234,15 +250,16 @@
                     android:textSize="20sp"
                     android:textColor="#FB3E3E"
                     android:layout_marginLeft="15dp"
-                    android:text="计算公式"/>
+                    android:text="@string/string_b16_compute_title"/>
 
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:text="@string/string_bmi_formual"
+                    android:text="@string/string_b16_compute_context"
                     android:layout_marginLeft="15dp"
                     android:textSize="16sp"
                     android:layout_marginRight="15dp"
+                    android:lineSpacingExtra="5dp"
                     android:layout_height="wrap_content"/>
 
 

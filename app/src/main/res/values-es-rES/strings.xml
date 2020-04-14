@@ -1,6 +1,49 @@
 <resources>
     <!--头尾内部m部分翻译为英文,后期根据提供文档更改-->
     <!--西班牙语-->
+    <string name="string_x_watch_take_camera">Cámara remota</string>
+    <string name="string_b16_step_frequency">frequency</string>
+    <string name="string_b16_bmi1">Índice de reducción de grasa</string>
+    <string name="string_b16_bmi2">Calorías efectivas quemadas</string>
+    <string name="string_b16_bmi3">Calorías = quema de grasa</string>
+    <string name="string_b16_bmi4">Permanecer durante 30 días es equivalente a quemar grasa</string>
+
+    <string name="string_b16_bmi_count">Resumen</string>
+    <string name="string_b16_bmi_time">Tiempo de quema de grasa</string>
+    <string name="string_b16_bmi_consume">Consumo de quemagrasas</string>
+    <string name="string_b16_bmi_effective">La frecuencia de ejercicio por encima de 120 puede consumir grasa efectivamente</string>
+    <string name="string_b16_bmi_desc">¿Qué es el IMC?</string>
+    <string name="string_b16_bmi_desc_content">El índice de masa corporal (IMC, BodyMassIndex) es un estándar importante para medir la obesidad y la salud humana, y se utiliza principalmente para el análisis estadístico. El valor absoluto del peso no se puede utilizar para determinar el grado de obesidad, tiene una sensación de calor y altura. Por lo tanto, el IMC obtiene parámetros relativamente objetivos a través de dos valores de peso corporal y altura, y usa este parámetro para medir la masa corporal.</string>
+    <string name="string_b16_compute_title">Fórmula de cálculo</string>
+    <string name="string_b16_compute_context">Índice de masa corporal IMC = peso / estatura al cuadrado (en unidades internacionales kg / m²) IMC ideal (18.5 ~ 23.9) = peso (unidad kg) ÷ estatura al cuadrado (en m) de acuerdo con los estándares establecidos por la Organización Mundial de la Salud:</string>
+
+    <string name="string_b16_bmi_table_tr1">Clasificación de IMC</string>
+    <string name="string_b16_bmi_table_td1">Delgado</string>
+    <string name="string_b16_bmi_table_td2">Normal</string>
+    <string name="string_b16_bmi_table_td3">Sobrepeso</string>
+    <string name="string_b16_bmi_table_td4">Sobrepeso</string>
+    <string name="string_b16_bmi_table_td5">Obeso</string>
+    <string name="string_b16_bmi_table_td6">Obesidad moderada</string>
+    <string name="string_b16_bmi_table_td7">Extremadamente obeso</string>
+    <string name="string_b16_bmi_table_tr2">Normas de la OMS</string>
+    <string name="string_b16_bmi_table_tr3">Estándar asiático</string>
+    <string name="string_b16_bmi_table_tr4">Riesgo de enfermedades relacionadas.</string>
+    <string name="string_b16_bmi_table_tr4_1">Bajo (pero mayor riesgo de otras enfermedades)</string>
+    <string name="string_b16_bmi_table_tr4_2">Media</string>
+    <string name="string_b16_bmi_table_tr4_3">Aumentar</string>
+    <string name="string_b16_bmi_table_tr4_4">Aumento moderado</string>
+    <string name="string_b16_bmi_table_tr4_5">Aumento severo</string>
+    <string name="string_b16_bmi_table_tr4_6">Aumento muy severo</string>
+
+    <string name="string_friend_level_title">Descripción de permiso de amigos</string>
+    <string name="string_friend_special">Establecer como amigo especial</string>
+    <string name="string_friend_start">Establecer como amigo estrella</string>
+    <string name="string_friend_normal">Establecer como un amigo normal</string>
+    <string name="string_friend_level_desc">Amigos especiales: solo se puede establecer una persona y tienen permiso para ver todos los datos. Después de establecer amigos especiales, deben aceptar solicitarla; \n\n
+        Amigos estrella: puede ver todos los datos, excepto el período fisiológico, y establecer amigos estrella sin el consentimiento de los amigos;\n\n
+        Amigos comunes: puede verificar los datos de pasos, sueño, frecuencia cardíaca y presión arterial entre ellos. Después de solicitar el consentimiento, serán amigos normales por defecto;</string>
+
+
     <string name="string_bmi_title">BMI</string>
 
     <string name="string_permis_title">Welcome to RaceFit Pro</string>

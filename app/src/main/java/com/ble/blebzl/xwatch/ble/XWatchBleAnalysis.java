@@ -6,6 +6,7 @@ import com.ble.blebzl.MyApp;
 import com.ble.blebzl.b18.modle.B18AlarmBean;
 import com.ble.blebzl.b30.bean.B30HalfHourDB;
 import com.ble.blebzl.b30.bean.B30HalfHourDao;
+import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.w30s.ble.WriteBackDataListener;
 import com.google.gson.Gson;
@@ -66,8 +67,10 @@ public class XWatchBleAnalysis {
         int currTime = calendar.get(Calendar.MINUTE);
         int currSecond = calendar.get(Calendar.SECOND);
 
+        String tmpYear = new BigInteger(String.valueOf(year-2000),16).toString(10);
         String tmpMonth = new BigInteger(String.valueOf(month),16).toString(10);//16进制的s转换为10进制
         String tmpDay = new BigInteger(String.valueOf(day),16).toString(10);//16进制的s转换为10进制
+
 
         String s0 = new BigInteger(String.valueOf(currHour),16).toString(10);//16进制的s转换为10进制
 
@@ -75,6 +78,7 @@ public class XWatchBleAnalysis {
 
         String s2 = new BigInteger(String.valueOf(currSecond),16).toString(10);
 
+        int yearByte = Integer.valueOf(tmpYear);
         int monthByte = Integer.valueOf(tmpMonth);
         int dayByte = Integer.valueOf(tmpDay);
 
@@ -82,10 +86,16 @@ public class XWatchBleAnalysis {
         int mineByte = Integer.valueOf(s1);
         int secondByte = Integer.valueOf(s2);
 
+
         // 0x01 AA BB CC DD EE FF 00 00 00 00 00 00 00 00 ChkSum
-        byte[] sync_watch_time = new byte[]{0x01, (byte) (year-2000), (byte) monthByte, (byte) dayByte, (byte) hourByte, (byte) mineByte, (byte) secondByte,0x00,
-                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) ((1+(year-2000)+monthByte+dayByte+ hourByte+  mineByte+  secondByte)&0xff)};
-        MyApp.getInstance().getW37BleOperateManager().writeBleDataToDeviceForXWatch(sync_watch_time, new WriteBackDataListener() {
+        byte[] sync_watch_time = new byte[]{0x01, (byte) (yearByte), (byte) monthByte, (byte) dayByte, (byte) hourByte, (byte) mineByte, (byte) secondByte,0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) ((1+yearByte+monthByte+dayByte+ hourByte+  mineByte+  secondByte)&0xff)};
+        //SWatch指令
+        byte[] s_watch_time = new byte[]{0x01, (byte) year, (byte) month, (byte) day, (byte) currHour, (byte) currTime, (byte) currSecond,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, (byte) ((0x01+ year+ month+ day+ currHour+ currTime+ currSecond)&0xff)};
+
+        String bName = MyCommandManager.DEVICENAME;
+
+        MyApp.getInstance().getW37BleOperateManager().writeBleDataToDeviceForXWatch(bName.equals("XWatch")?sync_watch_time:s_watch_time, new WriteBackDataListener() {
             @Override
             public void backWriteData(byte[] data) {
                 if(xWatchSyncSuccListener != null)
@@ -219,13 +229,13 @@ public class XWatchBleAnalysis {
     //设置用户步数目标
     // 0x0B AA BB CC DD EE 00 00 00 00 00 00 00 00 ChkSum
     public void setDeviceSportGoal(int goal){
-        int sportBB = goal / 16777216;
-        int sportCC = goal / 65536;
-        int sportDD = goal / 256;
-        int sportEE = goal % 256;
+        int sportBB = (goal >>24) & 0xFF;
+        int sportCC = (goal >>16) & 0xFF;
+        int sportDD = (goal >>8) & 0xFF;
+        int sportEE = goal & 0xFF;
 
         byte[] goalByte = new byte[]{0x0B,0x00, (byte) sportBB, (byte) sportCC, (byte) sportDD, (byte) sportEE,0x00,
-                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) ((byte) (0x0B+sportBB+sportCC+sportDD+sportEE) & 0xFF)};
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,(byte) ((byte) (0x0B+sportBB+sportCC+sportDD+sportEE) & 0xFF)};
 
         MyApp.getInstance().getW37BleOperateManager().writeBleDataToDeviceForXWatch(goalByte, new WriteBackDataListener() {
             @Override
@@ -369,11 +379,7 @@ public class XWatchBleAnalysis {
                 }
             }
         });
-
-
     }
-
-
 
 
     //读取某天的运动数据 0-当天；1昨天，2-前天
@@ -381,35 +387,44 @@ public class XWatchBleAnalysis {
     public void getSomeDayForDevice(int day, final XWatchCountStepListener xWatchCountStepListener){
         byte[] dayStep = new byte[]{0x07, (byte) day, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) ((byte) (0x07+day) & 0xFF)};
 
-
         final XWatchStepBean xWatchStepBean = new XWatchStepBean();
         final B30HalfHourDB b30HalfHourDB = new B30HalfHourDB();
+
+        final DecimalFormat decimalFormat = new DecimalFormat("#.#");
+        final String bleName = MyCommandManager.DEVICENAME;
+
         MyApp.getInstance().getW37BleOperateManager().writeBleDataToDeviceForXWatch(dayStep, new WriteBackDataListener() {
             @Override
             public void backWriteData(byte[] data) {
 
                 if (data[0] == 7 && data[1] == 0) {    //第一条回复 当天的 = FF * 65536 + GG * 256 + HH
-                    DecimalFormat decimalFormat = new DecimalFormat("#.#");
                     //当天的总步数
                     int countStep = (data[6] & 0xFF) * 65536 + (data[7] * 256) + (data[8] & 0xFF) ;
                     //计算卡路里
-                    double kcalStr = ((data[12] & 0xFF) * 65536 + data[13] * 256 + (data[14] & 0xFF)) /100 ;
+                    double kcalStr = (data[12] & 0xFF) * 65536 + data[13] * 256 + (data[14] & 0xFF) ;
 
-                    String resultKcal = decimalFormat.format(kcalStr);
+                    String resultKcal = decimalFormat.format(bleName.equals("XWatch") ? WatchUtils.div(kcalStr,100,1) : kcalStr );
                     Log.e(TAG,"------步数="+countStep+"--=卡路里="+kcalStr);
                     if(xWatchCountStepListener != null){
                         xWatchCountStepListener.backDeviceCountStep(countStep,Double.valueOf(resultKcal));
                     }
 
-                    //日期
-                    int yearStr = data[3];
-                    String moneth = Integer.toHexString(data[4]);
-                    String dayStr = Integer.toHexString(data[5]);
+                    String dayStrs = null;
+                    if(bleName.equals("XWatch")){
+                        //日期
+                        String yearStr = Integer.toHexString(data[3]);
+                        String moneth = Integer.toHexString(data[4]);
+                        String dayStr = Integer.toHexString(data[5]);
 
-                    int tmpMonth = Integer.valueOf(moneth);
-                    int tmpDay = Integer.valueOf(dayStr);
+                        int tmpYear = Integer.valueOf(yearStr);
+                        int tmpMonth = Integer.valueOf(moneth);
+                        int tmpDay = Integer.valueOf(dayStr);
 
-                    String dayStrs = (yearStr+2000)+"-"+(tmpMonth<10?"0"+tmpMonth:tmpMonth)+"-"+(tmpDay<10?"0"+tmpDay:tmpDay);
+                        dayStrs = (tmpYear+2000)+"-"+(tmpMonth<10?"0"+tmpMonth:tmpMonth)+"-"+(tmpDay<10?"0"+tmpDay:tmpDay);
+                    }else{
+                        dayStrs = WatchUtils.getCurrentDate();
+                    }
+
 
                     xWatchStepBean.setKcal(kcalStr);
                     xWatchStepBean.setStepNumber(countStep);
@@ -417,10 +432,6 @@ public class XWatchBleAnalysis {
                     b30HalfHourDB.setDate(dayStrs);
                     b30HalfHourDB.setAddress(MyApp.getInstance().getMacAddress());
                     b30HalfHourDB.setType(B30HalfHourDao.XWATCH_DAY_STEP);
-//                    b30HalfHourDB.setOriginData(countStep+"");
-//                    B30HalfHourDao.getInstance().saveOriginData(b30HalfHourDB);
-
-
                 }
 
                 if(data[0] == 7 && data[1] == 1){   //返回距离信息 单位 km
@@ -438,7 +449,6 @@ public class XWatchBleAnalysis {
                     Log.e(TAG,"--------保存步数="+b30HalfHourDB.toString());
 
                     B30HalfHourDao.getInstance().saveOriginData(b30HalfHourDB);
-
 
 
                     DecimalFormat decimalFormat = new DecimalFormat("#.#");
@@ -459,44 +469,81 @@ public class XWatchBleAnalysis {
 
         final List<Integer> stepList = new ArrayList<>();
         final Map<String,List<Integer>> stepDetailMap = new HashMap<>();
+
+        final String bleName = MyCommandManager.DEVICENAME;
+
         MyApp.getInstance().getW37BleOperateManager().writeBleDataToDeviceForXWatch(dayByte, new WriteBackDataListener() {
             @Override
             public void backWriteData(byte[] data) {
-                Log.e(TAG,"-------详细数据="+ Arrays.toString(data));
-                if(data[0] == 67 && data[1] == -16){
+                if(bleName.equals("SWatch")){
+                    if(data[0] == 67 && data[1] == -16){
 
-                    //日期
-                    int yearStr = data[2];
-                    String moneth = Integer.toHexString(data[3]);
-                    String dayStr = Integer.toHexString(data[4]);
+                        //下标
+                        int position = data[2];
 
-                   // int tmpYear = Integer.valueOf(yearStr);
-                    int tmpMonth = Integer.valueOf(moneth);
-                    int tmpDay = Integer.valueOf(dayStr);
+                        int currStep1 = (data[3] & 0xff) * 256 + (data[4] & 0xff);
+                        int currStep2 = (data[5] & 0xff) * 256 + (data[6] & 0xff);
+                        int currStep3 = (data[7] & 0xff) * 256 + (data[8] & 0xff);
+                        int currStep4 = (data[9] & 0xff) * 256 + (data[10] & 0xff);
+                        int currStep5 = (data[11] & 0xff) * 256 + (data[12] & 0xff);
+                        int currStep6 = (data[13] & 0xff) * 256 + (data[14] & 0xff);
+                        stepList.add(currStep1);
+                        stepList.add(currStep2);
+                        stepList.add(currStep3);
+                        stepList.add(currStep4);
+                        stepList.add(currStep5);
+                        stepList.add(currStep6);
 
-                    //下标
-                    int position = data[5];
 
-                    //步数
-                    int currSport = data[9] & 0xFF + data[10] * 256;
-                    stepList.add(currSport);
-                    String dayStrs = (yearStr+2000)+"-"+(tmpMonth<10?"0"+tmpMonth:tmpMonth)+"-"+(tmpDay<10?"0"+tmpDay:tmpDay);
-                    stepDetailMap.put(dayStrs,stepList);
-                    if(position == 95){     //同步完了
-                        if(xWatchSportDetailListener != null)
-                            xWatchSportDetailListener.backDeviceSportDetail(stepDetailMap);
+                        if(position == 8){  //返回完了
+                            B30HalfHourDB b30HalfHourDB = new B30HalfHourDB();
+                            b30HalfHourDB.setDate(WatchUtils.getCurrentDate());
+                            b30HalfHourDB.setAddress(MyApp.getInstance().getMacAddress());
+                            b30HalfHourDB.setType(B30HalfHourDao.XWATCH_DETAIL_SPORT);
+                            b30HalfHourDB.setOriginData(new Gson().toJson(stepList));
+                            B30HalfHourDao.getInstance().saveOriginData(b30HalfHourDB);
+                            if(xWatchSportDetailListener != null)
+                                xWatchSportDetailListener.backDeviceSportDetail(stepDetailMap);
+                        }
+                    }
+                }else{
+                    if(data[0] == 67 && data[1] == -16){
+                        //日期
+                        String yearStr = Integer.toHexString(data[2]);
+                        String moneth = Integer.toHexString(data[3]);
+                        String dayStr = Integer.toHexString(data[4]);
 
-                        B30HalfHourDB b30HalfHourDB = new B30HalfHourDB();
-                        b30HalfHourDB.setDate(dayStrs);
-                        b30HalfHourDB.setAddress(MyApp.getInstance().getMacAddress());
-                        b30HalfHourDB.setType(B30HalfHourDao.XWATCH_DETAIL_SPORT);
-                        b30HalfHourDB.setOriginData(new Gson().toJson(stepList));
-                        B30HalfHourDao.getInstance().saveOriginData(b30HalfHourDB);
+                        int tmpYear = Integer.valueOf(yearStr);
+                        int tmpMonth = Integer.valueOf(moneth);
+                        int tmpDay = Integer.valueOf(dayStr);
+
+                        //下标
+                        int position = data[5];
+
+                        //步数
+                        int currSport = data[9] & 0xFF + data[10] * 256;
+                        stepList.add(currSport);
+                        String dayStrs = (tmpYear+2000)+"-"+(tmpMonth<10?"0"+tmpMonth:tmpMonth)+"-"+(tmpDay<10?"0"+tmpDay:tmpDay);
+                        stepDetailMap.put(dayStrs,stepList);
+                        if(position == 95){     //同步完了
+                            if(xWatchSportDetailListener != null)
+                                xWatchSportDetailListener.backDeviceSportDetail(stepDetailMap);
+
+                            B30HalfHourDB b30HalfHourDB = new B30HalfHourDB();
+                            b30HalfHourDB.setDate(dayStrs);
+                            b30HalfHourDB.setAddress(MyApp.getInstance().getMacAddress());
+                            b30HalfHourDB.setType(B30HalfHourDao.XWATCH_DETAIL_SPORT);
+                            b30HalfHourDB.setOriginData(new Gson().toJson(stepList));
+                            B30HalfHourDao.getInstance().saveOriginData(b30HalfHourDB);
+
+                        }
 
                     }
-
+                    if(data[0] == 67 && data[1] == -1){ //无数据
+                        if(xWatchSportDetailListener != null)
+                            xWatchSportDetailListener.backDeviceSportDetail(stepDetailMap);
+                    }
                 }
-
             }
         });
     }
@@ -551,7 +598,7 @@ public class XWatchBleAnalysis {
 
     }
 
-    //推送通知
+    //XWatch推送通知
     //0x4D AA 00 00 00 00 00 00 00 00 00 00 00 00 00 ChkSum
     public void setDeviceNoti(int type){
         byte[] notiByte = new byte[]{0x4D, (byte) type, 0x00, 0x00, 0x00, 0x00,
@@ -564,6 +611,72 @@ public class XWatchBleAnalysis {
         });
     }
 
+
+
+    //SWatch推送通知 type=0时为来电提醒，其它为APP消息提醒
+    public void setSWatchNoti(int type){
+        byte notiByte = WatchUtils.bitToByte("11111111");
+        byte notiByte2 = WatchUtils.bitToByte("11110000");
+        byte[] s_watch_byte = new byte[]{0x03,notiByte,notiByte2,type ==0 ?0x01 : WatchUtils.bitToByte("00000010"),0x00,0x00,0x00,0x00,
+                0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, (byte) ((0x03+notiByte+notiByte2+(type ==0 ?0x01 : WatchUtils.bitToByte("00000010"))) & 0xff)};
+        MyApp.getInstance().getW37BleOperateManager().writeBleDataToDeviceForXWatch(s_watch_byte, new WriteBackDataListener() {
+            @Override
+            public void backWriteData(byte[] data) {
+
+            }
+        });
+    }
+
+    /**
+     * SWatch【0x04AA00 000000 00000000 00000000 00CS】
+     * 1启动拍照；
+     * 0关闭拍照
+     */
+    public void openOrCloseCamera(int type){
+        byte[] cameraByte = new byte[]{0x04, (byte) type,0x00, 0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00, 0x00, (byte) ((0x04+type)&0xff)};
+        MyApp.getInstance().getW37BleOperateManager().writeBleDataToDeviceForXWatch(cameraByte, new WriteBackDataListener() {
+            @Override
+            public void backWriteData(byte[] data) {
+
+            }
+        });
+    }
+
+
+    /**
+     * 设置SWatch闹钟
+     * @param savedAlarmStr 实体类
+     */
+    public void setSWatchAlarm(B18AlarmBean savedAlarmStr){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int currHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currTime = calendar.get(Calendar.MINUTE);
+        int currSecond = calendar.get(Calendar.SECOND);
+        //小时
+        int alarmHour = savedAlarmStr.getHour();
+        //分钟
+        int alarmMine = savedAlarmStr.getMinute();
+        //开关
+        boolean isOpen = savedAlarmStr.isOpen();
+        //星期
+        byte weekByte = WatchUtils.bitToByte(savedAlarmStr.setAlarmAnalysis());
+
+        //SWatch指令
+        byte[] s_watch_time = new byte[]{0x01, (byte) year, (byte) month, (byte) day, (byte) currHour,
+                (byte) currTime, (byte) currSecond,0x00, (byte) alarmHour, (byte) alarmMine, (byte) (isOpen?1:0),0x7F,0x00,0x00,0x00,
+                (byte) ((0x01+ year+ month+ day+ currHour+ currTime+ currSecond+(isOpen?1:0)+0x7F)&0xff)};
+        MyApp.getInstance().getW37BleOperateManager().writeBleDataToDeviceForXWatch(s_watch_time, new WriteBackDataListener() {
+            @Override
+            public void backWriteData(byte[] data) {
+
+            }
+        });
+
+    }
 
 
     /**

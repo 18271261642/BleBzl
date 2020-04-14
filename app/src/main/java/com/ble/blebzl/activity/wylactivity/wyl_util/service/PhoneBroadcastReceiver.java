@@ -1,18 +1,16 @@
 package com.ble.blebzl.activity.wylactivity.wyl_util.service;
 
-import android.Manifest;
+
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.LocationListener;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.ble.blebzl.Commont;
 import com.ble.blebzl.MyApp;
 import com.ble.blebzl.bleutil.MyCommandManager;
@@ -32,12 +30,10 @@ import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.model.enums.ESocailMsg;
 import com.veepoo.protocol.model.settings.ContentPhoneSetting;
 import com.veepoo.protocol.model.settings.ContentSetting;
-import com.yanzhenjie.permission.AndPermission;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
 import static android.content.Context.TELEPHONY_SERVICE;
 
 /**
@@ -54,12 +50,6 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
     String phoneNumber = "";
     private String bleName;
 
-
-//    public PhoneBroadcastReceiver() {
-//        super();
-//        Log.e(TAG,"------电话-----=");
-//
-//    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -86,9 +76,6 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
      */
     public void doReceivePhone(Context context, Intent intent) {
         phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-
-//        if (WatchUtils.isEmpty(phoneNumber))
-//            return;
         Log.d(TAG, "---phoneNumber----" + phoneNumber);
         TelephonyManager telephony = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
         if (telephony == null)
@@ -134,53 +121,9 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
                     }
                 }
 
-                if(bleName.equals("XWatch")){   //xWatch
+                if(bleName.equals("XWatch") || bleName.equals("SWatch")){   //xWatch
                     xWatchNoti();
                 }
-
-              /*  if (!WatchUtils.isEmpty(phoneNumber) && !WatchUtils.isEmpty(bleName)) {
-                    Log.d(TAG, "------收到了来电广播---" + phoneNumber);
-                    if (bleName.equals("bozlun")) {
-                        sendH8PhoneAlert();
-                    }
-
-                    if (bleName.equals(H9_NAME_TAG)) {
-                        getPeople(phoneNumber, context);
-                    }
-
-                    if (bleName.equals("w30") || bleName.equals("W30") || bleName.equals("W31") || bleName.equals("W37")) {
-                        boolean isOn = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), "w30sswitch_Phone", true);
-                        if (isOn) {
-                            sendPhoneAlertData(phoneNumber, "W30");
-                        }
-                    }
-                    //维亿魄系列
-                    if (WatchUtils.isVPBleDevice(bleName)) {   //B30手环
-                        sendPhoneAlertData(phoneNumber, "B30");
-                    }
-
-                    //腾进达方案
-                    Set<String> set = new HashSet<>(Arrays.asList(WatchUtils.TJ_FilterNamas));
-                    if (set.contains(bleName)) {
-                        int pushMsg_call = AppIC.SData().getIntData("pushMsg_call");
-                        if (pushMsg_call == 1) {
-                            L4Command.SendCallInstruction(phoneNumber);
-                        }
-                    }
-
-                    //B18
-                    if(bleName.equals("B18") || bleName.equals("B16") || bleName.equals("B50")){
-                        if(MyCommandManager.DEVICENAME != null){
-                            boolean isB18 = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISPhone, false);
-                            if(isB18)sendPhoneAlertData(phoneNumber, "B16");
-                        }
-                    }
-
-                    if(bleName.equals("XWatch")){   //xWatch
-                        xWatchNoti();
-                    }
-                }*/
-
                 break;
             case TelephonyManager.CALL_STATE_IDLE:// "[Broadcast]挂断电话
                 Log.d(TAG, "------挂断电话--");
@@ -208,7 +151,11 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
     private void xWatchNoti(){
         if(MyCommandManager.DEVICENAME == null)
             return;
-        XWatchBleAnalysis.getW37DataAnalysis().setDeviceNoti(0);
+        if(MyCommandManager.DEVICENAME.equals("SWatch")){
+            XWatchBleAnalysis.getW37DataAnalysis().setSWatchNoti(0);
+        }else{
+            XWatchBleAnalysis.getW37DataAnalysis().setDeviceNoti(0);
+        }
     }
 
 
@@ -231,7 +178,7 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 //        }
         //findPhoneContactsByNumber(phoneNumber,tag);
 
-        sendCommVerticalPhone(tag,"Call Phone","");
+        sendCommVerticalPhone(tag,WatchUtils.isEmpty(phoneNumber)?"Call Phone":phoneNumber,"");
 
     }
 

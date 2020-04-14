@@ -283,8 +283,7 @@ public class WatchMineFragment extends LazyFragment {
                         return;
                     }
 
-
-                    if(MyCommandManager.DEVICENAME.equals("XWatch")){
+                    if(MyCommandManager.DEVICENAME.equals("XWatch") || MyCommandManager.DEVICENAME.equals("SWatch")){
                         startActivity(new Intent(getActivity(), XWatchDeviceActivity.class));
                         return;
                     }
@@ -320,7 +319,7 @@ public class WatchMineFragment extends LazyFragment {
                     }
 
                     MyApp.getInstance().getB30ConnStateService().stopAutoConn();
-
+                    MyApp.getInstance().getW37BleOperateManager().stopScan();
                     startActivity(new Intent(getActivity(), NewSearchActivity.class));
                     if (getActivity() != null)
                         getActivity().finish();

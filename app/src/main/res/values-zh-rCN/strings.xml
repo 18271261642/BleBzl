@@ -1,5 +1,48 @@
 <resources>
 
+    <string name="string_x_watch_take_camera">遥控拍照</string>
+    <string name="string_b16_step_frequency">步频</string>
+    <string name="string_b16_bmi1">减脂指数</string>
+    <string name="string_b16_bmi2">有效消耗的卡路里</string>
+    <string name="string_b16_bmi3">卡=燃烧脂肪</string>
+    <string name="string_b16_bmi4">如此坚持30天相当于燃烧脂肪</string>
+
+    <string name="string_b16_bmi_count">汇总</string>
+    <string name="string_b16_bmi_time">燃脂时间</string>
+    <string name="string_b16_bmi_consume">燃脂消耗</string>
+    <string name="string_b16_bmi_effective">运动步频在120以上才能有效消耗脂肪</string>
+    <string name="string_b16_bmi_desc">什么是BMI</string>
+    <string name="string_b16_bmi_desc_content">身体质量指数(BMI,BodyMassIndex)是国际上常用的衡量人体肥胖程度和健康的重要标准，主要用于统计分析。肥胖程度的判断不能采用体重的绝对值，它天热与身高有感。因此，BMI通过人体体重和身高两个数值获取相对客观的参数，并用这个参数所处范围衡量身体质量。</string>
+    <string name="string_b16_compute_title">计算公式</string>
+    <string name="string_b16_compute_context">体重指数BMI=体重/身高的平方(国际单位kg/m²)理想BMI(18.5~23.9)=体重(单位kg)÷身高的平方(单位m)根据世界卫生组织定下的标准:</string>
+    
+    <string name="string_b16_bmi_table_tr1">BMI分类</string>
+    <string name="string_b16_bmi_table_td1">偏瘦</string>
+    <string name="string_b16_bmi_table_td2">正常</string>
+    <string name="string_b16_bmi_table_td3">超重</string>
+    <string name="string_b16_bmi_table_td4">偏胖</string>
+    <string name="string_b16_bmi_table_td5">肥胖</string>
+    <string name="string_b16_bmi_table_td6">中度肥胖</string>
+    <string name="string_b16_bmi_table_td7">极度肥胖</string>
+    <string name="string_b16_bmi_table_tr2">WHO标准</string>
+    <string name="string_b16_bmi_table_tr3">亚洲标准</string>
+    <string name="string_b16_bmi_table_tr4">相关疾病发病的危险性</string>
+    <string name="string_b16_bmi_table_tr4_1">低(但其它疾病的危险性增加)</string>
+    <string name="string_b16_bmi_table_tr4_2">平均水平</string>
+    <string name="string_b16_bmi_table_tr4_3">增加</string>
+    <string name="string_b16_bmi_table_tr4_4">中度增加</string>
+    <string name="string_b16_bmi_table_tr4_5">严重增加</string>
+    <string name="string_b16_bmi_table_tr4_6">非常严重增加</string>
+
+
+    
+    <string name="string_friend_level_title">好友权限说明</string>
+    <string name="string_friend_special">设置为特殊好友</string>
+    <string name="string_friend_start">设置为星标好友</string>
+    <string name="string_friend_normal">设置为普通好友</string>
+    <string name="string_friend_level_desc">特殊好友:只允许设置一位，拥有查看所有数据的权限，设置特殊好友后需对方同意申请;\n\n
+星标好友:可以互相查看除生理期外的所有数据，设置星标好友无需好友同意;\n\n
+普通好友:可以互相查看步数、睡眠、心率、血压数据,申请好友同意后默认为普通好友;\n</string>
     <string name="string_bmi_title">减脂指数</string>
 
     <string name="string_permis_title">欢迎使用 RaceFit Pro</string>

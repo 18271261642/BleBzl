@@ -16,6 +16,7 @@ import android.util.Log;
 import com.ble.blebzl.Commont;
 import com.ble.blebzl.MyApp;
 import com.ble.blebzl.R;
+import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.util.SharedPreferencesUtils;
 import com.ble.blebzl.w30s.ble.w30.utils.W30SBleUtils;
@@ -46,6 +47,9 @@ public class W37BleOperateManager {
     public static final String W37_CAMERA_DIS_TAKE_PHOTO = "com.android.phonemsg.w30s.ble.dis_take_photo";
     public static final String W37_FIND_PHONE_ACTION = "com.android.phonemsg.w30s.ble.find_phone";
 
+    //XWatch拍照指令
+    public static final String X_WATCH_TAKE_PHOTO = "com.example.bozhilun.android.x_watch_take_photo";
+
 
     private static final String TAG = "W37BleOperateManager";
 
@@ -65,6 +69,10 @@ public class W37BleOperateManager {
     private UUID X_WATCH_UUID_SYSTEM_NOTI = UUID.fromString("0000fff7-0000-1000-8000-00805f9b34fb"); //
 
 
+    //SWatch
+    private UUID S_WATCH_UUID_SYSTEM_SERVICE = UUID.fromString("d973f2e0-b19e-12e8-9e96-0800200c9a66");
+    private UUID S_WATCH_UUID_SYSTEM_WRITE = UUID.fromString("d973f2e2-b19e-12e8-9e96-0800200c9a66");
+    private UUID S_WATCH_UUID_SYSTEM_NOTI = UUID.fromString("d973f2e1-b19e-12e8-9e96-0800200c9a66");
 
 
 
@@ -168,13 +176,20 @@ public class W37BleOperateManager {
                         public void run() {
                             if(!W30SBleUtils.isOtaConn){
                                 BleSpUtils.put(mContext,SAVE_BLE_MAC_KEY,bleMac);
-
+                                MyCommandManager.DEVICENAME = bleName;
                                 Log.e(TAG,"----------需要保存的mac="+bleName+"--bleMac="+bleMac);
                                 MyApp.getInstance().setMacAddress(bleMac);
                                 SharedPreferencesUtils.saveObject(mContext,Commont.BLEMAC,bleMac);
                                 SharedPreferencesUtils.saveObject(mContext,Commont.BLENAME,bleName);
                             }
-                            setNotiData(bleMac,bleName.equals("XWatch") ? X_WATCH_UUID_SYSTEM_SERVICED : UUID_SYSTEM_SERVICE,bleName.equals("XWatch") ? X_WATCH_UUID_SYSTEM_NOTI : UUID_SYSTEM_READ,connectResponse);
+                            if(bleName.equals("XWatch")){
+                                setNotiData(bleMac, X_WATCH_UUID_SYSTEM_SERVICED,X_WATCH_UUID_SYSTEM_NOTI ,connectResponse);
+                            }
+                            else if(bleName.equals("SWatch")){
+                                setNotiData(bleMac,S_WATCH_UUID_SYSTEM_SERVICE,S_WATCH_UUID_SYSTEM_NOTI,connectResponse);
+                            }else{
+                                setNotiData(bleMac, UUID_SYSTEM_SERVICE, UUID_SYSTEM_READ,connectResponse);
+                            }
                         }
                     }, 1000L);
                     connectResponse.connStatus(code);
@@ -232,6 +247,21 @@ public class W37BleOperateManager {
                             handler.sendEmptyMessage(0x01);
                         }
 
+                        if(value.length>2 && (value[0] == 76 && value[1] == 1)){     //xWatch 拍照指令
+                            Intent intent = new Intent();
+                            intent.setAction(X_WATCH_TAKE_PHOTO);
+                            mContext.sendBroadcast(intent);
+                        }
+                        if(value[0] == 25 && value[1] == 0){ //SWatch查找手机的指令
+                            handler.sendEmptyMessage(0x01);
+                        }
+
+                        if(value[0] == 20 && value[1] == 1){    //SWatch拍照指令
+                            Intent intent = new Intent();
+                            intent.setAction(X_WATCH_TAKE_PHOTO);
+                            mContext.sendBroadcast(intent);
+                        }
+
                     }
                 }, 1000L);
 
@@ -251,6 +281,7 @@ public class W37BleOperateManager {
     public void registerW37CameraListener(){
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(W37_CAMERA_TAKE_PHOTO);
+        intentFilter.addAction(W37_CAMERA_DIS_TAKE_PHOTO);
         intentFilter.addAction(W37_CAMERA_DIS_TAKE_PHOTO);
         mContext.registerReceiver(broadcastReceiver,intentFilter);
 
@@ -291,14 +322,22 @@ public class W37BleOperateManager {
 
 
 
-    //写入数据 舟海系列手环
+    //写入数据 XWatch,SWatch
     public synchronized void writeBleDataToDeviceForXWatch(byte[] data,WriteBackDataListener writeBackDataListener){
         String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
         Log.e(TAG,"------写入数据="+bleMac+"-----数据="+Arrays.toString(data));
         if(WatchUtils.isEmpty(bleMac))
             return;
+        String bName = (String) SharedPreferencesUtils.readObject(MyApp.getContext(),Commont.BLENAME);
+        if(bName == null)
+            return;
+        Log.e(TAG,"------写入的马刺的转="+bName);
         interfaceManager.setWriteBackDataListener(writeBackDataListener);
-        bluetoothClient.write(bleMac,X_WATCH_UUID_SYSTEM_SERVICED,X_WATCH_UUID_SYSTEM_WRITE,data,bleWriteResponse);
+        if(bName.equals("SWatch")){
+            bluetoothClient.writeNoRsp(bleMac, S_WATCH_UUID_SYSTEM_SERVICE, S_WATCH_UUID_SYSTEM_WRITE,data,bleWriteResponse);
+        }else{
+            bluetoothClient.write(bleMac,X_WATCH_UUID_SYSTEM_SERVICED ,X_WATCH_UUID_SYSTEM_WRITE ,data,bleWriteResponse);
+        }
     }
 
 

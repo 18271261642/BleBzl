@@ -130,35 +130,35 @@ public class CameraLine extends View {
             int screenWidth = CameraUtils.getScreenWH(getContext()).widthPixels;
             int screenHeight = CameraUtils.getScreenWH(getContext()).heightPixels;
 
-            if (lineIsWide) {
-                int lineCount = 3;// 为了隐藏最中间的线，线数量基本是奇数数量
-                int width = screenWidth / (lineCount + 1);
-                int height = screenHeight / (lineCount + 1);
-                int centerLineNum = lineCount / 2;
-                for (int i = width, j = 0; i < screenWidth && j < lineCount; i += width, j++) {
-                    if (centerLineNum != j) {
-                        canvas.drawLine(i, 0, i, screenHeight, mLinePaint);
-                    }
-
-                }
-                for (int j = height, i = 0; j < screenHeight && i < lineCount; j += height, i++) {
-                    if (centerLineNum != i) {
-                        canvas.drawLine(0, j, screenWidth, j, mLinePaint);
-                    }
-                }
-
-            } else {
-                int lineCount = 2;
-                int width = screenWidth / (lineCount + 1);
-                int height = screenHeight / (lineCount + 1);
-                for (int i = width, j = 0; i < screenWidth && j < lineCount; i += width, j++) {
-                    canvas.drawLine(i, 0, i, screenHeight, mLinePaint);
-
-                }
-                for (int j = height, i = 0; j < screenHeight && i < lineCount; j += height, i++) {
-                    canvas.drawLine(0, j, screenWidth, j, mLinePaint);
-                }
-            }
+//            if (lineIsWide) {
+//                int lineCount = 3;// 为了隐藏最中间的线，线数量基本是奇数数量
+//                int width = screenWidth / (lineCount + 1);
+//                int height = screenHeight / (lineCount + 1);
+//                int centerLineNum = lineCount / 2;
+//                for (int i = width, j = 0; i < screenWidth && j < lineCount; i += width, j++) {
+//                    if (centerLineNum != j) {
+//                        canvas.drawLine(i, 0, i, screenHeight, mLinePaint);
+//                    }
+//
+//                }
+//                for (int j = height, i = 0; j < screenHeight && i < lineCount; j += height, i++) {
+//                    if (centerLineNum != i) {
+//                        canvas.drawLine(0, j, screenWidth, j, mLinePaint);
+//                    }
+//                }
+//
+//            } else {
+//                int lineCount = 2;
+//                int width = screenWidth / (lineCount + 1);
+//                int height = screenHeight / (lineCount + 1);
+//                for (int i = width, j = 0; i < screenWidth && j < lineCount; i += width, j++) {
+//                    canvas.drawLine(i, 0, i, screenHeight, mLinePaint);
+//
+//                }
+//                for (int j = height, i = 0; j < screenHeight && i < lineCount; j += height, i++) {
+//                    canvas.drawLine(0, j, screenWidth, j, mLinePaint);
+//                }
+//            }
 
 
             if (crossLineLength != 0) {

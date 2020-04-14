@@ -136,14 +136,42 @@
         android:layout_weight="0.5"/>
 
 
-    <TextView
-        android:id="@+id/appVersionTv"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:text="@string/privacy"
-        android:textColor="@color/blue"
-        android:textSize="20sp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_height="wrap_content" />
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/userProtocalTv"
+            android:layout_width="wrap_content"
+            android:text="User Agreement"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:padding="5dp"
+            android:text="And"/>
+
+        <TextView
+            android:id="@+id/appVersionTv"
+            android:layout_width="wrap_content"
+            android:text="@string/privacy"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </LinearLayout>

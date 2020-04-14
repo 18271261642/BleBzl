@@ -357,4 +357,13 @@
         <attr name="cus_lin_view_color" format="color"/>
     </declare-styleable>
 
+
+
+    <!--xwatch运动，卡路里进度-->
+    <declare-styleable name="CusScheduleView">
+        <attr name="cus_all_schedule_color" format="color"/>
+        <attr name="cus_curr_schedule_color" format="color"/>
+
+    </declare-styleable>
+
 </resources>

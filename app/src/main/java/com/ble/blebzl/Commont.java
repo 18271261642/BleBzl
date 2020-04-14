@@ -11,6 +11,8 @@ import com.tjdL4.tjdmain.contr.L4Command;
  * sp---key
  */
 public class Commont {
+
+
     public static boolean FIRST_SMS = true;//发送的短信
     public static boolean FIRST_GPS = true;//发送的短信
     public static int SENDMESSGE_COUNT = 2;//发送的短信
@@ -27,6 +29,9 @@ public class Commont {
     public static final String IS_B31S_LIGHT_KEY = "is_B31s_light";
     //B31S不支持疲劳检测，B31支持
     public static final String IS_B31S_FATIGUE_KEY = "is_b31s_fatigue";
+
+    //B31是否支持呼吸率
+    public static final String IS_B31_HEART = "is_b31_heart";
 
     //设备的版本
     public static final String DEVICE_VERSION_CODE_KEY = "device_version_code";
@@ -69,6 +74,8 @@ public class Commont {
 
     //B36是打开经期提醒功能
     public static final String IS_B36_JINGQI_NOTI = "is_b36_noti";
+    //是否开启推送
+    public static final String IS_WOMEN_PUSH = "is_women_push";
 
     //运动目标
     public static final String SPORT_GOAL_STEP = "b30Goal";
@@ -205,6 +212,8 @@ public class Commont {
 
     //上传生理期数据
     public static final String UPLOAD_WOMEN_MENSTRUAL = "/menstrualCycle/submitMenstrualCycle";
+    //修改生理期数据
+    public static final String UPDATE_WOMEN_MENSTRUAL = "/menstrualCycle/changeRemindSet";
 
 
     //注销账号

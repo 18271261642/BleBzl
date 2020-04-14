@@ -9,7 +9,9 @@ import com.ble.blebzl.b18.B18BleConnManager;
 import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.siswatch.utils.DateTimeUtils;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
+import com.ble.blebzl.util.OkHttpTool;
 import com.ble.blebzl.util.SharedPreferencesUtils;
+import com.google.gson.Gson;
 import com.hplus.bluetooth.BleProfileManager;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.IWomenDataListener;
@@ -18,6 +20,9 @@ import com.veepoo.protocol.model.datas.WomenData;
 import com.veepoo.protocol.model.enums.ESex;
 import com.veepoo.protocol.model.enums.EWomenStatus;
 import com.veepoo.protocol.model.settings.WomenSetting;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 设置手环提醒，经期，备孕期，和宝妈期
@@ -106,6 +111,9 @@ public class B36SetWomenDataServer {
         }
 
 
+        submitWomenData(statusCode,lastMenDate,menesInterval,menseLength);
+
+
         if(MyCommandManager.DEVICENAME.equals("B36")){
             boolean isB36Noti = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.IS_B36_JINGQI_NOTI, false);
             if (isB36Noti) {
@@ -131,6 +139,79 @@ public class B36SetWomenDataServer {
         }
 
     }
+
+
+    //提交数据
+    private static void submitWomenData(int statusCode, String lastMenDate, String menesInterval, String menseLength) {
+        try {
+            String userId = (String) SharedPreferencesUtils.readObject(MyApp.getContext(),Commont.USER_ID_DATA);
+            String url = Commont.FRIEND_BASE_URL +  Commont.UPLOAD_WOMEN_MENSTRUAL;
+            Map<String,Object> maps = new HashMap<>();
+            maps.put("userId",userId);
+            maps.put("lastMensesDay",lastMenDate);
+            maps.put("cycleDays",menesInterval);
+            maps.put("durationDays",menseLength);
+            maps.put("cycleStatus",statusCode);
+            String params = new Gson().toJson(maps);
+            Log.e(TAG,"----------提交生理期数据="+url+"--="+params);
+            OkHttpTool.getInstance().doRequest(url, params, "", new OkHttpTool.HttpResult() {
+                @Override
+                public void onResult(String result) {
+                    Log.e(TAG,"----------提交生理期数据返回="+result);
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    static void setDevicePushNoti(boolean isPush,int statusCode){
+        try {
+            if(MyCommandManager.DEVICENAME == null)
+                return;
+            //最后一次月经的时间
+            String lastMenDate = (String) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.WOMEN_LAST_MENSTRUATION_DATE, WatchUtils.getCurrentDate());
+            if (WatchUtils.isEmpty(lastMenDate))
+                lastMenDate = WatchUtils.getCurrentDate();
+            //月经周期长度
+            String menesCycle = (String) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.WOMEN_MEN_INTERVAL, "28");
+            if (WatchUtils.isEmpty(menesCycle))
+                menesCycle = "28";
+
+            //月经持续长度
+            String menseLength = (String) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.WOMEN_MEN_LENGTH, "8");
+            if (WatchUtils.isEmpty(menseLength))
+                menseLength = "8";
+
+            String url = Commont.FRIEND_BASE_URL +  Commont.UPDATE_WOMEN_MENSTRUAL;
+            String userId = (String) SharedPreferencesUtils.readObject(MyApp.getContext(),Commont.USER_ID_DATA);
+            if(userId == null)
+                return;
+            Map<String,Object> maps = new HashMap<>();
+            maps.put("userId",userId);
+            maps.put("lastMensesDay",lastMenDate);
+            maps.put("cycleDays",menesCycle);
+            maps.put("durationDays",menseLength);
+            maps.put("cycleStatus",statusCode);
+            maps.put("openReminder",isPush ? 1 : 2);   //1开启；2关闭
+            String params = new Gson().toJson(maps);
+            Log.e(TAG,"----------修改生理期数据="+url+"--="+params);
+            OkHttpTool.getInstance().doRequest(url, params, "", new OkHttpTool.HttpResult() {
+                @Override
+                public void onResult(String result) {
+                    Log.e(TAG,"----------修改生理期数据返回="+result);
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

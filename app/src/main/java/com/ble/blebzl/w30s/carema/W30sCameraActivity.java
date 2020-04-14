@@ -25,22 +25,22 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.ble.blebzl.MyApp;
 import com.ble.blebzl.R;
 import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.w30s.activity.W30sAlbumActivity;
+import com.ble.blebzl.w30s.ble.W37BleOperateManager;
 import com.ble.blebzl.w30s.ble.W37DataAnalysis;
 import com.ble.blebzl.w30s.utils.CameraUtils;
 import com.ble.blebzl.util.SharedPreferencesUtils;
+import com.ble.blebzl.xwatch.ble.XWatchBleAnalysis;
 import com.tjdL4.tjdmain.L4M;
 import com.tjdL4.tjdmain.contr.L4Command;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.ICameraDataListener;
 import com.veepoo.protocol.model.enums.ECameraStatus;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -97,6 +97,8 @@ public class W30sCameraActivity extends WatchBaseActivity implements View.OnClic
 
     //是否是手动切换摄像头
     boolean isChange = false;
+
+    ImageView xiangtouzhuanIM, shanguangIM, paizhaoIM, xiangceIM;
 
 
     @SuppressLint("HandlerLeak")
@@ -161,7 +163,10 @@ public class W30sCameraActivity extends WatchBaseActivity implements View.OnClic
 
 
         initViews();
-        registerReceiver(myBroadcastReceiver,new IntentFilter(W37_CAMERA_TAKE_PHOTO));
+
+        IntentFilter intentFilter = new IntentFilter(W37BleOperateManager.X_WATCH_TAKE_PHOTO);
+        intentFilter.addAction(W37_CAMERA_TAKE_PHOTO);
+        registerReceiver(myBroadcastReceiver,intentFilter);
 
         verticalDevice();
 
@@ -330,7 +335,14 @@ public class W30sCameraActivity extends WatchBaseActivity implements View.OnClic
                     if (isShowCamera) {
                         takePhonePic();
                     }
-//                        handler.sendEmptyMessageDelayed(FOCUS_YAOYIYAO, 6000);
+                }
+            }
+
+            if(action.equals(W37BleOperateManager.X_WATCH_TAKE_PHOTO)){ //XWatch拍照
+                if (isShow) {
+                    if (isShowCamera) {
+                        takePhonePic();
+                    }
                 }
             }
         }
@@ -378,38 +390,48 @@ public class W30sCameraActivity extends WatchBaseActivity implements View.OnClic
 
     @Override
     protected void onDestroy() {
+        destoryReset();
         super.onDestroy();
         Log.e(TAG, "-----onDestroy---");
-        isShow = false;
-        releaseCamera();
-        unregisterReceiver(myBroadcastReceiver);
-        MyApp.getInstance().getW37BleOperateManager().unRegisterW37CameraListener();
-        Set<String> set = new HashSet<>(Arrays.asList(WatchUtils.TJ_FilterNamas));
 
-        //退出拍照模式
-        if (MyCommandManager.DEVICENAME != null) {
+    }
 
-            if (MyCommandManager.DEVICENAME.equals("B30")
-                    || MyCommandManager.DEVICENAME.equals("B36")
-                    || MyCommandManager.DEVICENAME.equals("B31")
-                    || MyCommandManager.DEVICENAME.equals("500S")
-                    || MyCommandManager.DEVICENAME.equals("B31S") || MyCommandManager.DEVICENAME.equals("B36M")) {
-                MyApp.getInstance().getVpOperateManager().stopCamera(iBleWriteResponse, new ICameraDataListener() {
-                    @Override
-                    public void OnCameraDataChange(ECameraStatus coStatus) {
+    private void destoryReset() {
+        try {
+            isShow = false;
+            releaseCamera();
+            unregisterReceiver(myBroadcastReceiver);
+            MyApp.getInstance().getW37BleOperateManager().unRegisterW37CameraListener();
+            Set<String> set = new HashSet<>(Arrays.asList(WatchUtils.TJ_FilterNamas));
 
-                    }
-                });
+            //退出拍照模式
+            if (MyCommandManager.DEVICENAME != null) {
+
+                if (MyCommandManager.DEVICENAME.equals("B30")
+                        || MyCommandManager.DEVICENAME.equals("B36")
+                        || MyCommandManager.DEVICENAME.equals("B31")
+                        || MyCommandManager.DEVICENAME.equals("500S")
+                        || MyCommandManager.DEVICENAME.equals("B31S") || MyCommandManager.DEVICENAME.equals("B36M")) {
+                    MyApp.getInstance().getVpOperateManager().stopCamera(iBleWriteResponse, new ICameraDataListener() {
+                        @Override
+                        public void OnCameraDataChange(ECameraStatus coStatus) {
+
+                        }
+                    });
+                }
+                //腾进达方案，用户信息要同步
+                else if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME) || set.contains(MyCommandManager.DEVICENAME)) {
+                    //拍照结束时销毁
+                    L4Command.CameraOff();
+                    L4M.SetResultListener(null);
+                }
+                else if(MyCommandManager.DEVICENAME.equals("SWatch")){
+                    XWatchBleAnalysis.getW37DataAnalysis().openOrCloseCamera(0);
+                }
             }
-            //腾进达方案，用户信息要同步
-            else if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME) || set.contains(MyCommandManager.DEVICENAME)) {
-                //拍照结束时销毁
-                L4Command.CameraOff();
-                L4M.SetResultListener(null);
-            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -462,7 +484,7 @@ public class W30sCameraActivity extends WatchBaseActivity implements View.OnClic
     }
 
 
-    ImageView xiangtouzhuanIM, shanguangIM, paizhaoIM, xiangceIM;
+
 
     private void init() {
         id_rl_cp_view = (RelativeLayout) findViewById(R.id.id_rl_cp_view);
@@ -678,7 +700,7 @@ public class W30sCameraActivity extends WatchBaseActivity implements View.OnClic
     /**
      * 切换前后相投
      */
-    void changeCameraTwo(boolean ischange) {
+    private void changeCameraTwo(boolean ischange) {
         //切换前后摄像头
         int cameraCount = 0;
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();

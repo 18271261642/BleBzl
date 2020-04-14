@@ -59,7 +59,7 @@ public class NewW31OTAActivity extends WatchBaseActivity implements RequestView 
     private static final String TAG = "NewW31OTAActivity";
     public static final String UpData = "com.exalpme.bozhilun.android.w30s.ota";
     //下载升级包的保存路径，完整的路径，不能是文件夹的路径
-    private String downLoadSaveUrl = "/storage/emulated/0/Android/data/com.bozlun.bozhilun.android/cache/W31/W31V3.zip";
+    private String downLoadSaveUrl = "/storage/emulated/0/Android/data/com.ble.blebzl/cache/W31/W31V3.zip";
 
     @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;

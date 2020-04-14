@@ -1,6 +1,48 @@
 <resources>
 
     <!--日语-->
+    <string name="string_x_watch_take_camera">リモートカメラ</string>
+    <string name="string_b16_step_frequency">frequency</string>
+    <string name="string_b16_bmi1">脂肪減少指数</string>
+    <string name="string_b16_bmi2">消費カロリー</string>
+    <string name="string_b16_bmi3">カロリー=脂肪燃焼</string>
+    <string name="string_b16_bmi4">30日間の滞在は、脂肪燃焼に相当します</string>
+
+    <string name="string_b16_bmi_count">まとめ</string>
+    <string name="string_b16_bmi_time">脂肪燃焼時間</string>
+    <string name="string_b16_bmi_consume">脂肪燃焼消費</string>
+    <string name="string_b16_bmi_effective">スポーツ頻度は120を超えた場合のみ体脂肪を消費する可能</string>
+    <string name="string_b16_bmi_desc">BMIとはなんですか</string>
+    <string name="string_b16_bmi_desc_content">体の品質指数(BMI,BodyMassIndex)は人間の肥満と健康ですかだと測定する世界で常に使用する重要な基準です。主に溶媒分析に使用します。体の肥満の程度を判断することは、体重の絶対値が使用できません。それは自然な身長に関係があります。ですからBMIは人間の体重と身長の2つのデータ値を利用して、取得した比較的客観的なパラメーターで、更にこのパラメーターの範囲で体の品質を測定します。</string>
+    <string name="string_b16_compute_title">計算式</string>
+    <string name="string_b16_compute_context">BMI=体重/身長の2乗(国際単位kg/m²)理想な体重BMI(18.5~23.9)=身長(単位kg)÷身長の2乗(単位m)世界保健機関によって設定した基準:</string>
+
+    <string name="string_b16_bmi_table_tr1">BMIカテゴリー</string>
+    <string name="string_b16_bmi_table_td1">痩せすぎます</string>
+    <string name="string_b16_bmi_table_td2">正常</string>
+    <string name="string_b16_bmi_table_td3">太りすぎ</string>
+    <string name="string_b16_bmi_table_td4">やや太い</string>
+    <string name="string_b16_bmi_table_td5">肥満</string>
+    <string name="string_b16_bmi_table_td6">中程度の肥満が増やします</string>
+    <string name="string_b16_bmi_table_td7">極めて肥満</string>
+    <string name="string_b16_bmi_table_tr2">WHO標準</string>
+    <string name="string_b16_bmi_table_tr3">アジア標準</string>
+    <string name="string_b16_bmi_table_tr4">関連病気のリスク</string>
+    <string name="string_b16_bmi_table_tr4_1">低い(他の病気のリスクが高くなります)</string>
+    <string name="string_b16_bmi_table_tr4_2">平均レベル</string>
+    <string name="string_b16_bmi_table_tr4_3">増やします</string>
+    <string name="string_b16_bmi_table_tr4_4">中程度増やします</string>
+    <string name="string_b16_bmi_table_tr4_5">酷いやします</string>
+    <string name="string_b16_bmi_table_tr4_6">非常に酷い増やします</string>
+
+    <string name="string_friend_level_title">友達の許可の説明</string>
+    <string name="string_friend_special">特別な友達に設定</string>
+    <string name="string_friend_start">スターフレンドに設定</string>
+    <string name="string_friend_normal">通常の友達に設定</string>
+    <string name="string_friend_level_desc">特別な友人：設定できるのは1人だけで、すべてのデータを表示する権限があります。特別な友人を設定した後、申請に同意する必要があります; \n\n
+        スターの友達：生理期間を除くすべてのデータを表示し、友達の同意なしにスターの友達を設定できます;\n\n
+        普通の友達：歩数、睡眠、心拍数、血圧のデータを互いに確認できます。同意を申請すると、デフォルトで普通の友達になります;</string>
+
     <string name="string_bmi_title">BMI</string>
 
     <string name="string_permis_title">Welcome to RaceFit Pro</string>

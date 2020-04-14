@@ -55,6 +55,16 @@ public class FriendDetailHomeBean {
         private BloodOxygenDay bloodOxygenDay;
         private HrvDay hrvDay;
 
+        private MenstrualCycle menstrualCycle;
+
+        public MenstrualCycle getMenstrualCycle() {
+            return menstrualCycle;
+        }
+
+        public void setMenstrualCycle(MenstrualCycle menstrualCycle) {
+            this.menstrualCycle = menstrualCycle;
+        }
+
         public HrvDay getHrvDay() {
             return hrvDay;
         }

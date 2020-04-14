@@ -10,6 +10,11 @@
     android:layout_height="wrap_content">
 
 
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:scrollbars="none"
+        android:layout_height="wrap_content">
+
 
 
 
@@ -66,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textSize="@dimen/size_15"
-        android:text="有效消耗的卡路里"/>
+        android:text="@string/string_b16_bmi2"/>
 
 
 
@@ -91,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textSize="@dimen/size_15"
-        android:text="卡=燃烧脂肪"/>
+        android:text="@string/string_b16_bmi3"/>
 
 
 
@@ -114,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textSize="@dimen/size_15"
-        android:text="克"/>
+        android:text="g"/>
 
 
 
@@ -127,7 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textSize="@dimen/size_15"
-        android:text="如此坚持30天相当于燃烧脂肪"/>
+        android:text="@string/string_b16_bmi4"/>
 
 
     <TextView
@@ -149,9 +154,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textSize="@dimen/size_16"
-        android:text="克"/>
+        android:text="g"/>
 
 
 
 </android.support.constraint.ConstraintLayout>
+
+    </HorizontalScrollView>
 </LinearLayout>

@@ -191,42 +191,36 @@ public class B30SysSettingActivity extends WatchBaseActivity {
 
     //退出提示
     private void alertLogoutMsg(String bleName) {
-        if (bleName.equals("bozlun")) {   //H8手表
-            // showLoadingDialog("disconn...");
-            if (MyCommandManager.DEVICENAME != null) {
-                SharedPreferencesUtils.saveObject(B30SysSettingActivity.this, Commont.BLEMAC, "");
-                MyApp.getInstance().h8BleManagerInstance().disConnH8(new H8ConnstateListener() {
-                    @Override
-                    public void h8ConnSucc() {
+        if(MyCommandManager.DEVICENAME == null)
+            clearCommLogoutApp();
+        if(bleName.equals("bozlun")){   //H8
+            SharedPreferencesUtils.saveObject(B30SysSettingActivity.this, Commont.BLEMAC, "");
+            MyApp.getInstance().h8BleManagerInstance().disConnH8(new H8ConnstateListener() {
+                @Override
+                public void h8ConnSucc() {
 
+                }
+
+                @Override
+                public void h8ConnFailed() {
+
+                }
+            });
+        }
+
+        if(WatchUtils.isVPBleDevice(bleName)){  //维亿魄系列
+            SharedPreferencesUtils.saveObject(B30SysSettingActivity.this, Commont.BLEMAC, "");
+            MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
+                @Override
+                public void onResponse(int stateCode) {
+                    if (stateCode == -1) {
+                        SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+                        //clearCommLogoutApp();
                     }
-
-                    @Override
-                    public void h8ConnFailed() {
-
-                    }
-                });
-            }
-
-        } else if (bleName.equals("B30")
-                || bleName.equals("B36")
-                || bleName.equals("B31")
-                || bleName.equals("B31S")
-                || bleName.equals("500S")) {
-            if (MyCommandManager.DEVICENAME != null) {
-                SharedPreferencesUtils.saveObject(B30SysSettingActivity.this, Commont.BLEMAC, "");
-                MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
-                    @Override
-                    public void onResponse(int stateCode) {
-                        if (stateCode == -1) {
-                            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                            //clearCommLogoutApp();
-                        }
-                    }
-                });
-            }
-        } else if (bleName.equals("B15P")) {
-
+                }
+            });
+        }
+        if((bleName.equals("B15P"))){   //B15P
             if (L4M.Get_Connect_flag() == 2) {//已经连接的状态下
                 /**
                  *手动断开  b15p
@@ -235,16 +229,21 @@ public class B30SysSettingActivity extends WatchBaseActivity {
             }
             B15PContentState.getInstance().setManualDis(true);//设置为手动断开
             B15PContentState.getInstance().stopSeachDevices();//停止扫描
-        } else if (bleName.equals("W30") || bleName.equals("W31") || bleName.equals("W37")) {
-            if (MyCommandManager.DEVICENAME != null) {
-                String bleMac = (String) SharedPreferencesUtils.readObject(this, Commont.BLEMAC);
-                if (!WatchUtils.isEmpty(bleMac))
-                    MyApp.getInstance().getW37BleOperateManager().disBleDeviceByMac(bleMac);
-            }
+        }
+        if (bleName.equals("W30") || bleName.equals("W31") || bleName.equals("W37")) {
+            String bleMac = (String) SharedPreferencesUtils.readObject(this, Commont.BLEMAC);
+            if (!WatchUtils.isEmpty(bleMac))
+                MyApp.getInstance().getW37BleOperateManager().disBleDeviceByMac(bleMac);
+        }
 
-        }else if(bleName.contains("B16") || bleName.contains("B18")){
+        if(bleName.contains("B16") || bleName.contains("B18")){     //B16
             if(BleProfileManager.getInstance().getConnectController().isConnected())
-               B18BleConnManager.getB18BleConnManager().disConnB18Device(this);
+                B18BleConnManager.getB18BleConnManager().disConnB18Device(this);
+        }
+        if(bleName.equals("XWatch")){  //XWatch手表
+            String bleMac = (String) SharedPreferencesUtils.readObject(this, Commont.BLEMAC);
+            if (!WatchUtils.isEmpty(bleMac))
+                MyApp.getInstance().getW37BleOperateManager().disBleDeviceByMac(bleMac);
         }
         clearCommLogoutApp();
     }

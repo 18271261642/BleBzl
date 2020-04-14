@@ -118,81 +118,86 @@ public class B30HeartDetailActivity extends WatchBaseActivity {
     }
 
     private void initData() {
-        rateCurrdateTv.setText(currDay);
-        String mac = MyApp.getInstance().getMacAddress();
-        if(WatchUtils.isEmpty(mac))
-            return;
-        String rate = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
-                .TYPE_RATE);
+        try {
+            rateCurrdateTv.setText(currDay);
+            String mac = MyApp.getInstance().getMacAddress();
+            if(WatchUtils.isEmpty(mac))
+                return;
+            String rate = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
+                    .TYPE_RATE);
 //        List<HalfHourRateData> rateData = gson.fromJson(rate, new TypeToken<List<HalfHourRateData>>() {
 //        }.getType());
 
 
-        List<CusVPHalfRateData> rateData = gson.fromJson(rate, new TypeToken<List<CusVPHalfRateData>>() {
-        }.getType());
+            List<CusVPHalfRateData> rateData = gson.fromJson(rate, new TypeToken<List<CusVPHalfRateData>>() {
+            }.getType());
 
 
-        String sport = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
-                .TYPE_SPORT);
+            String sport = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
+                    .TYPE_SPORT);
 //        List<HalfHourSportData> sportData = gson.fromJson(sport, new TypeToken<List<HalfHourSportData>>() {
 //        }.getType());
 
-        List<CusVPHalfSportData> sportData = gson.fromJson(sport, new TypeToken<List<CusVPHalfSportData>>() {
-        }.getType());
+            List<CusVPHalfSportData> sportData = gson.fromJson(sport, new TypeToken<List<CusVPHalfSportData>>() {
+            }.getType());
 
 
-        halfHourRateDatasList.clear();
-        halfHourSportDataList.clear();
+            halfHourRateDatasList.clear();
+            halfHourSportDataList.clear();
 //        MyLogUtil.d("------------", rateData.size() + "========" + sportData.size());
 
-        List<Map<String, Integer>> listMap = new ArrayList<>();
-        if (rateData != null && !rateData.isEmpty()) {
-            int k = 0;
-            for (int i = 0; i < 48; i++) {
-                Map<String, Integer> map = new HashMap<>();
-                int time = i * 30;
-                map.put("time", time);
-                CusVPTimeData tmpDate = rateData.get(k).getTime();
-                int tmpIntDate = tmpDate.getHMValue();
+            List<Map<String, Integer>> listMap = new ArrayList<>();
+            if (rateData != null && !rateData.isEmpty()) {
+                int k = 0;
+                for (int i = 0; i < 48; i++) {
+                    Map<String, Integer> map = new HashMap<>();
+                    int time = i * 30;
+                    map.put("time", time);
+                    CusVPTimeData tmpDate = rateData.get(k).getTime();
+                    int tmpIntDate = tmpDate.getHMValue();
 
-                if (tmpIntDate == time) {
-                    map.put("val", rateData.get(k).getRateValue());
-                    if (k < rateData.size() - 1) {
-                        k++;
+                    if (tmpIntDate == time) {
+                        map.put("val", rateData.get(k).getRateValue());
+                        if (k < rateData.size() - 1) {
+                            k++;
+                        }
+                    } else {
+                        map.put("val", 0);
                     }
-                } else {
-                    map.put("val", 0);
+                    listMap.add(map);
                 }
-                listMap.add(map);
+                Collections.sort(rateData, new Comparator<CusVPHalfRateData>() {
+                    @Override
+                    public int compare(CusVPHalfRateData o1, CusVPHalfRateData o2) {
+                        return o2.getTime().getColck().compareTo(o1.getTime().getColck());
+                    }
+                });
+
+                Collections.sort(sportData, new Comparator<CusVPHalfSportData>() {
+                    @Override
+                    public int compare(CusVPHalfSportData o1, CusVPHalfSportData o2) {
+                        return o2.getTime().getColck().compareTo(o1.getTime().getColck());
+                    }
+                });
+                halfHourRateDatasList.addAll(rateData);
+                halfHourSportDataList.addAll(sportData);
             }
-            Collections.sort(rateData, new Comparator<CusVPHalfRateData>() {
-                @Override
-                public int compare(CusVPHalfRateData o1, CusVPHalfRateData o2) {
-                    return o2.getTime().getColck().compareTo(o1.getTime().getColck());
-                }
-            });
-
-            Collections.sort(sportData, new Comparator<CusVPHalfSportData>() {
-                @Override
-                public int compare(CusVPHalfSportData o1, CusVPHalfSportData o2) {
-                    return o2.getTime().getColck().compareTo(o1.getTime().getColck());
-                }
-            });
-            halfHourRateDatasList.addAll(rateData);
-            halfHourSportDataList.addAll(sportData);
-        }
-        heartList.clear();
-        for (int i = 0; i < listMap.size(); i++) {
-            Map<String, Integer> map = listMap.get(i);
-            heartList.add(map.get("val"));
-        }
-        //圆点的半径
+            heartList.clear();
+            for (int i = 0; i < listMap.size(); i++) {
+                Map<String, Integer> map = listMap.get(i);
+                heartList.add(map.get("val"));
+            }
+            //圆点的半径
 //        b30HeartDetailView.setPointRadio(5);
-        //绘制基准线
-        b30HeartDetailView.setCanvasBeanLin(true);
-        b30HeartDetailView.setRateDataList(heartList);
+            //绘制基准线
+            b30HeartDetailView.setCanvasBeanLin(true);
+            b30HeartDetailView.setRateDataList(heartList);
 
-        b30HeartDetailAdapter.notifyDataSetChanged();
+            b30HeartDetailAdapter.notifyDataSetChanged();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

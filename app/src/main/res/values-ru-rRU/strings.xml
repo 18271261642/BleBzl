@@ -1,5 +1,50 @@
 <resources>
     <!--//饿语-->
+
+    <string name="string_x_watch_take_camera">Удаленная камера</string>
+
+    <string name="string_b16_step_frequency">frequency</string>
+    <string name="string_b16_bmi1">Индекс снижения жира</string>
+    <string name="string_b16_bmi2">Эффективные сожженные калории</string>
+    <string name="string_b16_bmi3">Калория = сжигание жира</string>
+    <string name="string_b16_bmi4">Пребывание в течение 30 дней эквивалентно сжиганию жира</string>
+
+
+    <string name="string_b16_bmi_count">собирать</string>
+    <string name="string_b16_bmi_time">Время сжигания жира</string>
+    <string name="string_b16_bmi_consume">Сжигание жира</string>
+    <string name="string_b16_bmi_effective">Частота упражнений выше 120 может эффективно потреблять жир</string>
+    <string name="string_b16_bmi_desc">Что такое MBI</string>
+    <string name="string_b16_bmi_desc_content">Индекс массы тела (ИМТ, BodyMassIndex) является важным стандартом для измерения ожирения и здоровья человека и в основном используется для статистического анализа. Абсолютное значение веса не может быть использовано для определения степени ожирения, оно имеет ощущение жаркой погоды и роста. Следовательно, ИМТ получает относительно объективные параметры посредством двух значений массы тела и роста и использует этот параметр для измерения массы тела.</string>
+    <string name="string_b16_compute_title">Расчетная формула</string>
+    <string name="string_b16_compute_context">Индекс массы тела ИМТ = вес / рост в квадрате (в международных единицах кг / м²) в процентах ИМТ (18,5 ~ 23,9) = вес (единица кг) ÷ квадрат роста (в м) в соответствии со стандартами, установленными Всемирной организацией здравоохранения</string>
+
+    <string name="string_b16_bmi_table_tr1">ИМТ классификация</string>
+    <string name="string_b16_bmi_table_td1">стройный</string>
+    <string name="string_b16_bmi_table_td2">нормаль</string>
+    <string name="string_b16_bmi_table_td3">избыточный вес</string>
+    <string name="string_b16_bmi_table_td4">избыточный вес</string>
+    <string name="string_b16_bmi_table_td5">тучность</string>
+    <string name="string_b16_bmi_table_td6">Умеренное ожирение</string>
+    <string name="string_b16_bmi_table_td7">Крайне тучный</string>
+    <string name="string_b16_bmi_table_tr2">Стандарты ВОЗ</string>
+    <string name="string_b16_bmi_table_tr3">Азиатский стандарт</string>
+    <string name="string_b16_bmi_table_tr4">Риск сопутствующих заболеваний</string>
+    <string name="string_b16_bmi_table_tr4_1">Низкий (но повышенный риск других заболеваний)</string>
+    <string name="string_b16_bmi_table_tr4_2">средний уровень</string>
+    <string name="string_b16_bmi_table_tr4_3">прибавление</string>
+    <string name="string_b16_bmi_table_tr4_4">Умеренное увеличение</string>
+    <string name="string_b16_bmi_table_tr4_5">Сильное увеличение</string>
+    <string name="string_b16_bmi_table_tr4_6">Очень серьезное увеличение</string>
+
+    <string name="string_friend_level_title">Описание разрешения друзей</string>
+    <string name="string_friend_special">Установить как особого друга</string>
+    <string name="string_friend_start">Сделать звездным другом</string>
+    <string name="string_friend_normal">Установить как нормальный друг</string>
+    <string name="string_friend_level_desc">Особые друзья: можно назначить только одного человека, и у него есть разрешение на просмотр всех данных. После установки особых друзей они должны согласиться подать заявку; \n\n
+        Звездные друзья: Вы можете просматривать все данные, кроме физиологического периода, и устанавливать звездных друзей без согласия друзей;\n\n
+        Обычные друзья: вы можете проверять данные о шаге, сне, частоте сердечных сокращений и кровяном давлении друг с другом. После того как вы подадите согласие, по умолчанию вы будете обычными друзьями;</string>
+
     <string name="string_bmi_title">BMI</string>
 
     <string name="string_permis_title">Welcome to RaceFit Pro</string>

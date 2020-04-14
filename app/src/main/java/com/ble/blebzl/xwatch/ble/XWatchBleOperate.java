@@ -28,7 +28,6 @@ public class XWatchBleOperate {
     }
 
 
-
     public void bleConnOperate(final int day, final Context context, final XWatchSyncSuccListener xWatchSyncSuccListener){
         XWatchBleAnalysis.getW37DataAnalysis().getSomeDayForDevice(day, new XWatchCountStepListener() {
             @Override
@@ -55,7 +54,6 @@ public class XWatchBleOperate {
             }
         });
     }
-
 
 
 }

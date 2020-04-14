@@ -98,6 +98,8 @@ public class B18MessageAlertFragment extends LazyFragment {
 
         initViews();
 
+        requestPermiss(Manifest.permission.READ_PHONE_STATE);
+
         return view;
     }
 

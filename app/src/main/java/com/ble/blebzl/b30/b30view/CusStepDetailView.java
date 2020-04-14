@@ -122,11 +122,14 @@ public class CusStepDetailView extends View {
         float modulsV = maxV / mHeight;
         modulsV = modulsV + 1;
 
-        for(int i = 0;i<48;i++){
-            RectF rectF = new RectF(mSignWidth * i + mSignWidth , -(sourList.get(i) / modulsV), mSignWidth * i + mSignWidth  + dp2px(2), 0);
-            canvas.drawRect(rectF, pillarPaint);
+        try {
+            for(int i = 0;i<48;i++){
+                RectF rectF = new RectF(mSignWidth * i + mSignWidth , -(sourList.get(i) / modulsV), mSignWidth * i + mSignWidth  + dp2px(2), 0);
+                canvas.drawRect(rectF, pillarPaint);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
     }
 
     /**
