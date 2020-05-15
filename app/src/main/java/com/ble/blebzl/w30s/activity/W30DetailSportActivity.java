@@ -24,6 +24,7 @@ import com.ble.blebzl.b30.bean.B30HalfHourDao;
 import com.ble.blebzl.commdbserver.W30StepDetailBean;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
+import com.ble.blebzl.view.DateSelectDialogView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -89,9 +90,11 @@ public class W30DetailSportActivity extends WatchBaseActivity {
     List<BarEntry> b30ChartList = new ArrayList<>();
     private Gson gson = new Gson();
 
+    private DateSelectDialogView dateSelectDialogView;
+
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @SuppressLint("SetTextI18n")
         @Override
         public void handleMessage(Message msg) {
@@ -163,7 +166,7 @@ public class W30DetailSportActivity extends WatchBaseActivity {
     }
 
     @OnClick({R.id.commentB30BackImg, R.id.stepCurrDateLeft,
-            R.id.stepCurrDateRight})
+            R.id.stepCurrDateRight,R.id.stepCurrDateTv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg: //返回
@@ -175,7 +178,23 @@ public class W30DetailSportActivity extends WatchBaseActivity {
             case R.id.stepCurrDateRight:   //下一天
                 changeDayData(false);
                 break;
+            case R.id.stepCurrDateTv:
+                chooseDate();
+                break;
         }
+    }
+
+    private void chooseDate() {
+        dateSelectDialogView = new DateSelectDialogView(this);
+        dateSelectDialogView.show();
+        dateSelectDialogView.setOnDateSelectListener(new DateSelectDialogView.OnDateSelectListener() {
+            @Override
+            public void selectDateStr(String str) {
+                dateSelectDialogView.dismiss();
+                currDay = str;
+                findSportFromDb(currDay);
+            }
+        });
     }
 
     /**

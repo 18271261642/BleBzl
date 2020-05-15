@@ -160,7 +160,7 @@ public class NewLoginActivity extends WatchBaseActivity implements LoginListente
         if(!isFirstPrivacy){
             privacyDialogView = new PrivacyDialogView(NewLoginActivity.this);
             privacyDialogView.show();
-            privacyDialogView.setCancelable(false);
+            privacyDialogView.setCancelable(true);
             privacyDialogView.setOnPirvacyClickListener(new PrivacyDialogView.OnPirvacyClickListener() {
                 @Override
                 public void disCancleView() {
@@ -251,7 +251,7 @@ public class NewLoginActivity extends WatchBaseActivity implements LoginListente
                 }
                 break;
             case R.id.register_btn://注册
-                startActivity(new Intent(NewLoginActivity.this, RegisterActivity2.class));
+                startActivity(new Intent(NewLoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.userProtocalTv:   //用户协议
                 startActivity(UserProtocalActivity.class);

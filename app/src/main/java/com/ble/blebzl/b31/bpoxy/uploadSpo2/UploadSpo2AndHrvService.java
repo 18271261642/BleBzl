@@ -50,7 +50,7 @@ public class UploadSpo2AndHrvService extends IntentService  {
 
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler(){
+    private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -200,6 +200,8 @@ public class UploadSpo2AndHrvService extends IntentService  {
     @Override
     protected void onHandleIntent(Intent intent) {
         if(WatchUtils.isEmpty(userId))
+            return;
+        if(userId.equals("9278cc399ab147d0ad3ef164ca156bf0"))
             return;
         if(bleMac == null)
             return;

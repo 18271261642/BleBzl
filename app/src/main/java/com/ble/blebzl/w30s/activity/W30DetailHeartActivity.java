@@ -19,6 +19,7 @@ import com.ble.blebzl.b30.bean.B30HalfHourDB;
 import com.ble.blebzl.b30.bean.B30HalfHourDao;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
+import com.ble.blebzl.view.DateSelectDialogView;
 import com.ble.blebzl.w30s.bean.W30HeartBean;
 import com.ble.blebzl.w30s.views.W30CusHeartView;
 import com.google.gson.Gson;
@@ -60,10 +61,11 @@ public class W30DetailHeartActivity extends WatchBaseActivity {
 
     private String currDay = WatchUtils.getCurrentDate();
 
+    private DateSelectDialogView dateSelectDialogView;
 
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler(){
+    private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -174,7 +176,7 @@ public class W30DetailHeartActivity extends WatchBaseActivity {
 
 
     @OnClick({R.id.rateCurrDateLeft, R.id.rateCurrDateRight,
-            R.id.commentB30BackImg})
+            R.id.commentB30BackImg,R.id.rateCurrdateTv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
@@ -186,7 +188,23 @@ public class W30DetailHeartActivity extends WatchBaseActivity {
             case R.id.rateCurrDateRight:    //下一天
                 changeDayData(false);
                 break;
+            case R.id.rateCurrdateTv:
+                chooseDate();
+                break;
         }
+    }
+
+    private void chooseDate() {
+        dateSelectDialogView = new DateSelectDialogView(this);
+        dateSelectDialogView.show();
+        dateSelectDialogView.setOnDateSelectListener(new DateSelectDialogView.OnDateSelectListener() {
+            @Override
+            public void selectDateStr(String str) {
+                dateSelectDialogView.dismiss();
+                currDay = str;
+                findHeartDetailFromDb(str);
+            }
+        });
     }
 
     /**

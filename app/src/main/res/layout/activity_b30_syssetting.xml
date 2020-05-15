@@ -133,6 +133,49 @@
         android:background="@color/chang_white" />
 
 
+
+
+    <LinearLayout
+        android:id="@+id/userProtocalLin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/b18i_selected_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/icon_user_procotol" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_15"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:padding="@dimen/size_5"
+            android:text="@string/string_privacy_agreement"
+            android:textColor="#333333"
+            android:textSize="@dimen/text_size_17" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:background="@mipmap/my_arrow_right"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/size_25"
+        android:background="@color/chang_white" />
+
     <LinearLayout
         android:id="@+id/logoutLin"
         android:layout_width="match_parent"
@@ -154,7 +197,7 @@
             android:layout_weight="2"
             android:gravity="center_vertical"
             android:padding="@dimen/size_5"
-            android:text="注销账号"
+            android:text="@string/string_logout"
             android:textColor="#333333"
             android:textSize="@dimen/text_size_17" />
 

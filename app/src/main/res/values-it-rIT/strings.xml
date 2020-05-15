@@ -1,6 +1,14 @@
 <resources>
     <!--头尾内部m部分翻译为英文,后期根据提供文档更改-->
     <!--意大利语-->
+    <string name="string_spo2_cali">taratura</string>
+    <string name="string_heart_waring">Allarme frequenza cardiaca</string>
+    <string name="string_heart_limit">Limite superiore della frequenza cardiaca a riposo</string>
+    <string name="string_logout">Annulla account</string>
+
+    <string name="string_privacy_agreement">Accordo con l\'utente</string>
+    <string name="string_privacy_desc">Cari utenti, al fine di proteggere i vostri diritti, vi preghiamo di comprendere l\'accordo per l\'utente e l\'informativa sulla privacy prima di utilizzare questo software per comprendere i vostri diritti legali.</string>
+
     <string name="string_x_watch_take_camera">Telecamera remota</string>
     <string name="string_b16_step_frequency">frequency</string>
     <string name="string_b16_bmi1">Indice di riduzione del grasso</string>

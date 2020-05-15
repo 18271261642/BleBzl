@@ -1,6 +1,13 @@
 <resources>
 
     <!--日语-->
+    <string name="string_spo2_cali">校正中</string>
+    <string name="string_heart_waring">心拍数アラーム</string>
+    <string name="string_heart_limit">安静時心拍数の上限</string>
+    <string name="string_logout">アカウントをキャンセル</string>
+    <string name="string_privacy_agreement">ユーザー同意書</string>
+    <string name="string_privacy_desc">親愛なるユーザー各位あなたの権利を保護するために、このソフトウェアを使用してあなたの法的権利を理解する前に、ユーザーの同意とプライバシーポリシーを理解してください。</string>
+
     <string name="string_x_watch_take_camera">リモートカメラ</string>
     <string name="string_b16_step_frequency">frequency</string>
     <string name="string_b16_bmi1">脂肪減少指数</string>

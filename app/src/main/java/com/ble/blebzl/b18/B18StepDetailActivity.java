@@ -22,6 +22,7 @@ import com.ble.blebzl.b30.bean.B30HalfHourDao;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.util.SharedPreferencesUtils;
+import com.ble.blebzl.view.DateSelectDialogView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -67,6 +68,8 @@ public class B18StepDetailActivity extends WatchBaseActivity {
 
     private String currDay = WatchUtils.getCurrentDate();
 
+    private DateSelectDialogView dateSelectDialogView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +92,8 @@ public class B18StepDetailActivity extends WatchBaseActivity {
         if(bleMac == null)
             return;
         String bleName = (String) SharedPreferencesUtils.readObject(B18StepDetailActivity.this, Commont.BLENAME);
+        if(WatchUtils.isEmpty(bleName))
+            return;
         if(bleName.equals("XWatch")){
             readXWatchDeviceSport(bleMac,dayStr);
         }else{
@@ -198,7 +203,7 @@ public class B18StepDetailActivity extends WatchBaseActivity {
     }
 
     @OnClick({R.id.commentB30BackImg, R.id.stepCurrDateLeft,
-            R.id.stepCurrDateRight})
+            R.id.stepCurrDateRight,R.id.stepCurrDateTv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:
@@ -210,7 +215,23 @@ public class B18StepDetailActivity extends WatchBaseActivity {
             case R.id.stepCurrDateRight:
                 changeDayData(false);
                 break;
+            case R.id.stepCurrDateTv:
+                chooseDate();
+                break;
         }
+    }
+
+    private void chooseDate() {
+        dateSelectDialogView = new DateSelectDialogView(this);
+        dateSelectDialogView.show();
+        dateSelectDialogView.setOnDateSelectListener(new DateSelectDialogView.OnDateSelectListener() {
+            @Override
+            public void selectDateStr(String str) {
+                dateSelectDialogView.dismiss();
+                currDay = str;
+                readB18Steps(currDay);
+            }
+        });
     }
 
     private void changeDayData(boolean left) {

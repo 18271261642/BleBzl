@@ -1,5 +1,13 @@
 <resources>
     <!--韩语-->
+    <string name="string_spo2_cali">교정</string>
+    <string name="string_heart_waring">심박수 알람</string>
+    <string name="string_heart_limit">휴식하는 심박수의 상한</string>
+    <string name="string_logout">계정 해지</string>
+
+    <string name="string_privacy_agreement">이용 약관</string>
+    <string name="string_privacy_desc">친애하는 사용자, 귀하의 권리를 보호하기 위해이 소프트웨어를 사용하여 법적 권리를 이해하기 전에 사용자 계약 및 개인 정보 보호 정책을 이해하십시오.</string>
+
 
     <string name="string_x_watch_take_camera">원격 카메라</string>
     <string name="string_b16_step_frequency">frequency</string>

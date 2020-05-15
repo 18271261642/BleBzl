@@ -126,8 +126,22 @@ public class CustomBlueAdapter extends RecyclerView.Adapter<CustomBlueAdapter.Cu
                 holder.img.setImageResource(R.mipmap.ic_seach_500s);
                 return;
             }
-            if(bleName.contains("B18") || bleName.contains("B50") || bleName.contains("B16")){ //B50(B18)
+            if(bleName.contains("B18") || bleName.contains("B16")){ //B50(B18)
                 holder.img.setImageResource(R.mipmap.icon_b16_search);
+                return;
+            }
+
+            if(bleName.contains("X")){
+                holder.img.setImageResource(R.mipmap.icon_xw_search);
+                return;
+            }
+
+            if(bleName.equals("SWatch")){
+                holder.img.setImageResource(R.mipmap.icon_s_watch_search);
+                return;
+            }
+            if(bleName.contains("YWK")){
+                holder.img.setImageResource(R.mipmap.icon_ywk_search);
                 return;
             }
 
@@ -153,18 +167,11 @@ public class CustomBlueAdapter extends RecyclerView.Adapter<CustomBlueAdapter.Cu
                 } else {
                     holder.img.setImageResource(R.mipmap.img_f6);
                 }
-                return;
-            }
 
-            if(bleName.contains("X")){
-                holder.img.setImageResource(R.mipmap.icon_xw_search);
-                return;
             }
-
-            if(bleName.equals("SWatch")){
-                holder.img.setImageResource(R.mipmap.icon_s_watch_search);
+            else{
+                holder.img.setImageResource(R.mipmap.icon_comm_search);
             }
-
         }
 
     }

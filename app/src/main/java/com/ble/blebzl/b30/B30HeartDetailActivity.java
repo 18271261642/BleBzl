@@ -22,6 +22,7 @@ import com.ble.blebzl.b30.model.CusVPTimeData;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.util.Constant;
+import com.ble.blebzl.view.DateSelectDialogView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -89,6 +90,8 @@ public class B30HeartDetailActivity extends WatchBaseActivity {
      */
     private Gson gson;
 
+    private DateSelectDialogView dateSelectDialogView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +104,6 @@ public class B30HeartDetailActivity extends WatchBaseActivity {
     private void initViews() {
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(R.string.heart_rate);
-        commentB30ShareImg.setVisibility(View.VISIBLE);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -125,9 +127,6 @@ public class B30HeartDetailActivity extends WatchBaseActivity {
                 return;
             String rate = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
                     .TYPE_RATE);
-//        List<HalfHourRateData> rateData = gson.fromJson(rate, new TypeToken<List<HalfHourRateData>>() {
-//        }.getType());
-
 
             List<CusVPHalfRateData> rateData = gson.fromJson(rate, new TypeToken<List<CusVPHalfRateData>>() {
             }.getType());
@@ -135,8 +134,6 @@ public class B30HeartDetailActivity extends WatchBaseActivity {
 
             String sport = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
                     .TYPE_SPORT);
-//        List<HalfHourSportData> sportData = gson.fromJson(sport, new TypeToken<List<HalfHourSportData>>() {
-//        }.getType());
 
             List<CusVPHalfSportData> sportData = gson.fromJson(sport, new TypeToken<List<CusVPHalfSportData>>() {
             }.getType());
@@ -201,7 +198,8 @@ public class B30HeartDetailActivity extends WatchBaseActivity {
 
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg, R.id.rateCurrDateLeft,
+    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg,
+            R.id.rateCurrDateLeft,R.id.rateCurrdateTv,
             R.id.rateCurrDateRight})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -217,7 +215,23 @@ public class B30HeartDetailActivity extends WatchBaseActivity {
             case R.id.rateCurrDateRight:   //切换下一天数据
                 changeDayData(false);
                 break;
+            case R.id.rateCurrdateTv:
+                chooseDateData();
+                break;
         }
+    }
+
+    private void chooseDateData() {
+        dateSelectDialogView = new DateSelectDialogView(this);
+        dateSelectDialogView.show();
+        dateSelectDialogView.setOnDateSelectListener(new DateSelectDialogView.OnDateSelectListener() {
+            @Override
+            public void selectDateStr(String str) {
+                dateSelectDialogView.dismiss();
+                currDay = str;
+                initData();
+            }
+        });
     }
 
     /**

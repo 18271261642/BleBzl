@@ -266,7 +266,8 @@ public class WatchMineFragment extends LazyFragment {
                     }
                     if (MyCommandManager.DEVICENAME.equals(WatchUtils.B31_NAME)
                             || MyCommandManager.DEVICENAME.equals(WatchUtils.B31S_NAME)
-                            || MyCommandManager.DEVICENAME.equals(WatchUtils.S500_NAME)) {    //B31,B31S,500s
+                            || MyCommandManager.DEVICENAME.equals(WatchUtils.S500_NAME)
+                            || MyCommandManager.DEVICENAME.contains("YWK") || MyCommandManager.DEVICENAME.equals("SpO2")) {    //B31,B31S,500s
                         startActivity(new Intent(getActivity(), B31DeviceActivity.class));
                         return;
                     }

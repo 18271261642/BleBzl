@@ -142,6 +142,7 @@
                     style="@style/match_btn"
                     android:layout_below="@+id/email_login_form"
                     android:layout_marginTop="@dimen/size_30"
+                    android:visibility="gone"
                     android:background="@drawable/blue_btn_selector"
                     android:text="@string/user_emil_regsiter"
                     android:textAllCaps="false" />

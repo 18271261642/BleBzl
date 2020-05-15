@@ -98,19 +98,22 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
     private final static String SKIN_COLOR_KEY = "skin_position";
 
-
-    //    @BindView(R.id.tv_title)
-//    TextView tvTitle;
+    //头像
     @BindView(R.id.mine_logo_iv_personal)
     CircleImageView mineLogoIv;
+    //昵称
     @BindView(R.id.nickname_tv)
     TextView nicknameTv;
+    //性别
     @BindView(R.id.sex_tv)
     TextView sexTv;
+    //身高
     @BindView(R.id.height_tv)
     TextView heightTv;
+    //体重
     @BindView(R.id.weight_tv)
     TextView weightTv;
+    //生日
     @BindView(R.id.birthday_tv)
     TextView birthdayTv;
     @BindView(R.id.bottomsheet)

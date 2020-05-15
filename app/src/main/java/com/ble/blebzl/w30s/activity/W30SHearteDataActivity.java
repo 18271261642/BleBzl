@@ -36,13 +36,9 @@ import butterknife.OnClick;
  */
 
 public class W30SHearteDataActivity extends WatchBaseActivity {
+
     private static final String TAG = "W30SHearteDataActivity";
-    //    private String[] StringDate = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-//            "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};//X轴的标注
-//    private List<PointValue> mPointValues = new ArrayList<>();
-//    private List<AxisValue> mAxisValues = new ArrayList<>();
-//    @BindView(R.id.leaf_chart)
-//    LeafLineChart leafLineChart;
+
     @BindView(R.id.heartedata_list)
     ListView listView;
     @BindView(R.id.bar_titles)
@@ -56,71 +52,20 @@ public class W30SHearteDataActivity extends WatchBaseActivity {
     @BindView(R.id.image_data_type)
     ImageView image_data_type;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.h9_hearte_data_activity);
         ButterKnife.bind(this);
         barTitles.setText(getResources().getString(R.string.string_harete_data));
-//        leafLineChart.setVisibility(View.GONE);
+
         barMores.setVisibility(View.GONE);
         is18i = getIntent().getStringExtra("is18i");
         if (heartList == null) heartList = new ArrayList<>();
         if (lineChart != null) lineChart.setRateDataList(heartList);
-//        subscriberOnNextListener = new SubscriberOnNextListener<String>() {
-//            @Override
-//            public void onNext(String result) {
-//                Log.e("------返回--", result);
-//                if (result != null) {
-//                    HeartDataBean heartDataBean = new Gson().fromJson(result, HeartDataBean.class);
-//                    List<HeartDataBean.HeartRateBean> heartDataList = heartDataBean.getHeartRate();
-//                    if (heartNewDataList != null) heartNewDataList.clear();
-//                    for (int i = 0; i < heartDataList.size(); i++) {
-//                        if (heartNewDataList != null) {
-//                            //2018-04-03 02:00
-//                            String substring = heartDataList.get(i).getRtc().substring(11, 16);
-//                            if (!heartNewDataList.contains(substring)) {
-//                                heartNewDataList.add(heartDataList.get(i));
-//                            }
-//                        }
-//                    }
-//
-//                    //升序排列
-//                    Collections.sort(heartNewDataList, new Comparator<HeartDataBean.HeartRateBean>() {
-//                        @Override
-//                        public int compare(HeartDataBean.HeartRateBean o1, HeartDataBean.HeartRateBean o2) {
-//                            return o1.getRtc().compareTo(o2.getRtc());
-//                        }
-//                    });
-//
-//                    if (heartNewDataList != null) {
-//                        dataAdapter = new H9HearteDataAdapter(W30SHearteDataActivity.this, heartNewDataList);
-////                    for (int i = 0; i < heartDataList.size(); i++) {
-////                        HeartDataBean.HeartRateBean heartRateBean = heartDataList.get(i);
-////                        Log.d("-----数据-ssss---", heartRateBean.getRtc() + "===" + heartRateBean.getHeartRate());
-////                    }
-//                        heartedataList.setAdapter(dataAdapter);
-//                        dataAdapter.notifyDataSetChanged();
-//                    }
-//
-////                    heartDataList = getHeartDataList(result);
-////                    if (heartDataList != null) {
-////                        dataAdapter = new H9HearteDataAdapter(H9HearteDataActivity.this, heartDataList);
-//////                    for (int i = 0; i < heartDataList.size(); i++) {
-//////                        HeartDataBean.HeartRateBean heartRateBean = heartDataList.get(i);
-//////                        Log.d("-----数据-ssss---", heartRateBean.getRtc() + "===" + heartRateBean.getHeartRate());
-//////                    }
-////                        heartedataList.setAdapter(dataAdapter);
-////                        dataAdapter.notifyDataSetChanged();
-////                    }
-//                }
-//                //initLineCharts();
-//                getAxisLables();
-//                getAxisPoints();
-//                initLineChart();
-//                leafLineChart.postInvalidate();
-//            }
-//        };
+
     }
 
     @Override

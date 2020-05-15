@@ -32,6 +32,7 @@ import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.util.Constant;
 import com.ble.blebzl.b31.bpoxy.enums.EnumGlossary;
 import com.ble.blebzl.util.SharedPreferencesUtils;
+import com.ble.blebzl.view.DateSelectDialogView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.google.gson.Gson;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
@@ -169,9 +170,11 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
 
     private BreathStopAdapter breathStopAdapter;
 
+    private DateSelectDialogView dateSelectDialogView;
+
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -343,7 +346,8 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
             R.id.spo2LowO2Tv, R.id.spo2HeartLoadTv,
             R.id.spo2SleepActiTv, R.id.spo2LowO2ActivityTv,
             R.id.spo2CommTv, R.id.block_spo2h, R.id.block_heart,
-            R.id.block_sleep, R.id.block_breath, R.id.block_lowspo2h})
+            R.id.block_sleep, R.id.block_breath, R.id.block_lowspo2h,
+            R.id.commArrowDate})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:  //返回
@@ -380,6 +384,9 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
                 break;
             case R.id.commArrowRight:   //后一天
                 changeCurrDay(false);
+                break;
+            case R.id.commArrowDate:
+                chooseDateData();
                 break;
             case R.id.spo2OsahsTv:  //OSAHS
                 startSpo2Desc(EnumGlossary.OSHAHS.getValue());
@@ -430,6 +437,19 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
                         new String[]{"4", getResources().getString(R.string.vpspo2h_toptitle_lowspo2h), currDay});
                 break;
         }
+    }
+
+    private void chooseDateData() {
+        dateSelectDialogView = new DateSelectDialogView(this);
+        dateSelectDialogView.show();
+        dateSelectDialogView.setOnDateSelectListener(new DateSelectDialogView.OnDateSelectListener() {
+            @Override
+            public void selectDateStr(String str) {
+                dateSelectDialogView.dismiss();
+                currDay = str;
+                readSpo2Data(str);
+            }
+        });
     }
 
 

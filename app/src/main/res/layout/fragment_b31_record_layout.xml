@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/b30_home_title_layout" />
 
-    <View
+    <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/white"/>
+        android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/syncStatusTv"
-        android:visibility="gone"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:background="@color/block_backgroud_hrv"
-        android:text="@string/syncy_data"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:padding="8dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+        <include layout="@layout/b30_home_title_layout" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white"/>
+
+        <TextView
+            android:id="@+id/syncStatusTv"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:background="@color/block_backgroud_hrv"
+            android:text="@string/syncy_data"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:padding="8dp"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.AppBarLayout>
+
 
     <!--4DDDFF-->
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/b31HomeSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -238,5 +261,5 @@
         </android.support.v4.widget.NestedScrollView>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

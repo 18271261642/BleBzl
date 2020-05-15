@@ -1,4 +1,12 @@
 <resources>
+    <string name="string_spo2_cali">校准中</string>
+    <string name="string_heart_waring">心率报警</string>
+    <string name="string_heart_limit">静息心率上限</string>
+    <string name="string_logout">注销账号</string>
+
+    <string name="string_privacy_agreement">用户协议</string>
+    <string name="string_privacy_desc">尊敬的用户，为了保护您的权利，请您在使用本软件之前先了解 用户协议 和 隐私政策，以了解您的合法权益。</string>
+
 
     <string name="string_x_watch_take_camera">遥控拍照</string>
     <string name="string_b16_step_frequency">步频</string>

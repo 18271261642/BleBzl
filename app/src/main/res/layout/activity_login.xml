@@ -147,7 +147,7 @@
         <TextView
             android:id="@+id/userProtocalTv"
             android:layout_width="wrap_content"
-            android:text="User Agreement"
+            android:text="@string/string_privacy_agreement"
             android:textColor="@color/blue"
             android:textSize="20sp"
             android:layout_gravity="center"
@@ -157,7 +157,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/black"
             android:padding="5dp"
             android:text="And"/>
@@ -167,7 +167,7 @@
             android:layout_width="wrap_content"
             android:text="@string/privacy"
             android:textColor="@color/blue"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_height="wrap_content" />

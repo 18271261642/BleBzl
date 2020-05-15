@@ -18,6 +18,7 @@ import com.ble.blebzl.b30.model.CusVPSleepData;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.util.Constant;
+import com.ble.blebzl.view.DateSelectDialogView;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -91,8 +92,7 @@ public class B30SleepDetailActivity extends WatchBaseActivity {
      */
     private Gson gson;
 
-
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.CHINA);
+    private DateSelectDialogView dateSelectDialogView;
 
 
     @Override
@@ -105,7 +105,6 @@ public class B30SleepDetailActivity extends WatchBaseActivity {
     }
 
     private void initViews() {
-        commentB30ShareImg.setVisibility(View.VISIBLE);
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(getResources().getString(R.string.sleep));
 //        commentB30ShareImg.setVisibility(View.VISIBLE);
@@ -157,66 +156,72 @@ public class B30SleepDetailActivity extends WatchBaseActivity {
     }
 
     private void showSleepChartView(final CusVPSleepData sleepData) {
-        listValue.clear();
-        if (sleepData != null) {
-            String slleepLin = sleepData.getSleepLine();
-            for (int i = 0; i < slleepLin.length(); i++) {
-                if (i <= slleepLin.length() - 1) {
-                    int subStr = Integer.valueOf(slleepLin.substring(i, i + 1));
-                    listValue.add(subStr);
+        try {
+            listValue.clear();
+            if (sleepData != null) {
+                String slleepLin = sleepData.getSleepLine();
+                for (int i = 0; i < slleepLin.length(); i++) {
+                    if (i <= slleepLin.length() - 1) {
+                        int subStr = Integer.valueOf(slleepLin.substring(i, i + 1));
+                        listValue.add(subStr);
+                    }
                 }
+                listValue.add(0, 2);
+                listValue.add(0);
+                listValue.add(2);
             }
-            listValue.add(0, 2);
-            listValue.add(0);
-            listValue.add(2);
-        }
-        if (listValue.size() > 0) {
-            detailCusSleepView.setSeekBarShow(false);
-            detailCusSleepView.setSleepList(listValue);
-            sleepSeekBar.setMax(listValue.size());
-            sleepSeekBar.setProgress(-2);
-            sleepSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    try {
-                        if (progress == listValue.size())
-                            return;
-                        //Log.e(TAG,"-------progress="+progress+"--="+sleepData.getSleepDown().getDateAndClockForSleep());
-                        int sleepHour = sleepData.getSleepDown().getHour() * 60;
-                        int sleepMine = sleepData.getSleepDown().getMinute();
-                        //入睡时间 分钟
-                        int sleepDownT = sleepHour + sleepMine;
-                        int currD = sleepDownT + ((progress == 0 ? -1 : progress - 1) * 5);   //当前的分钟
-                        //转换成时：分
-                        int hour = (int) Math.floor(currD / 60);
-                        if (hour >= 24)
-                            hour = hour - 24;
-                        int mine = currD % 60;
+            if (listValue.size() > 0) {
+                detailCusSleepView.setSeekBarShow(false);
+                detailCusSleepView.setSleepList(listValue);
+                sleepSeekBar.setMax(listValue.size());
+                sleepSeekBar.setProgress(-2);
+                sleepSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        try {
+                            if (progress == listValue.size())
+                                return;
+                            //Log.e(TAG,"-------progress="+progress+"--="+sleepData.getSleepDown().getDateAndClockForSleep());
+                            int sleepHour = sleepData.getSleepDown().getHour() * 60;
+                            int sleepMine = sleepData.getSleepDown().getMinute();
+                            //入睡时间 分钟
+                            int sleepDownT = sleepHour + sleepMine;
+                            int currD = sleepDownT + ((progress == 0 ? -1 : progress - 1) * 5);   //当前的分钟
+                            //转换成时：分
+                            int hour = (int) Math.floor(currD / 60);
+                            if (hour >= 24)
+                                hour = hour - 24;
+                            int mine = currD % 60;
 
-                        detailCusSleepView.setSleepDateTxt((hour == 0 ? "00" : (hour < 10 ? "0" + hour : hour)) + ":" + (mine == 0 ? "00" : (mine < 10 ? "0" + mine : mine)) + "");
-                        detailCusSleepView.setSeekBarSchdue(progress);
-                    }catch (Exception e){
-                        e.printStackTrace();
+                            detailCusSleepView.setSleepDateTxt((hour == 0 ? "00" : (hour < 10 ? "0" + hour : hour)) + ":" + (mine == 0 ? "00" : (mine < 10 ? "0" + mine : mine)) + "");
+                            detailCusSleepView.setSeekBarSchdue(progress);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                     }
 
-                }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        detailCusSleepView.setSeekBarShow(true, 0);
+                    }
 
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                    detailCusSleepView.setSeekBarShow(true, 0);
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                }
-            });
-        } else {
-            detailCusSleepView.setSleepList(new ArrayList<Integer>());
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                    }
+                });
+            } else {
+                detailCusSleepView.setSleepList(new ArrayList<Integer>());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
     @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg,
-            R.id.sleepCurrDateLeft, R.id.sleepCurrDateRight})
+            R.id.sleepCurrDateLeft,R.id.sleepCurrDateTv,
+            R.id.sleepCurrDateRight})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
@@ -231,7 +236,23 @@ public class B30SleepDetailActivity extends WatchBaseActivity {
             case R.id.sleepCurrDateRight:   //切换下一天数据
                 changeDayData(false);
                 break;
+            case R.id.sleepCurrDateTv:
+                chooseDate();
+                break;
         }
+    }
+
+    private void chooseDate() {
+        dateSelectDialogView = new DateSelectDialogView(this);
+        dateSelectDialogView.show();
+        dateSelectDialogView.setOnDateSelectListener(new DateSelectDialogView.OnDateSelectListener() {
+            @Override
+            public void selectDateStr(String str) {
+                dateSelectDialogView.dismiss();
+                currDay = str;
+                initData();
+            }
+        });
     }
 
     /**

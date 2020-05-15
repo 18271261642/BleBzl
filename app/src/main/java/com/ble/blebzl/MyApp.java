@@ -207,6 +207,7 @@ public class MyApp extends LitePalApplication {
 
 
     private void initNoHttpData(){
+        NoHttp.initialize(instance);
         NoHttp.initialize(InitializationConfig.newBuilder(this)
                 //设置全局连接超时时间
                 .connectionTimeout(30 * 1000)

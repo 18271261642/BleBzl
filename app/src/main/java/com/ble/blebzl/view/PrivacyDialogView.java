@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.ble.blebzl.R;
 
+import java.util.Locale;
+
 /**
  * Created by Admin
  * Date 2020/1/11
@@ -29,6 +31,8 @@ public class PrivacyDialogView extends Dialog implements View.OnClickListener {
     private OnPirvacyClickListener onPirvacyClickListener;
 
     private TextView privacyContentTv;
+
+    private TextView privacyAgreement,privacyPolicy;
 
     private Context context;
 
@@ -51,46 +55,46 @@ public class PrivacyDialogView extends Dialog implements View.OnClickListener {
 
         String str = "尊敬的用户，为了保护您的权利，请您在使用本软件之前先阅读 用户协议 和 隐私政策 以了解您的合法权益。";
 
-
-        SpannableString spannableString = new SpannableString(str);
-        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.BLUE);
-        ForegroundColorSpan fc2 = new ForegroundColorSpan(Color.BLUE);
-        spannableString.setSpan(foregroundColorSpan,28,33, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(fc2,35,40, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        privacyContentTv.setText(spannableString);
-
-
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
-                context.startActivity(new Intent(context,UserProtocalActivity.class));
-            }
-
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-
-        ClickableSpan clickableSpan2 = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
-                context.startActivity(new Intent(context,PrivacyActivity.class));
-            }
-
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-        spannableString.setSpan(clickableSpan,28,33, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(clickableSpan2,35,40, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        privacyContentTv.setText(spannableString);
-        privacyContentTv.setMovementMethod(LinkMovementMethod.getInstance());
+//
+//        SpannableString spannableString = new SpannableString(str);
+//        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.BLUE);
+//        ForegroundColorSpan fc2 = new ForegroundColorSpan(Color.BLUE);
+//        spannableString.setSpan(foregroundColorSpan,28,33, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+//        spannableString.setSpan(fc2,35,40, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+//        privacyContentTv.setText(spannableString);
+//
+//
+//        ClickableSpan clickableSpan = new ClickableSpan() {
+//            @Override
+//            public void onClick(@NonNull View widget) {
+//                context.startActivity(new Intent(context,UserProtocalActivity.class));
+//            }
+//
+//            @Override
+//            public void updateDrawState(@NonNull TextPaint ds) {
+//                super.updateDrawState(ds);
+//                ds.setUnderlineText(false);
+//            }
+//        };
+//
+//
+//        ClickableSpan clickableSpan2 = new ClickableSpan() {
+//            @Override
+//            public void onClick(@NonNull View widget) {
+//                context.startActivity(new Intent(context,PrivacyActivity.class));
+//            }
+//
+//            @Override
+//            public void updateDrawState(@NonNull TextPaint ds) {
+//                super.updateDrawState(ds);
+//                ds.setUnderlineText(false);
+//            }
+//        };
+//
+//        spannableString.setSpan(clickableSpan,28,33, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+//        spannableString.setSpan(clickableSpan2,35,40, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+//        privacyContentTv.setText(spannableString);
+//        privacyContentTv.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 
@@ -98,9 +102,17 @@ public class PrivacyDialogView extends Dialog implements View.OnClickListener {
         privacyContentTv = findViewById(R.id.privacyContentTv);
         cancleBtn = findViewById(R.id.privacyCancleBtn);
         sureBtn = findViewById(R.id.privacySureBtn);
+        privacyAgreement = findViewById(R.id.privacyUserAgreementTv);
+        privacyPolicy = findViewById(R.id.privacyPolicyTv);
         cancleBtn.setOnClickListener(this);
         sureBtn.setOnClickListener(this);
 
+
+        privacyAgreement.setText(context.getResources().getString(R.string.string_privacy_agreement));
+        privacyPolicy.setText(context.getResources().getString(R.string.privacy));
+
+        privacyAgreement.setOnClickListener(this);
+        privacyPolicy.setOnClickListener(this);
     }
 
     @Override
@@ -117,6 +129,12 @@ public class PrivacyDialogView extends Dialog implements View.OnClickListener {
                     onPirvacyClickListener.disCancleView();
                     cancel();
                 }
+                break;
+            case R.id.privacyUserAgreementTv:   //用户协议
+                context.startActivity(new Intent(context,UserProtocalActivity.class));
+                break;
+            case R.id.privacyPolicyTv:  //隐私政策
+                context.startActivity(new Intent(context,PrivacyActivity.class));
                 break;
         }
     }

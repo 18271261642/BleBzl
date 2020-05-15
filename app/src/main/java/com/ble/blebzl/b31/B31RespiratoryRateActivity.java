@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ble.blebzl.MyApp;
 import com.ble.blebzl.R;
 import com.ble.blebzl.b30.b30view.CustomCircleProgressBar;
+import com.ble.blebzl.b30.b30view.TmpCustomCircleProgressBar;
 import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
@@ -42,7 +43,7 @@ public class B31RespiratoryRateActivity extends WatchBaseActivity {
     @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
     @BindView(R.id.b31MeaureRateProgressView)
-    CustomCircleProgressBar b31MeaureRateProgressView;
+    TmpCustomCircleProgressBar b31MeaureRateProgressView;
     @BindView(R.id.showB31RateStateTv)
     TextView showB31RateStateTv;
     @BindView(R.id.b31MeaureRateStartImg)
@@ -53,7 +54,7 @@ public class B31RespiratoryRateActivity extends WatchBaseActivity {
 
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler(){
+    private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -61,6 +62,7 @@ public class B31RespiratoryRateActivity extends WatchBaseActivity {
                 BreathData breathData = (BreathData) msg.obj;
                 if(breathData == null)
                     return;
+                b31MeaureRateProgressView.setProgress(breathData.getProgressValue());
                 if(breathData.getDeviceState() != 0){
                     showB31RateStateTv.setText(WatchUtils.setBusyDesicStr());
                     b31MeaureRateProgressView.stopAnim();
@@ -96,7 +98,8 @@ public class B31RespiratoryRateActivity extends WatchBaseActivity {
         b31MeaureRateProgressView.setInsideColor(Color.parseColor("#EBEBEB"));
         b31MeaureRateProgressView.setOutsideColor(Color.WHITE);
 
-
+        b31MeaureRateProgressView.setMaxProgress(100);
+        b31MeaureRateProgressView.setTmpTxt(null);
     }
 
     @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg,
@@ -124,9 +127,9 @@ public class B31RespiratoryRateActivity extends WatchBaseActivity {
             showB31RateStateTv.setText("");
             isStart = true;
             b31MeaureRateStartImg.setImageResource(R.drawable.detect_breath_stop);
-            b31MeaureRateProgressView.setTmpTxt(null);
-            b31MeaureRateProgressView.setScheduleDuring(60 * 1000);
-            b31MeaureRateProgressView.setProgress(100);
+//            b31MeaureRateProgressView.setTmpTxt(null);
+//            b31MeaureRateProgressView.setScheduleDuring(60 * 1000);
+//            b31MeaureRateProgressView.setProgress(100);
             MyApp.getInstance().getVpOperateManager().startDetectBreath(iBleWriteResponse, new IBreathDataListener() {
                 @Override
                 public void onDataChange(BreathData breathData) {

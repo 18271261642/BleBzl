@@ -166,12 +166,16 @@ public class H8BleService extends Service {
                     break;
                 case 0x03:  //挂断电话
                     Log.e(TAG,"-----挂断电话----");
-                    TelephonyManager tm = (TelephonyManager) MyApp.getContext()
-                            .getSystemService(Service.TELEPHONY_SERVICE);
-                    PhoneUtils.endPhone(MyApp.getContext(),tm);
-                    PhoneUtils.dPhone();
-                    PhoneUtils.endCall(MyApp.getContext());
-                    //PhoneUtils.endcall();
+                    try {
+                        TelephonyManager tm = (TelephonyManager) MyApp.getContext()
+                                .getSystemService(Service.TELEPHONY_SERVICE);
+                        PhoneUtils.endPhone(MyApp.getContext(),tm);
+                        PhoneUtils.dPhone();
+                        PhoneUtils.endCall(MyApp.getContext());
+                        //PhoneUtils.endcall();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     break;
 
                 case 0x08:
@@ -439,14 +443,6 @@ public class H8BleService extends Service {
     }
 
 
-
-
-
-
-
-
-
-
     //连接
     public boolean connectBleByMac(String address) {
         Log.e(TAG, "----connect----" + address);
@@ -674,7 +670,6 @@ public class H8BleService extends Service {
             case 48:    //获取手表时间返回
                 handler.sendEmptyMessage(666);
                 if(getH8TimeInterface != null){
-
                     getH8TimeInterface.getH8TimeData(bleData);
                 }
                 break;
@@ -801,6 +796,8 @@ public class H8BleService extends Service {
         }
         boolean isWriteTrue = mBluetoothGatt.writeCharacteristic(characteristic);
         Log.e(TAG, "-----isWriteTrue=" + isWriteTrue);
+        if(!isWriteTrue)
+            mBluetoothGatt.writeCharacteristic(characteristic);
     }
 
 
@@ -1043,7 +1040,11 @@ public class H8BleService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (broadcastReceiver != null)
-            unregisterReceiver(broadcastReceiver);
+        try {
+            if (broadcastReceiver != null)
+                unregisterReceiver(broadcastReceiver);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

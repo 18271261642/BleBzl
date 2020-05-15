@@ -22,6 +22,7 @@ import com.ble.blebzl.b30.model.CusVPSleepPrecisionData;
 import com.ble.blebzl.b30.model.CusVPTimeData;
 import com.ble.blebzl.b31.bpoxy.B31SaveSpo2AsyncTask;
 import com.ble.blebzl.b31.bpoxy.B31sSaveHrvAsyncTask;
+import com.ble.blebzl.b31.bpoxy.ReadHRVAnSpo2DatatService;
 import com.ble.blebzl.bleutil.MyCommandManager;
 import com.ble.blebzl.commdbserver.CommCalUtils;
 import com.ble.blebzl.commdbserver.CommDBManager;
@@ -94,7 +95,6 @@ public class ConnBleHelpService {
     private ConnBleMsgDataListener connBleMsgDataListener;
 
 
-
     //睡眠处理map
     private Map<String, CusVPSleepData> sleepMap = new HashMap<>();
 
@@ -112,7 +112,8 @@ public class ConnBleHelpService {
     private B31sSaveHrvAsyncTask b31sSaveHrvAsyncTask;
 
 
-
+    //是否支持血氧
+    private boolean isSupportSpo2 = false;
 
     /**
      * 转换工具
@@ -236,30 +237,7 @@ public class ConnBleHelpService {
             @Override
             public void onFunctionSupportDataChange(FunctionDeviceSupportData functionDeviceSupportData) {
                 Log.e(TAG, "--111---functionDeviceSupportData--=" + functionDeviceSupportData.toString());
-
-                Context context = MyApp.getContext();
-
-                //版本协议
-                int originProtcolVersion = functionDeviceSupportData.getOriginProtcolVersion();
-                SharedPreferencesUtils.setParam(context,Commont.VP_DEVICE_VERSION,originProtcolVersion);
-                //B31带血压功能的标识
-                SharedPreferencesUtils.setParam(context,Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
-
-                isSleepPrecisionData = functionDeviceSupportData.getPrecisionSleep() == EFunctionStatus.SUPPORT;
-                //B31S支持亮度调节功能
-                SharedPreferencesUtils.setParam(context,Commont.IS_B31S_LIGHT_KEY,functionDeviceSupportData.getScreenLight() == EFunctionStatus.SUPPORT);
-
-                //B31S带精准睡眠功能的设备不支持疲劳度检测功能
-                SharedPreferencesUtils.setParam(context,Commont.IS_B31S_FATIGUE_KEY,functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
-
-                //设置支持的主题风格
-                int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
-                SharedPreferencesUtils.setParam(context,Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
-
-                //B31是否支持呼吸率
-                SharedPreferencesUtils.setParam(context,Commont.IS_B31_HEART,functionDeviceSupportData.getBeathFunction() == EFunctionStatus.SUPPORT);
-
-
+                setCommentFunction(functionDeviceSupportData);
             }
         }, new ISocialMsgDataListener() {
             @Override
@@ -275,6 +253,8 @@ public class ConnBleHelpService {
 
 
     }
+
+
 
     //验证设备密码
     public void doConnOperater(final String blePwd, final VerB30PwdListener verB30PwdListener) {
@@ -309,30 +289,7 @@ public class ConnBleHelpService {
             @Override
             public void onFunctionSupportDataChange(FunctionDeviceSupportData functionDeviceSupportData) {
                 Log.e(TAG,"----------functionDeviceSupportData="+functionDeviceSupportData.toString());
-                Context context = MyApp.getContext();
-
-                //版本协议
-                int originProtcolVersion = functionDeviceSupportData.getOriginProtcolVersion();
-                SharedPreferencesUtils.setParam(context,Commont.VP_DEVICE_VERSION,originProtcolVersion);
-                //B31带血压功能的标识
-                SharedPreferencesUtils.setParam(context,Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
-
-                isSleepPrecisionData = functionDeviceSupportData.getPrecisionSleep() == EFunctionStatus.SUPPORT;
-                //B31S支持亮度调节功能
-                SharedPreferencesUtils.setParam(context,Commont.IS_B31S_LIGHT_KEY,functionDeviceSupportData.getScreenLight() == EFunctionStatus.SUPPORT);
-
-                //B31S带精准睡眠功能的设备不支持疲劳度检测功能
-                SharedPreferencesUtils.setParam(context,Commont.IS_B31S_FATIGUE_KEY,functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
-
-                //设置支持的主题风格
-                int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
-                SharedPreferencesUtils.setParam(context,Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
-
-                //B31是否支持呼吸率
-                SharedPreferencesUtils.setParam(context,Commont.IS_B31_HEART,functionDeviceSupportData.getBeathFunction() == EFunctionStatus.SUPPORT);
-
-
-
+                setCommentFunction(functionDeviceSupportData);
             }
         }, new ISocialMsgDataListener() {
             @Override
@@ -348,14 +305,53 @@ public class ConnBleHelpService {
             }
         }, blePwd, is24Hour);
 
+    }
+
+
+
+    private void setCommentFunction(FunctionDeviceSupportData functionDeviceSupportData) {
+        Context context = MyApp.getContext();
+
+        //版本协议
+        int originProtcolVersion = functionDeviceSupportData.getOriginProtcolVersion();
+        SharedPreferencesUtils.setParam(context,Commont.VP_DEVICE_VERSION,originProtcolVersion);
+
+        isSupportSpo2 = functionDeviceSupportData.getSpo2H() == EFunctionStatus.SUPPORT;
+
+        //是否支持心率预警
+        SharedPreferencesUtils.setParam(context,Commont.IS_SUPPORT_HEART_WARING,functionDeviceSupportData.getHeartWaring() == EFunctionStatus.SUPPORT);
+
+
+        //B31带血压功能的标识
+        SharedPreferencesUtils.setParam(context,Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
+
+        isSleepPrecisionData = functionDeviceSupportData.getPrecisionSleep() == EFunctionStatus.SUPPORT;
+        //B31S支持亮度调节功能
+        SharedPreferencesUtils.setParam(context,Commont.IS_B31S_LIGHT_KEY,functionDeviceSupportData.getScreenLight() == EFunctionStatus.SUPPORT);
+
+        //B31S带精准睡眠功能的设备不支持疲劳度检测功能
+        SharedPreferencesUtils.setParam(context,Commont.IS_B31S_FATIGUE_KEY,functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
+
+        //是否支持倒计时
+        SharedPreferencesUtils.setParam(context,Commont.IS_SUPPORT_COUNTDOWN,functionDeviceSupportData.getCountDown() == EFunctionStatus.SUPPORT);
+
+        //是否支持主题风格
+        SharedPreferencesUtils.setParam(context,Commont.IS_SUPPORT_SCREEN_STYLE,functionDeviceSupportData.getScreenStyleFunction() == EFunctionStatus.SUPPORT);
+
+        //设置支持的主题风格
+        int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
+        SharedPreferencesUtils.setParam(context,Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
+
+        //B31是否支持呼吸率
+        SharedPreferencesUtils.setParam(context,Commont.IS_B31_HEART,functionDeviceSupportData.getBeathFunction() == EFunctionStatus.SUPPORT);
 
     }
+
 
     //连接成功后设置数据
     private void syncCommSettingData() {
         SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.BATTERNUMBER, 0);//每次连接清空电量
-        //同步用户信息，设置目标步数
-        setDeviceUserData();
+
         //设置语言，根据系统的语言设置
         ELanguage languageData ;
         String localelLanguage = Locale.getDefault().getLanguage();
@@ -381,6 +377,8 @@ public class ConnBleHelpService {
             }
         }, languageData);
 
+        //同步用户信息，设置目标步数
+        setDeviceUserData();
 
 
     }
@@ -504,7 +502,7 @@ public class ConnBleHelpService {
 
                  readAllDeviceData(today);
             }
-        }, today ? 2 : 4);
+        }, today ? 2 : 3);
 
         //读取健康数据，步数详情、心率、血压等
 
@@ -706,7 +704,7 @@ public class ConnBleHelpService {
         int vpOrignVersion = (int) SharedPreferencesUtils.getParam(MyApp.getContext(),Commont.VP_DEVICE_VERSION,0);
 
         if(vpOrignVersion == 0){    //旧版
-            MyApp.getInstance().getVpOperateManager().readAllHealthData(iAllHealthDataListener,today ? 2 : 4);
+            MyApp.getInstance().getVpOperateManager().readAllHealthData(iAllHealthDataListener,today ? 2 : 3);
         }else{  //新版 B31s带精准睡眠功能的
             //MyApp.getInstance().getVpOperateManager().readOriginData(bleWriteResponse,iOriginProgressListener,1);
             new ReadAllDataAsync().execute();
@@ -721,6 +719,21 @@ public class ConnBleHelpService {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
+                if(!isSupportSpo2){
+                    new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
+                            .obtainFormatDate(0));// 更新最后更新数据的时间
+                    if (connBleMsgDataListener != null) {
+                        connBleMsgDataListener.onOriginData();
+                    }
+
+                    Intent intent = new Intent();
+                    intent.setAction(WatchUtils.B31_SPO2_COMPLETE);
+                    MyApp.getContext().sendBroadcast(intent);
+
+                    return null;
+                }
+
+
                 MyApp.getInstance().getVpOperateManager().readOriginData(bleWriteResponse, new IOriginData3Listener() {
                     @Override
                     public void onOriginFiveMinuteListDataChange(List<OriginData3> list) {
@@ -885,6 +898,17 @@ public class ConnBleHelpService {
             if (connBleMsgDataListener != null) {
                 connBleMsgDataListener.onOriginData();
             }
+
+            if(isSupportSpo2){
+                try {
+                    Intent intent = new Intent(MyApp.getContext(), ReadHRVAnSpo2DatatService.class);
+                    //intent.putExtra("isToday",isToday);
+                    MyApp.getContext().startService(intent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
         }
     };
 
@@ -925,8 +949,6 @@ public class ConnBleHelpService {
         CusVPSleepData deviceSstr = new CusVPSleepData(sleepData.getDate(),sleepData.getCali_flag(),sleepData.getSleepQulity(),
                 sleepData.getWakeCount(),sleepData.getDeepSleepTime(),sleepData.getLowSleepTime(),sleepData.getAllSleepTime(),
                 sleepData.getSleepLine(),donwTime,upTime);
-
-
 
 
         //Log.e("-------设备睡眠数据---", gson.toJson(deviceSstr) + "");

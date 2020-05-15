@@ -46,8 +46,8 @@ import butterknife.OnClick;
 
 /**
  * Created by thinkpad on 2017/3/4.
- * 注册页面
- */
+ * 注册页面,手机号注册
+ * */
 
 public class RegisterActivity2 extends WatchBaseActivity implements RequestView {
 

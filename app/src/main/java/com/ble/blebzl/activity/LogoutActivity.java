@@ -61,7 +61,7 @@ public class LogoutActivity extends WatchBaseActivity implements RequestView {
 
     private void initViews() {
         commentB30BackImg.setVisibility(View.VISIBLE);
-        commentB30TitleTv.setText("注销账号");
+        commentB30TitleTv.setText(getResources().getString(R.string.string_logout));
     }
 
     @OnClick({R.id.commentB30BackImg, R.id.logoutAccountBtn})

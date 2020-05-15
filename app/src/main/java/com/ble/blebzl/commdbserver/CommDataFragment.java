@@ -130,7 +130,7 @@ public class CommDataFragment extends LazyFragment {
     private int SectectCode = 7;
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

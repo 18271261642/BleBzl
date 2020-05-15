@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
@@ -53,8 +54,10 @@ import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.Setting;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -96,6 +99,8 @@ public class B31DeviceActivity extends WatchBaseActivity implements Rationale<Li
     RelativeLayout wxSportRel;
     @BindView(R.id.DeviceVersionTv)
     TextView DeviceVersionTv;
+    @BindView(R.id.b31sDeviceHeartAlarmRel)
+    RelativeLayout b31sDeviceHeartAlarmRel;
     /**
      * 私人血压数据
      */
@@ -126,6 +131,7 @@ public class B31DeviceActivity extends WatchBaseActivity implements Rationale<Li
 
         sportGoalList = new ArrayList<>();
         sleepGoalList = new ArrayList<>();
+
         for (int i = 1000; i <= 64000; i += 1000) {
             sportGoalList.add(i + "");
         }
@@ -177,13 +183,19 @@ public class B31DeviceActivity extends WatchBaseActivity implements Rationale<Li
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(getResources().getString(R.string.device));
         b31sPrivateBloadToggleBtn.setOnCheckedChangeListener(new ToggleClickListener());
-        if (MyCommandManager.DEVICENAME != null) {
-            if (!MyCommandManager.DEVICENAME.equals("B31")) {
-                b31sDevicePrivateBloadRel.setVisibility(View.VISIBLE);
-            }
+//
+//        //是否支持心率预警
+//        boolean isSupportHeartWaring = (boolean) SharedPreferencesUtils.getParam(B31DeviceActivity.this,Commont.IS_SUPPORT_HEART_WARING,false);
+//        b31sDeviceHeartAlarmRel.setVisibility(isSupportHeartWaring ? View.VISIBLE : View.GONE);
 
-            String versionCode = (String) SharedPreferencesUtils.getParam(MyApp.getContext(),Commont.DEVICE_VERSION_CODE_KEY,"0-0");
-            if(WatchUtils.isEmpty(versionCode))
+        //是否支持血压
+        boolean isSupportBp = (boolean) SharedPreferencesUtils.getParam(B31DeviceActivity.this,Commont.IS_B31_HAS_BP_KEY,false);
+        b31sDevicePrivateBloadRel.setVisibility(isSupportBp?View.VISIBLE:View.GONE);
+
+
+        if (MyCommandManager.DEVICENAME != null) {
+            String versionCode = (String) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.DEVICE_VERSION_CODE_KEY, "0-0");
+            if (WatchUtils.isEmpty(versionCode))
                 versionCode = "0-0";
             DeviceVersionTv.setText(versionCode);
 
@@ -202,7 +214,7 @@ public class B31DeviceActivity extends WatchBaseActivity implements Rationale<Li
             R.id.b31DeviceResetRel, R.id.b31DeviceStyleRel,
             R.id.b31DeviceDfuRel, R.id.b31DeviceClearDataRel,
             R.id.wxSportRel, R.id.b31DisConnBtn, R.id.b31DeviceCounDownRel,
-            R.id.b31sDevicePrivateBloadRel})
+            R.id.b31sDevicePrivateBloadRel,R.id.b31sDeviceHeartAlarmRel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
@@ -225,6 +237,9 @@ public class B31DeviceActivity extends WatchBaseActivity implements Rationale<Li
                 break;
             case R.id.b31DeviceSleepRel:    //睡眠目标
                 setSleepGoal();
+                break;
+            case R.id.b31sDeviceHeartAlarmRel:  //心率报警
+                startActivity(HeartWaringActivity.class);
                 break;
             case R.id.b31sDevicePrivateBloadRel:    //设置私人血压值
                 startActivity(PrivateBloadActivity.class);

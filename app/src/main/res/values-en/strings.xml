@@ -1,5 +1,15 @@
 <resources>
     <!--英语-->
+    <string name="string_spo2_cali">Calibrating</string>
+    <string name="string_heart_waring">Heart rate alarm</string>
+    <string name="string_heart_limit">Upper limit of resting heart rate</string>
+    <string name="string_logout">Logout</string>
+
+    <string name="string_privacy_agreement">User Agreement</string>
+    <string name="string_privacy_desc">Dear users, in order to protect your rights, please understand the user agreement and privacy policy before using this software to understand your legal rights.</string>
+
+
+
     <string name="string_x_watch_take_camera">Remote camera</string>
     <string name="string_b16_step_frequency">frequency</string>
     <string name="string_b16_bmi1">Fat Reduction Index</string>

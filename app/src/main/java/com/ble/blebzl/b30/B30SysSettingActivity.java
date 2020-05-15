@@ -30,6 +30,7 @@ import com.ble.blebzl.util.LocalizeTool;
 import com.ble.blebzl.util.ToastUtil;
 import com.ble.blebzl.view.PrivacyActivity;
 import com.ble.blebzl.util.SharedPreferencesUtils;
+import com.ble.blebzl.view.UserProtocalActivity;
 import com.hplus.bluetooth.BleProfileManager;
 import com.tjdL4.tjdmain.Dev;
 import com.tjdL4.tjdmain.L4M;
@@ -96,7 +97,8 @@ public class B30SysSettingActivity extends WatchBaseActivity {
 
     @OnClick({R.id.image_back, R.id.updatePwdLin,
             R.id.feebackLin, R.id.aboutLin,
-            R.id.commExit_login, R.id.privacyLin,R.id.logoutLin})
+            R.id.commExit_login, R.id.privacyLin,
+            R.id.logoutLin,R.id.userProtocalLin})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:   //返回
@@ -121,6 +123,9 @@ public class B30SysSettingActivity extends WatchBaseActivity {
                 break;
             case R.id.privacyLin:    //隐私政策
                 startActivity(PrivacyActivity.class);
+                break;
+            case R.id.userProtocalLin:  //用户协议
+                startActivity(UserProtocalActivity.class);
                 break;
             case R.id.aboutLin:
                 updateApp();

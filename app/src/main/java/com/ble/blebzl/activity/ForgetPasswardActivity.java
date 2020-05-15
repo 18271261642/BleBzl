@@ -359,7 +359,9 @@ public class ForgetPasswardActivity extends BaseActivity implements RequestView 
         if(what == 1){  //发送手机验证码
             try {
                 JSONObject jsonObject = new JSONObject((String)object);
-                ToastUtil.showToast(ForgetPasswardActivity.this,jsonObject.getString("data"));
+                String msg = jsonObject.getString("msg");
+                String dataStr = jsonObject.getString("data");
+                ToastUtil.showToast(ForgetPasswardActivity.this,WatchUtils.isEmpty(dataStr)? msg : dataStr);
             }catch (Exception e){
                 e.printStackTrace();
             }

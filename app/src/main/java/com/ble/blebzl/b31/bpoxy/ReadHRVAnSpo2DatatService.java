@@ -266,8 +266,6 @@ public class ReadHRVAnSpo2DatatService extends IntentService  {
          */
         isToday = date.equals(WatchUtils.getCurrentDate());
 
-
-
     }
 
 
@@ -314,7 +312,7 @@ public class ReadHRVAnSpo2DatatService extends IntentService  {
             String currDayStr = WatchUtils.getCurrentDate();
             List<B31Spo2hBean> currList = LitePal.where(where,bleMac,
                     currDayStr).find(B31Spo2hBean.class);
-            if(currList != null && currList.size() == 420){
+            if(currList != null || currList.size() == 420){
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -403,7 +401,7 @@ public class ReadHRVAnSpo2DatatService extends IntentService  {
             public void onReadOriginComplete() {
 
             }
-        }, isToday ? 1 : 3);
+        }, isToday ? 1 : 2);
     }
 
 
@@ -503,7 +501,7 @@ public class ReadHRVAnSpo2DatatService extends IntentService  {
             public void onReadOriginComplete() {
 
             }
-        }, isToday ? 1 : 3);
+        }, isToday ? 1 : 2);
 
     }
 

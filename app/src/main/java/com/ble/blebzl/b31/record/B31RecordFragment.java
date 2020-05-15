@@ -89,6 +89,8 @@ import com.veepoo.protocol.util.HRVOriginUtil;
 import com.veepoo.protocol.util.HrvScoreUtil;
 import com.veepoo.protocol.util.Spo2hOriginUtil;
 import org.litepal.LitePal;
+import org.w3c.dom.Comment;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -297,7 +299,7 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
                         handler.removeMessages(1001);// 正常关闭就移除延时口令
                         if (syncStatusTv != null) syncStatusTv.setVisibility(View.VISIBLE);
                         //开始读取HRV
-                        startReadDeviceService();
+                        //startReadDeviceService();
                         //页面数据更新
                         updatePageData();
                         if (b31HomeSwipeRefreshLayout != null) {
@@ -384,14 +386,14 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
                         }
 
 
-                        if(kmSpo2Task != null && kmSpo2Task.getStatus() == AsyncTask.Status.RUNNING){
-                            kmSpo2Task.cancel(true);
-                            kmSpo2Task = null;
-                            kmSpo2Task = new KmSpo2Task();
-                        }else{
-                            kmSpo2Task = new KmSpo2Task();
-                        }
-                        kmSpo2Task.execute();
+//                        if(kmSpo2Task != null && kmSpo2Task.getStatus() == AsyncTask.Status.RUNNING){
+//                            kmSpo2Task.cancel(true);
+//                            kmSpo2Task = null;
+//                            kmSpo2Task = new KmSpo2Task();
+//                        }else{
+//                            kmSpo2Task = new KmSpo2Task();
+//                        }
+//                        kmSpo2Task.execute();
 
                     }
                     break;
@@ -404,6 +406,8 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
         }
     };
 
+
+    private String savedBleName = null;
 
     @Override
     public void onAttach(Context context) {
@@ -432,13 +436,14 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
         String tmpSaveTime = (String) SharedPreferencesUtils.getParam(getmContext(), "save_curr_time", "");
         if (WatchUtils.isEmpty(tmpSaveTime))
             SharedPreferencesUtils.setParam(getmContext(), "save_curr_time", System.currentTimeMillis() / 1000 + "");
+        savedBleName = (String) SharedPreferencesUtils.readObject(getmContext(),Commont.BLENAME);
     }
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        b31View = inflater.inflate(R.layout.fragment_b31_record_layout, container, false);
+        b31View = inflater.inflate(savedBleName!= null && (savedBleName.contains("P9") || savedBleName.contains("SpO2"))?R.layout.fragment_p9_home_layout : R.layout.fragment_b31_record_layout, container, false);
         unbinder = ButterKnife.bind(this, b31View);
 
         initViews();
@@ -532,10 +537,29 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
             if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME)) {
                 if (MyCommandManager.DEVICENAME.equals(WatchUtils.B31_NAME)) {
                     ivTop.setImageResource(R.mipmap.ic_home_top_b31);
-                } else if (MyCommandManager.DEVICENAME.equals(WatchUtils.S500_NAME)) {
+                    return;
+                }
+
+                if (MyCommandManager.DEVICENAME.equals(WatchUtils.S500_NAME)) {
                     ivTop.setImageResource(R.mipmap.ic_500s);
-                } else {
+                    return;
+                }
+                if(MyCommandManager.DEVICENAME.equals("B31S")) {
                     ivTop.setImageResource(R.mipmap.ic_home_top_b31);//b31s
+                    return;
+                }
+                if(MyCommandManager.DEVICENAME.equals("E Watch")){
+                    ivTop.setImageResource(R.mipmap.icon_e_watch_top);
+                    return;
+                }if(MyCommandManager.DEVICENAME.contains("YWK")){
+                    ivTop.setImageResource(R.mipmap.icon_ywk_top);
+                    return;
+                }
+                if(MyCommandManager.DEVICENAME.contains("SpO2")){
+                    ivTop.setImageResource(R.mipmap.icon_spo2_top);
+                }
+                else{
+                    ivTop.setImageResource(R.mipmap.icon_comm_top_img);
                 }
             }
         }
@@ -644,8 +668,6 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
                 } else {
                     startActivity(new Intent(getmContext(), B31sPrecisionSleepActivity.class));
                 }
-
-
                 break;
             case R.id.b30CusHeartLin:   //心率图表的点击
                 B30HeartDetailActivity.startAndParams(getActivity(), WatchUtils.obtainFormatDate(currDay));
@@ -1472,21 +1494,18 @@ public class B31RecordFragment extends LazyFragment implements ConnBleHelpServic
 
     //开始上传本地缓存的数据
     private void startUploadDBService() {
+
         try {
+
+            startReadDeviceService();
+            String userId = (String) SharedPreferencesUtils.readObject(getmContext(), Commont.USER_ID_DATA);
+            if(!WatchUtils.isEmpty(userId) && userId.equals("9278cc399ab147d0ad3ef164ca156bf0"))
+                return;
             CommDBManager.getCommDBManager().startUploadDbService(getmContext());
             //上传缓存的详细数据
             Intent intent1 = new Intent(getmContext(), FriendsUploadServices.class);
             getmContext().startService(intent1);
 
-            if(kmAsyncTask != null && kmAsyncTask.getStatus() == AsyncTask.Status.RUNNING){
-                kmAsyncTask.cancel(true);
-                kmAsyncTask = null;
-                kmAsyncTask = new KmAsyncTask();
-                kmAsyncTask.execute();
-            }else{
-                kmAsyncTask = new KmAsyncTask();
-            }
-            kmAsyncTask.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }

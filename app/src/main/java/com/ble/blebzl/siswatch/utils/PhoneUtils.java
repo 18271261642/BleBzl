@@ -107,6 +107,8 @@ public class PhoneUtils {
             Log.e("", ""+iTel.toString());
         } catch (Exception e) {
             e.printStackTrace();
+        }catch (NoSuchMethodError e){
+            e.printStackTrace();
         }
         Log.e("", "endCall test");
     }
@@ -124,6 +126,7 @@ public class PhoneUtils {
         } catch (ClassNotFoundException e) {
             Log.d(TAG, "", e);
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -144,6 +147,8 @@ public class PhoneUtils {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }catch (NoSuchMethodError e){
+            e.printStackTrace();
         }
     }
 
@@ -161,6 +166,8 @@ public class PhoneUtils {
             iTelephony.endCall();
         } catch (Exception e) {
             e.printStackTrace();
+        }catch (NoSuchMethodError error){
+            error.printStackTrace();
         }
     }
 

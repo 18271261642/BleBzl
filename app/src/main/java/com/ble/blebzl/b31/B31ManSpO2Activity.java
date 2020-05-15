@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ble.blebzl.b30.b30view.TmpCustomCircleProgressBar;
 import com.ble.blebzl.b31.km.KmConstance;
 import com.ble.blebzl.b31.km.NohttpUtils;
 import com.ble.blebzl.bleutil.MyCommandManager;
@@ -29,6 +30,7 @@ import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.ISpo2hDataListener;
 import com.veepoo.protocol.model.datas.Spo2hData;
 import com.veepoo.protocol.model.enums.EDeviceStatus;
+import com.veepoo.protocol.model.enums.ESPO2HStatus;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Response;
 
@@ -60,7 +62,7 @@ public class B31ManSpO2Activity extends WatchBaseActivity {
     @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
     @BindView(R.id.b31MeaureSpo2ProgressView)
-    CustomCircleProgressBar b31MeaureSpo2ProgressView;
+    TmpCustomCircleProgressBar b31MeaureSpo2ProgressView;
     @BindView(R.id.b31MeaureStartImg)
     ImageView b31MeaureStartImg;
     @BindView(R.id.showSpo2ResultTv)
@@ -87,23 +89,28 @@ public class B31ManSpO2Activity extends WatchBaseActivity {
                 Spo2hData spo2hData = (Spo2hData) msg.obj;
                 if (spo2hData == null)
                     return;
-                if(spo2hData.getDeviceState() != EDeviceStatus.FREE){
+                if(spo2hData.getDeviceState() != EDeviceStatus.FREE || (spo2hData.getSpState() == ESPO2HStatus.CLOSE && !spo2hData.isChecking())){   //设置端正在使用测量功能，
                     showSpo2ResultTv.setText(WatchUtils.setBusyDesicStr());
                     isStart = true;
                     startOrStopManSpo2();
                     return;
                 }
 
+                if(spo2hData.getSpState() == ESPO2HStatus.OPEN && spo2hData.isChecking()){
+                    b31MeaureSpo2ProgressView.setProgress(spo2hData.getCheckingProgress());
+                }
+
+
                 if (spo2hData.getCheckingProgress() == 0x00 && !spo2hData.isChecking()) {
+                    int spo2Value = spo2hData.getValue();
                     b31MeaureSpo2ProgressView.setTmpTxt(spo2hData.getValue() + "%");
-                    showSpo2ResultTv.setText(verSpo2Status(spo2hData.getValue()));
-                    b31MeaureSpo2ProgressView.setOxyDexcStr(getResources().getString(R.string.string_spo2_concent));
-                    //Log.e(TAG,"----------进度="+spo2hData.getCheckingProgress()+"%");
+                    showSpo2ResultTv.setText(spo2Value == 0 ? "":verSpo2Status(spo2hData.getValue()));
+                    b31MeaureSpo2ProgressView.setOxyDexcStr(spo2Value == 0 ? "校准中":getResources().getString(R.string.string_spo2_concent));
+
                     RequestOptions options = new RequestOptions()
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
                     Glide.with(B31ManSpO2Activity.this).asGif().load(R.drawable.spgif).apply(options).into(spo2ShowGifImg);
-
-                   uploadSpo2Data(spo2hData);
+                    // uploadSpo2Data(spo2hData);
                 }
 
             }
@@ -133,9 +140,10 @@ public class B31ManSpO2Activity extends WatchBaseActivity {
         //进度色
         b31MeaureSpo2ProgressView.setOutsideColor(Color.WHITE);
         spo2ShowGifImg.setImageResource(R.drawable.spgif);
+        b31MeaureSpo2ProgressView.setMaxProgress(100);
         b31MeaureSpo2ProgressView.setOxyDexcStr(getResources().getString(R.string.spo2_calibration_pro));
         b31MeaureSpo2ProgressView.setOxyCh(true);
-
+        b31MeaureSpo2ProgressView.setTmpTxt(null);
     }
 
     @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg,
@@ -161,11 +169,12 @@ public class B31ManSpO2Activity extends WatchBaseActivity {
     private void startOrStopManSpo2() {
         if (!isStart) {   //开始测量
             isStart = true;
+            showSpo2ResultTv.setText("");
             b31MeaureSpo2ProgressView.setTmpTxt(null);
             b31MeaureStartImg.setImageResource(R.drawable.detect_sp_stop);
             b31MeaureSpo2ProgressView.stopAnim();
-            b31MeaureSpo2ProgressView.setScheduleDuring(4 * 1000);
-            b31MeaureSpo2ProgressView.setProgress(100);
+//            b31MeaureSpo2ProgressView.setScheduleDuring(4 * 1000);
+//            b31MeaureSpo2ProgressView.setProgress(100);
             MyApp.getInstance().getVpOperateManager().startDetectSPO2H(iBleWriteResponse, new ISpo2hDataListener() {
                 @Override
                 public void onSpO2HADataChange(Spo2hData spo2hData) {

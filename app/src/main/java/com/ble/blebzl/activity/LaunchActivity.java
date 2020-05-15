@@ -161,7 +161,8 @@ public class LaunchActivity extends WatchBaseActivity {
                     startActivity(B30HomeActivity.class);
                 }else if("Ringmii".equals(btooth)){
                     startActivity(B30HomeActivity.class);
-                } else if("B31".equals(btooth)||"B31S".equals(btooth)||"500S".equals(btooth)){
+                } else if("B31".equals(btooth)||"B31S".equals(btooth)||"500S".equals(btooth)
+                        || btooth.equals("E Watch") || btooth.contains("YWK") || btooth.contains("SpO2")){
                     startActivity(B31HomeActivity.class);
                 }else if ("B15P".equals(btooth)||"B25".equals(btooth)) {
                     startActivity(B15pHomeActivity.class);

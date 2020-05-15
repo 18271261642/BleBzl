@@ -252,11 +252,11 @@ public class W37BleOperateManager {
                             intent.setAction(X_WATCH_TAKE_PHOTO);
                             mContext.sendBroadcast(intent);
                         }
-                        if(value[0] == 25 && value[1] == 0){ //SWatch查找手机的指令
+                        if(value.length>2 && (value[0] == 25 && value[1] == 0)){ //SWatch查找手机的指令
                             handler.sendEmptyMessage(0x01);
                         }
 
-                        if(value[0] == 20 && value[1] == 1){    //SWatch拍照指令
+                        if(value.length>2 && (value[0] == 20 && value[1] == 1)){    //SWatch拍照指令
                             Intent intent = new Intent();
                             intent.setAction(X_WATCH_TAKE_PHOTO);
                             mContext.sendBroadcast(intent);

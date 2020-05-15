@@ -1,5 +1,13 @@
 <resources>
     <!-- 越南语-->
+    <string name="string_spo2_cali">Hiệu chuẩn</string>
+    <string name="string_heart_waring">Báo nhịp tim</string>
+    <string name="string_heart_limit">Giới hạn trên của nhịp tim lúc nghỉ ngơi</string>
+    <string name="string_logout">Hủy tài khoản</string>
+
+    <string name="string_privacy_agreement">Thỏa thuận người dùng</string>
+    <string name="string_privacy_desc">онные права.Kính gửi người dùng, để bảo vệ quyền của bạn, vui lòng hiểu thỏa thuận và chính sách quyền riêng tư của người dùng trước khi sử dụng phần mềm này để hiểu các quyền hợp pháp của bạn.</string>
+
 
     <string name="string_x_watch_take_camera">Camera từ xa</string>
 

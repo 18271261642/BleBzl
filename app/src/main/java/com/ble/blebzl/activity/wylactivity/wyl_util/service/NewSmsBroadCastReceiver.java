@@ -100,9 +100,14 @@ public class NewSmsBroadCastReceiver extends BroadcastReceiver {
                 BleProfileManager.getInstance().getCommandController().sendSMSText(msgStr);
             }
 
-            if(saveBleName.equals("XWatch")){
-                if(MyCommandManager.DEVICENAME != null)
+            if(saveBleName.equals("XWatch") || saveBleName.equals("SWatch") ){
+                if(MyCommandManager.DEVICENAME == null)
+                    return;
+                if(MyCommandManager.DEVICENAME.equals("SWatch")){
+                    XWatchBleAnalysis.getW37DataAnalysis().setSWatchNoti(100);
+                }else{
                     XWatchBleAnalysis.getW37DataAnalysis().setDeviceNoti(1);
+                }
             }
         }
 

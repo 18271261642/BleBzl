@@ -1,6 +1,12 @@
 <resources>
     <!--葡萄牙语-->
+    <string name="string_spo2_cali">Calibração</string>
+    <string name="string_heart_waring">Alarme de frequência cardíaca</string>
+    <string name="string_heart_limit">Limite superior da frequência cardíaca em repouso</string>
+    <string name="string_logout">Cancelar conta</string>
 
+    <string name="string_privacy_agreement">Contrato do Usuário</string>
+    <string name="string_privacy_desc">Caros usuários, para proteger seus direitos, entenda o contrato e a política de privacidade do usuário antes de usar este software para entender seus direitos legais.</string>
 
     <string name="string_x_watch_take_camera">Câmera remota</string>
 

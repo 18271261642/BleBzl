@@ -410,7 +410,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements CustomBlue
                 if(bleName == null)
                     return;
                 if((scanRecord[7] == 80 && scanRecord[8] == 80) || WatchUtils.verBleNameForSearch(bleName)
-                        || bleName.contains("B18") || bleName.contains("B50") || bleName.contains("B16") || bleName.equals("XWatch") || bleName.equals("SWatch")){
+                        || bleName.contains("B18") || bleName.contains("B50") || bleName.contains("B16") || bleName.equals("XWatch") || bleName.equals("SWatch") || bleName.contains("YWK")){
                     if(repeatList.contains(bleMac))
                         return;
                     if(customDeviceList.size()>50){
@@ -557,7 +557,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements CustomBlue
             }
 
 
-            if (WatchUtils.isVPBleDevice(bleName)){
+            if (WatchUtils.isVPBleDevice(bleName) || bleName.contains("YWK")){
                 connectB30(customBlueDevice.getBluetoothDevice().getAddress().trim(), bleName);
                 return;
             }

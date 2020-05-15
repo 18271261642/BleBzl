@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true">
 
     <include
-        layout="@layout/appbar_toolbar" />
+        layout="@layout/comment_b30_title_layout" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -31,13 +31,14 @@
 
     </RelativeLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.5"
         android:layout_marginLeft="@dimen/size_24"
-        android:layout_marginRight="@dimen/size_24"
         android:layout_marginTop="@dimen/size_30"
+        android:layout_marginRight="@dimen/size_24"
+        android:layout_weight="2"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
@@ -74,42 +75,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textinput_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true">
-
-                <EditText
-                    android:id="@+id/code_et_regieg"
-                    style="@style/MyEditText"
-                    android:drawableLeft="@mipmap/yanzhengma_dianji"
-                    android:drawablePadding="@dimen/size_10"
-                    android:hint="@string/input_code"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:textAllCaps="false"
-                android:id="@+id/send_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/size_40"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="@dimen/size_5"
-                android:layout_marginRight="@dimen/size_5"
-                android:background="@drawable/blue_border_btn_selector"
-                android:padding="@dimen/size_5"
-                android:text="@string/send_code"
-                android:textColor="@color/new_colorAccent" />
-
-        </RelativeLayout>
 
         <Button
             android:id="@+id/login_btn_reger"
@@ -118,28 +83,24 @@
             android:layout_marginTop="@dimen/size_30"
             android:background="@drawable/blue_btn_selector"
             android:text="@string/user_regsiter" />
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/register_agreement_my"
-            android:layout_width="wrap_content"
 
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-           />
+
+
+        <TextView
+            android:id="@+id/registerForPhoneTv"
+            android:layout_width="wrap_content"
+            android:text="@string/forget_user_phone"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:layout_height="wrap_content"/>
+
+
+
     </LinearLayout>
 
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textColor="@color/blue"
-        android:textSize="20sp"/>
 
 
 </LinearLayout>

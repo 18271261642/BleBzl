@@ -227,7 +227,8 @@ public class B30ConnStateService extends Service {
                             SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLENAME, nameStr);
                             SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, mac);
                             Intent intent = new Intent();
-                            if(nameStr.equals(WatchUtils.B31_NAME)||nameStr.equals(WatchUtils.B31S_NAME)||nameStr.equals(WatchUtils.S500_NAME)){  //B31的连接
+                            if(nameStr.equals(WatchUtils.B31_NAME)||nameStr.equals(WatchUtils.B31S_NAME)
+                                    ||nameStr.equals(WatchUtils.S500_NAME) || nameStr.contains("YWK") || nameStr.contains("SpO2")){  //B31的连接
                                 intent.setAction(WatchUtils.B31_CONNECTED_ACTION);
                             }else{  //B30、B36、盖德
                                 intent.setAction(WatchUtils.B30_CONNECTED_ACTION);

@@ -110,6 +110,12 @@ public class B30DeviceActivity extends WatchBaseActivity implements Rationale<Li
     @BindView(R.id.deviceVersionTv)
     TextView deviceVersionTv;
 
+    //主界面风格
+    @BindView(R.id.b30DeviceStyleRel)
+    RelativeLayout b30DeviceStyleRel;
+
+
+
     /**
      * 本地化工具
      */
@@ -191,17 +197,23 @@ public class B30DeviceActivity extends WatchBaseActivity implements Rationale<Li
     private void initViews() {
         commentB30TitleTv.setText(getResources().getString(R.string.device));
         commentB30BackImg.setVisibility(View.VISIBLE);
-        Log.e(TAG,"---------b333="+(WatchUtils.isB36Device(B30DeviceActivity.this)));
-        if (!WatchUtils.isB36Device(B30DeviceActivity.this)) {
-            b30DevicePrivateBloadRel.setVisibility(View.VISIBLE);
-            b30DeviceLightRel.setVisibility(View.GONE);
-           // wxSportRel.setVisibility(View.VISIBLE);
-        } else {
-            b30DevicePrivateBloadRel.setVisibility(View.GONE);
-            b30DeviceLightRel.setVisibility(View.VISIBLE);
-            //wxSportRel.setVisibility(View.GONE);
-            b30DeviceCounDownRel.setVisibility(View.GONE);
-        }
+        //是否支持主题风格
+        boolean isScreenStyle = (boolean) SharedPreferencesUtils.getParam(B30DeviceActivity.this,Commont.IS_SUPPORT_SCREEN_STYLE,false);
+        b30DeviceStyleRel.setVisibility(isScreenStyle ? View.VISIBLE :View.GONE);
+
+        //是否支持倒计时
+        boolean isCountDowm = (boolean) SharedPreferencesUtils.getParam(B30DeviceActivity.this,Commont.IS_SUPPORT_COUNTDOWN,false);
+        b30DeviceCounDownRel.setVisibility(isCountDowm ? View.VISIBLE : View.GONE);
+
+        //是否支持血压功能
+        boolean isSupportBp = (boolean) SharedPreferencesUtils.getParam(B30DeviceActivity.this,Commont.IS_B31_HAS_BP_KEY,false);
+        b30DevicePrivateBloadRel.setVisibility(isSupportBp ? View.VISIBLE : View.GONE);
+
+        //是否支持亮度调节
+        //B31S支持亮度调节功能
+        boolean isLight = (boolean) SharedPreferencesUtils.getParam(B30DeviceActivity.this,Commont.IS_B31S_LIGHT_KEY,false);
+        b30DeviceLightRel.setVisibility(isLight ? View.VISIBLE : View.GONE);
+
         longSitToggleBtn.setOnCheckedChangeListener(new ToggleClickListener());
         turnWristToggleBtn.setOnCheckedChangeListener(new ToggleClickListener());
         privateBloadToggleBtn.setOnCheckedChangeListener(new ToggleClickListener());

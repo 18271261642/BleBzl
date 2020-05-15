@@ -163,6 +163,7 @@ public class XWatchHomeFragment extends LazyFragment {
                 try {
                     if (xWatchTask != null && xWatchTask.getStatus() == AsyncTask.Status.RUNNING) {
                         xWatchTask.cancel(true);
+                        xWatchTask = null;
                         xWatchTask = new UploadXWatchTask();
                     } else {
                         xWatchTask = new UploadXWatchTask();

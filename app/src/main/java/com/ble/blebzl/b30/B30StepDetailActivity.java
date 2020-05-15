@@ -26,6 +26,7 @@ import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.util.Constant;
 import com.ble.blebzl.util.SharedPreferencesUtils;
+import com.ble.blebzl.view.DateSelectDialogView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -111,6 +112,10 @@ public class B30StepDetailActivity extends WatchBaseActivity {
      */
     private Gson gson;
 
+
+    private DateSelectDialogView dateSelectDialogView;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,59 +145,68 @@ public class B30StepDetailActivity extends WatchBaseActivity {
      * 初始化数据
      */
     private void initData() {
-        stepCurrDateTv.setText(currDay);
-        String mac = MyApp.getInstance().getMacAddress();
-        if(WatchUtils.isEmpty(mac))
-            return;
-        String sport = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
-                .TYPE_SPORT);
+        try {
+            stepCurrDateTv.setText(currDay);
+            String mac = MyApp.getInstance().getMacAddress();
+            if(WatchUtils.isEmpty(mac))
+                return;
+            String sport = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
+                    .TYPE_SPORT);
 
 //        List<HalfHourSportData> sportData = gson.fromJson(sport, new TypeToken<List<HalfHourSportData>>() {
 //        }.getType());
 
-        List<CusVPHalfSportData> sportData = gson.fromJson(sport, new TypeToken<List<CusVPHalfSportData>>() {
-        }.getType());
+            List<CusVPHalfSportData> sportData = gson.fromJson(sport, new TypeToken<List<CusVPHalfSportData>>() {
+            }.getType());
 
 
-        if (sportData == null) sportData = new ArrayList<>();
-        showBarChart(sportData);
-        String step = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
-                .TYPE_STEP);
-        countStepTv.setText(step == null ? "0" : step);// 本地步数
-        showListData(sportData);
+            if (sportData == null) sportData = new ArrayList<>();
+            showBarChart(sportData);
+            String step = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
+                    .TYPE_STEP);
+            countStepTv.setText(step == null ? "0" : step);// 本地步数
+            showListData(sportData);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     /**
      * 显示图表
      */
     private void showBarChart(List<CusVPHalfSportData> sportData) {
-        List<Map<String, Integer>> listMap = new ArrayList<>();
-        if (sportData != null && !sportData.isEmpty()) {
-            int k = 0;
-            for (int i = 0; i < 48; i++) {
-                Map<String, Integer> map = new HashMap<>();
-                int time = i * 30;
-                map.put("time", time);
-                CusVPTimeData tmpDate = sportData.get(k).getTime();
-                int tmpIntDate = tmpDate.getHMValue();
-                if (tmpIntDate == time) {
-                    map.put("val", sportData.get(k).getStepValue());
-                    if (k < sportData.size() - 1) {
-                        k++;
+        try {
+            List<Map<String, Integer>> listMap = new ArrayList<>();
+            if (sportData != null && !sportData.isEmpty()) {
+                int k = 0;
+                for (int i = 0; i < 48; i++) {
+                    Map<String, Integer> map = new HashMap<>();
+                    int time = i * 30;
+                    map.put("time", time);
+                    CusVPTimeData tmpDate = sportData.get(k).getTime();
+                    int tmpIntDate = tmpDate.getHMValue();
+                    if (tmpIntDate == time) {
+                        map.put("val", sportData.get(k).getStepValue());
+                        if (k < sportData.size() - 1) {
+                            k++;
+                        }
+                    } else {
+                        map.put("val", 0);
                     }
-                } else {
-                    map.put("val", 0);
+                    listMap.add(map);
                 }
-                listMap.add(map);
             }
+            b30ChartList.clear();
+            for (int i = 0; i < listMap.size(); i++) {
+                Map<String, Integer> tmpMap = listMap.get(i);
+                b30ChartList.add(new BarEntry(i, tmpMap.get("val")));
+            }
+            initBarChart(b30ChartList);
+            b30BarChart.invalidate();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        b30ChartList.clear();
-        for (int i = 0; i < listMap.size(); i++) {
-            Map<String, Integer> tmpMap = listMap.get(i);
-            b30ChartList.add(new BarEntry(i, tmpMap.get("val")));
-        }
-        initBarChart(b30ChartList);
-        b30BarChart.invalidate();
     }
 
     /**
@@ -239,56 +253,45 @@ public class B30StepDetailActivity extends WatchBaseActivity {
      * 显示列表数据
      */
     private void showListData(List<CusVPHalfSportData> sportData) {
-//        dataList.clear();
-//        if (sportData == null && sportData.isEmpty()) return;
-//        for (int i = 0; i < sportData.size(); i++) {
-//            if (sportData.get(i).stepValue > 0) {
-//                dataList.add(sportData.get(i));
-//            }
-//        }
-//        b30StepDetailAdapter.notifyDataSetChanged();
-//        double calValue = 0;
-//        double disValue = 0;
-//        if (dataList != null && !dataList.isEmpty()) {
-//            for (HalfHourSportData item : dataList) {
-//                calValue += item.getCalValue();
-//                disValue += item.getDisValue();
-//            }
-//        }
-//        calValue = (double) Math.round(calValue * 100) / 100;
-        if (dataList != null) dataList.clear();
-        else dataList = new ArrayList<>();
-        if (sportData != null) dataList.addAll(sportData);
-        if (!dataList.isEmpty()) {
-            for (int i = dataList.size() - 1; i >= 0; i--) {
-                if (dataList.get(i).getStepValue() <= 0) {
-                    dataList.remove(i);
+        try {
+            if (dataList != null) dataList.clear();
+            else dataList = new ArrayList<>();
+            if (sportData != null) dataList.addAll(sportData);
+            if (!dataList.isEmpty()) {
+                for (int i = dataList.size() - 1; i >= 0; i--) {
+                    if (dataList.get(i).getStepValue() <= 0) {
+                        dataList.remove(i);
+                    }
                 }
             }
-        }
-        b30StepDetailAdapter.notifyDataSetChanged();
-        double calValue = 0;
-        double disValue = 0;
-        if (sportData != null) {
-            for (CusVPHalfSportData item : sportData) {
-                calValue += item.getCalValue();
-                disValue += item.getDisValue();
+            b30StepDetailAdapter.notifyDataSetChanged();
+            double calValue = 0;
+            double disValue = 0;
+            if (sportData != null) {
+                for (CusVPHalfSportData item : sportData) {
+                    calValue += item.getCalValue();
+                    disValue += item.getDisValue();
+                }
             }
+            calValue = (double) Math.round(calValue * 100) / 100;
+            countKcalTv.setText("" + calValue+"kcl");
+            // 算一下距离,按公制英制来算
+            //boolean isMetric = new LocalizeTool(this).getMetricSystem();
+            boolean isMetric = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSystem, true);
+            if (!isMetric) disValue = disValue * Constant.METRIC_MILE;
+            disValue = (double) Math.round(disValue * 100) / 100;
+            Log.d("bobo", "calValue: " + calValue + ",disValue: " + disValue);
+            String disStr = isMetric ? getString(R.string.mileage_setkm) : getString(R.string
+                    .mileage_setmi);
+            countDisTv.setText(disValue + disStr);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        calValue = (double) Math.round(calValue * 100) / 100;
-        countKcalTv.setText("" + calValue+"kcl");
-        // 算一下距离,按公制英制来算
-        //boolean isMetric = new LocalizeTool(this).getMetricSystem();
-        boolean isMetric = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSystem, true);
-        if (!isMetric) disValue = disValue * Constant.METRIC_MILE;
-        disValue = (double) Math.round(disValue * 100) / 100;
-        Log.d("bobo", "calValue: " + calValue + ",disValue: " + disValue);
-        String disStr = isMetric ? getString(R.string.mileage_setkm) : getString(R.string
-                .mileage_setmi);
-        countDisTv.setText(disValue + disStr);
+
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg, R.id.stepCurrDateLeft,
+    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg,
+            R.id.stepCurrDateLeft,R.id.stepCurrDateTv,
             R.id.stepCurrDateRight})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -304,7 +307,23 @@ public class B30StepDetailActivity extends WatchBaseActivity {
             case R.id.stepCurrDateRight:   //切换下一天数据
                 changeDayData(false);
                 break;
+            case R.id.stepCurrDateTv:
+                chooseDate();
+                break;
         }
+    }
+
+    private void chooseDate() {
+        dateSelectDialogView = new DateSelectDialogView(this);
+        dateSelectDialogView.show();
+        dateSelectDialogView.setOnDateSelectListener(new DateSelectDialogView.OnDateSelectListener() {
+            @Override
+            public void selectDateStr(String str) {
+                dateSelectDialogView.dismiss();
+                currDay = str;
+                initData();
+            }
+        });
     }
 
     /**

@@ -1,6 +1,15 @@
 <resources>
     <!--头尾内部m部分翻译为英文,后期根据提供文档更改-->
     <!--西班牙语-->
+    <string name="string_spo2_cali">Calibrando</string>
+    <string name="string_heart_waring">Alarma de frecuencia cardíaca</string>
+    <string name="string_heart_limit">Límite superior de frecuencia cardíaca en reposo</string>
+    <string name="string_logout">Cancelar cuenta</string>
+
+    <string name="string_privacy_agreement">Acuerdo de usuario</string>
+    <string name="string_privacy_desc">Estimados usuarios, para proteger sus derechos, comprendan el acuerdo de usuario yla política de privacidad antes de utilizar este software para comprender sus derechos legales.</string>
+
+
     <string name="string_x_watch_take_camera">Cámara remota</string>
     <string name="string_b16_step_frequency">frequency</string>
     <string name="string_b16_bmi1">Índice de reducción de grasa</string>

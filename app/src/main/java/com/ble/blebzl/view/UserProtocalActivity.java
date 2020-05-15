@@ -79,7 +79,7 @@ public class UserProtocalActivity extends WatchBaseActivity {
 
     private void initViews() {
         webView = findViewById(R.id.privacyWb);
-        tvTitle.setText("用户协议");
+        tvTitle.setText(getResources().getString(R.string.string_privacy_agreement));
         toolbar.setNavigationIcon(R.mipmap.backs);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -106,9 +106,6 @@ public class AlertService extends MyNotificationListenerService {
     private static final String PHONE_MISS_CALL_PHONE = "com.android.server.telecom";
 
 
-
-
-
     private String newmsg = "";
 
     @Override
@@ -211,7 +208,6 @@ public class AlertService extends MyNotificationListenerService {
                 if(saveBleName.equals("XWatch") || saveBleName.equals("SWatch")){
                     if(isLine)sendXWatcsgType(100);
                 }
-
 
                 return;
             }

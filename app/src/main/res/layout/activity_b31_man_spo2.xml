@@ -42,7 +42,7 @@
                 android:layout_gravity="center" />
 
 
-            <com.ble.blebzl.b30.b30view.CustomCircleProgressBar
+            <com.ble.blebzl.b30.b30view.TmpCustomCircleProgressBar
                 android:id="@+id/b31MeaureSpo2ProgressView"
                 android:layout_width="300dp"
                 android:layout_height="300dp"

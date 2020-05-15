@@ -2,6 +2,15 @@
     <!--头尾内部m部分翻译为英文,后期根据提供文档更改-->
     <!--头-->
     <!--德语-->
+    <string name="string_spo2_cali">Kalibrieren</string>
+    <string name="string_heart_waring">Herzfrequenzalarm</string>
+    <string name="string_heart_limit">Obergrenze der Ruheherzfrequenz</string>
+    <string name="string_logout">Konto kündigen</string>
+
+    <string name="string_privacy_agreement">Benutzervereinbarung</string>
+    <string name="string_privacy_desc">Sehr geehrte Benutzer, um Ihre Rechte zu schützen, verstehen Sie bitte die Benutzervereinbarung und die Datenschutzrichtlinien, bevor Sie diese Software verwenden, um Ihre gesetzlichen Rechte zu verstehen.</string>
+
+
     <string name="string_x_watch_take_camera">Remote-Kamera</string>
     <string name="string_b16_step_frequency">frequency</string>
     <string name="string_b16_bmi1">Fettreduktionsindex</string>

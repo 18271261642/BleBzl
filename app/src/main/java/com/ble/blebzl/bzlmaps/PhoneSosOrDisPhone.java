@@ -67,6 +67,8 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone {
             Log.d("call---", "rejectPhone: " + "电话被挂断了");
         } catch (Exception e) {
             e.printStackTrace();
+        }catch (NoSuchMethodError e){
+            e.printStackTrace();
         }
     }
 

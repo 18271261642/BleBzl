@@ -2,6 +2,14 @@
     <!--头尾内部m部分翻译为英文,后期根据提供文档更改-->
     <!--法语-->
     <!--法语-->
+    <string name="string_spo2_cali">Calibration</string>
+    <string name="string_heart_waring">Alarme de fréquence cardiaque</string>
+    <string name="string_heart_limit">Limite supérieure de la fréquence cardiaque au repos</string>
+    <string name="string_logout">Annuler le compte</string>
+
+    <string name="string_privacy_agreement">Accord d\'utilisation</string>
+    <string name="string_privacy_desc">Chers utilisateurs, afin de protéger vos droits, veuillez comprendre l\'accord d\'utilisation et la politique de confidentialité avant d\'utiliser ce logiciel pour comprendre vos droits légaux.</string>
+
     <string name="string_x_watch_take_camera">Caméra à distance</string>
     <string name="string_b16_step_frequency">frequency</string>
     <string name="string_b16_bmi1">Indice de réduction des graisses</string>

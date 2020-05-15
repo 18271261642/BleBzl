@@ -37,6 +37,13 @@ public class Commont {
     public static final String DEVICE_VERSION_CODE_KEY = "device_version_code";
     //设备支持的主题风格数量key
     public static final String SP_DEVICE_STYLE_COUNT = "sp_device_style_count";
+    //是否支持界面主题风格
+    public static final String IS_SUPPORT_SCREEN_STYLE = "is_support_screen_style";
+    //是否支持倒计时功能
+    public static final String IS_SUPPORT_COUNTDOWN = "is_support_count";
+    //是否支持心率警报
+    public static final String IS_SUPPORT_HEART_WARING ="is_support_heart_waring";
+
 
 
 

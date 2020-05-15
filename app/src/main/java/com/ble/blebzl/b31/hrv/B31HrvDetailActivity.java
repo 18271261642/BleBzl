@@ -39,6 +39,7 @@ import com.ble.blebzl.siswatch.WatchBaseActivity;
 import com.ble.blebzl.siswatch.utils.WatchUtils;
 import com.ble.blebzl.util.Constant;
 import com.ble.blebzl.b31.bpoxy.enums.Constants;
+import com.ble.blebzl.view.DateSelectDialogView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.google.gson.Gson;
 import com.veepoo.protocol.model.datas.HRVOriginData;
@@ -137,9 +138,10 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
 
     private findSavedHrvDataAsyncTask findSavedHrvDataAsyncTask;
 
+    private DateSelectDialogView dateSelectDialogView;
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -302,43 +304,6 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
             }
             findSavedHrvDataAsyncTask.execute();
 
-//            Thread thread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    String where = "bleMac = ? and dateStr = ?";
-//
-//                    List<B31HRVBean> hrvBeanList = LitePal.where(where, bleMac,
-//                            currDay).find(B31HRVBean.class);
-//                    Log.e(TAG,"--------hrv="+hrvBeanList.size());
-//                    if (hrvBeanList == null || hrvBeanList.isEmpty()) {
-//                        Message message = handler.obtainMessage();
-//                        message.what = 1002;
-//                        message.obj = tmpHRVlist;
-//                        handler.sendMessage(message);
-//                        return;
-//                    }
-//
-////                /**
-////                 * 测试时保存数据用的
-////                 */
-////                String string = JSON.toJSON(hrvBeanList).toString();
-////                LogTestUtil.e(TAG, "  HRV  完整数据  " + string);
-////                saveToFile(string);
-//
-//                    for (B31HRVBean hrvBean : hrvBeanList) {
-//                        HRVOriginData hrvOriginData = gson.fromJson(hrvBean.getHrvDataStr(), HRVOriginData.class);
-//                        //Log.e(TAG, "---HRV  A " + hrvOriginData.toString());
-//                        tmpHRVlist.add(hrvOriginData);
-//                    }
-//
-//                    Message message = handler.obtainMessage();
-//                    message.what = 1001;
-//                    message.obj = tmpHRVlist;
-//                    handler.sendMessage(message);
-//
-//                }
-//            });
-//            thread.start();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -408,26 +373,6 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -523,7 +468,7 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
             R.id.herDataTv, R.id.hrvType1, R.id.hrvType2,
             R.id.hrvType3, R.id.hrvType4, R.id.hrvType5,
             R.id.hrvType6, R.id.hrvType7, R.id.hrvType8,
-            R.id.hrvType9})
+            R.id.hrvType9,R.id.commArrowDate})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
@@ -534,6 +479,9 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
                 break;
             case R.id.commArrowRight:   //后一天
                 changeCurrDay(false);
+                break;
+            case R.id.commArrowDate:
+                chooseDate();
                 break;
             case R.id.herLerzeoTv:  //图表展示
                 clearHrvStyle(0);
@@ -578,6 +526,19 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
                         getResources().getString(R.string.vphrv_lorentz_chart_des_9), R.drawable.hrv_gradivew_9_big);
                 break;
         }
+    }
+
+    private void chooseDate() {
+        dateSelectDialogView = new DateSelectDialogView(this);
+        dateSelectDialogView.show();
+        dateSelectDialogView.setOnDateSelectListener(new DateSelectDialogView.OnDateSelectListener() {
+            @Override
+            public void selectDateStr(String str) {
+                dateSelectDialogView.dismiss();
+                currDay = str;
+                findDataFromDb(str);
+            }
+        });
     }
 
     private void showHrvDescDialog(String titleId, String descTxt, int drawable) {

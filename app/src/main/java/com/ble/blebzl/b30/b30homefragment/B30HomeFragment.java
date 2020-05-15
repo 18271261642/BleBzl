@@ -411,7 +411,7 @@ public class B30HomeFragment extends LazyFragment implements ConnBleHelpService.
     private void verIsTureB36() {
         try {
             if (WatchUtils.isEmpty(bleName))
-                bleName = (String) SharedPreferencesUtils.readObject(getActivity(), Commont.BLENAME);
+               return;
             if (bleName.equals("B36") ||bleName.equals("B36M")) {
                 b30HomeB30Lin.setVisibility(View.GONE);
                 if (WatchUtils.isB36SexWomen(getActivity())) {
@@ -424,7 +424,6 @@ public class B30HomeFragment extends LazyFragment implements ConnBleHelpService.
                     }
                     tunrOnOrOffPrivacy(womenPrivacy);
                     showB36WomenStatus();
-
                 }
 
               //  UpDatasBase.chageDevicesNames("B36");//更改设备类型

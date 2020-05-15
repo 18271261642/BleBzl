@@ -87,6 +87,8 @@ public class WatchOperationActivity extends WatchBaseActivity {
 
                 return true;
             }
+
+
         });
         watchOperationWebView.loadUrl(url);
 

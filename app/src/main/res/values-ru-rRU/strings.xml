@@ -1,5 +1,13 @@
 <resources>
     <!--//饿语-->
+    <string name="string_spo2_cali">калибровка</string>
+    <string name="string_heart_waring">Сигнализация сердечного ритма</string>
+    <string name="string_heart_limit">Верхний предел ЧСС в покое</string>
+    <string name="string_logout">Отменить аккаунт</string>
+
+    <string name="string_privacy_agreement">User Agreement</string>
+    <string name="string_privacy_desc">Dear users, in order to protect your rights, please understand the user agreement and privacy policy before using this software to understand your legal rights.</string>
+
 
     <string name="string_x_watch_take_camera">Удаленная камера</string>
 
@@ -401,7 +409,7 @@
 
 
     //饿语
-    <string name="privacy">Политика конфиденциальности</string>
+    <string name="privacy">Privacy Policy</string>
     <string name="string_data_tell">Дважды щелкните область значка, чтобы увидеть больше</string>
     <string name="string_net_work">Советы по настройке сети</string>
     <string name="string_no_net_work">Сетевое подключение недоступно. Установлен ли он?</string>
